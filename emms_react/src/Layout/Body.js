@@ -1,54 +1,54 @@
 import React from 'react';
 import './Body.css';
-import { Link, Route, Switch} from 'react-router-dom';
+import { Route, Switch} from 'react-router-dom';
 
 function Body(props){
     return (
       <Switch>
         {/* 메인 */}
-        <Route path="/main">
-          <div>메인</div>
+        <Route path="/MAIN">
+          <div className="main">메인</div>
         </Route>
         {/* 로그인 */}
-        <Route path="/로그인">
+        <Route path="/LOGIN">
           <div>로그인</div>
         </Route>
         {/* 팀관리 */}
-        <Route path="/팀관리">
+        <Route path="/TIMMNG">
           <div>팀관리</div>
         </Route>
         {/* 프로젝트제안 */}
-        <Route path="/프로젝트기본정보">
+        <Route path="/PRJINFO">
           <div>프로젝트기본정보</div>
         </Route>
-        <Route path="/제안공수산정">
+        <Route path="/PRJMHR">
           <div>제안공수산정</div>
         </Route>
-        <Route path="/프로젝트견적">
+        <Route path="/PRJOFR">
           <div>프로젝트견적</div>
         </Route>
-        <Route path="/투입공수산정">
+        <Route path="/DEPMHR">
           <div>투입공수산정</div>
         </Route>
-        <Route path="/사전원가산정">
+        <Route path="/BFRFCST">
           <div>사전원가산정</div>
         </Route>
-        <Route path="/사전비용계산">
+        <Route path="/BFRCST">
           <div>사전비용계산</div>
         </Route>
         {/* 프로젝트관리 */}
-        <Route path="/실투입공수관리">
+        <Route path="/RDEPMHR">
           <div>실투입공수관리</div>
         </Route>
-        <Route path="/비용처리">
+        <Route path="/CSTTRT">
          <div>비용처리</div>
         </Route>
         {/* 인력관리 */}
-        <Route path="/인력관리">
+        <Route path="/MEMMNG">
           <div>인력관리</div>
         </Route>
         {/* 문서관리 */}
-        <Route path="/문서관리">
+        <Route path="/DOCMNG">
           <div>문서관리</div>
         </Route>
         <Route path="/:id">

@@ -1,3 +1,64 @@
-.app-header{
-  margin-left: 30px;
+.nav{
+  text-align: center;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+li {
+  float: left;
+  display: inline;
+}
+
+.nav .home, .dropbtn {
+  display: inline-block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li .home{
+  background-color: rgb(199, 199, 199);
+  color: rgb(0, 0, 0);
+}
+
+li Link.menu:hover, .dropdown:hover .dropbtn {
+  background-color: rgb(97, 97, 97);
+  color: rgb(255, 240, 109);
+}
+
+li.dropdown {
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: fixed;
+  background-color: #333;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content .menu {
+  color: rgb(255, 255, 255);
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.dropdown-content .menu:hover {
+  background-color: (97, 97, 97);
+  color: rgb(255, 240, 109);
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
 }
