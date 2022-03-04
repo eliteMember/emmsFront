@@ -11,10 +11,10 @@ function MN100(props){
   const onSubmit = (data) => {
     console.log(data);
 
-    axios.post('http://localhost:8080/api/login', data)
+    axios.post('/api/login', data)
     .then(function(res){
       console.log(res);
-      if( res.isLogin === true ){
+      if( res.data.isLogin === true ){
         console.log('로그인 성공')
       }else{
         console.log('아이디 또는 비밀번호가 다름')

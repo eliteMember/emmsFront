@@ -11,10 +11,10 @@ function App() {
   const [isLogin, isLoginChange] = useState(false);
 
   useEffect(() => {
-    axios.get('http://localhost:8080/api/cmmn/getSession')
+    axios.get('/api/cmmn/getSession')
       .then(res => {
         console.log(res);
-        if( res.isLogin === true ){
+        if( res.data.isLogin === true ){
           isLoginChange(true);
         }else{
           isLoginChange(false);
