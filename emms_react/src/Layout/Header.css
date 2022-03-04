@@ -1,5 +1,7 @@
 .nav{
+  padding-left: 20px;
   text-align: center;
+  box-shadow: 0px 3px 10px 0px rgba(32,30,41,0.5);
 }
 
 ul {
