@@ -1,12 +1,16 @@
 import axios from 'axios';
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { Link, Router } from 'react-router-dom';
 import './MN100.css';
+import { useHistory } from "react-router-dom";
 
 
 
 function MN100(props){
   
+  const history = useHistory();
+
   const { register, watch, handleSubmit, formState: { errors } } = useForm();
   const onSubmit = (data) => {
     console.log(data);
@@ -14,14 +18,26 @@ function MN100(props){
     axios.post('/api/login', data)
     .then(function(res){
       console.log(res);
-      if( res.data.isLogin === true ){
-        console.log('로그인 성공')
+      if( res.data.login === true ){
+        console.log('로그인 성공');
+        props.isLoginChange( true );
+        //alert('로그인 성공');
+        //history.push('/');
+
+        // if (!location.state?.from) {
+        //     history.push('/');
+        // } else {
+        //     history.push(location.state.from);
+        // }
+
       }else{
-        console.log('아이디 또는 비밀번호가 다름')
+        console.log('아이디 또는 비밀번호가 다름');
+        alert('아이디 또는 비밀번호가 다름');
       }
     })
     .catch(function(res){
       console.log('로그인 실패');
+      alert('로그인 실패');
     })
 
   }

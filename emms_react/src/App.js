@@ -14,7 +14,7 @@ function App() {
     axios.get('/api/cmmn/getSession')
       .then(res => {
         console.log(res);
-        if( res.data.isLogin === true ){
+        if( res.data.login === true ){
           isLoginChange(true);
         }else{
           isLoginChange(false);
@@ -27,7 +27,7 @@ function App() {
   return (
     <div className="App">
       
-      <LoginOrMainControl isLogin = {isLogin}/>
+      <LoginOrMainControl isLogin={isLogin} isLoginChange={isLoginChange}/>
 
     </div>
   );
@@ -47,7 +47,7 @@ function App() {
   } else if(props.isLogin === false){
     return (
       <>
-      <MN100 />
+      <MN100 isLoginChange={props.isLoginChange}/>
       </>
     )
   }
