@@ -2,21 +2,19 @@ import React, { useState, useEffect } from 'react';
 import Header from './Layout/Header.js';
 import Body from './Layout/Body.js';
 import Footer from './Layout/Footer.js';
+import MN100 from './MN/MN100.js';
 import axios from 'axios';
 
 
 function App() {
 
-  const [serverPrefixUrl, serverPrefixUrlChange] = useState('http://localhost:8080');
   const [isLogin, isLoginChange] = useState(false);
 
-
-
   useEffect(() => {
-    axios.get('http://localhost:8080/api/cmmn/getSession')
+    axios.get('/api/cmmn/getSession')
       .then(res => {
         console.log(res);
-        if( res.isLogin === true ){
+        if( res.data.login === true ){
           isLoginChange(true);
         }else{
           isLoginChange(false);
@@ -29,7 +27,7 @@ function App() {
   return (
     <div className="App">
       
-      <LoginOrMainControl isLogin = {isLogin}/>
+      <LoginOrMainControl isLogin={isLogin} isLoginChange={isLoginChange}/>
 
     </div>
   );
@@ -49,7 +47,7 @@ function App() {
   } else if(props.isLogin === false){
     return (
       <>
-      <p>로그인 페이지</p>
+      <MN100 isLoginChange={props.isLoginChange}/>
       </>
     )
   }
