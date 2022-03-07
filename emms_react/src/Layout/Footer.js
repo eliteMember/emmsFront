@@ -2,8 +2,10 @@ import React from 'react';
 import './Footer.css';
 function Footer(props){
     return (
-        <div className="app-footer">
-            Footer 입니다.
+        <div className="footer">
+            <footer>
+                copyright@U2W.EMMS
+            </footer>
         </div>
     )
 }

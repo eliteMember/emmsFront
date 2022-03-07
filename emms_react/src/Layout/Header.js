@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import './Header.css';
 import React, { useEffect, useState } from 'react';
-import { Link, Route, Switch} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import axios from 'axios'
 
 
