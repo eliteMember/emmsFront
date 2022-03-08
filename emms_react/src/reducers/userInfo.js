@@ -37,12 +37,10 @@ const USER_INFO = (state = initialState, action) => {
   switch (action.type) {
     case UPDATE:
       copyUserInfo = action.payload;
-      console.log(copyUserInfo);
       return copyUserInfo;
 
     case EXPIRE:
       copyUserInfo = initialState;
-
       return copyUserInfo;
 
     // default를 쓰지 않으면 맨처음 state에 값이 undefined가 나옴 꼭! default문을 넣어야함
