@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import Header from './Layout/Header.js';
-import Body from './Layout/Body.js';
-import Footer from './Layout/Footer.js';
-import MN100 from './MN/MN100.js';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import axios from 'axios';
 
+let Header = lazy(() => { return import('./Layout/Header.js') });
+let Body = lazy(() => { return import('./Layout/Footer.js') });
+let Footer = lazy(() => { return import('./Layout/Footer.js') });
+let MN100 = lazy(() => { return import('./MN/MN100.js') });
 
 function App() {
 
@@ -13,45 +13,48 @@ function App() {
   useEffect(() => {
     axios.get('/api/cmmn/getSession')
       .then(res => {
-        console.log(res);
-        if( res.data.login === true ){
-          isLoginChange(false);
-        }else{
+        if (res.data.login === true) {
+          isLoginChange(true);
+        } else {
           isLoginChange(false);
         }
-      }).catch(()=>{
+      }).catch(() => {
         console.log('세션정보 불러오기 에러');
       })
   }, [])
-  
+
   return (
     <div className="App">
-      
-      <LoginOrMainControl isLogin={isLogin} isLoginChange={isLoginChange}/>
+
+      <LoginOrMainControl isLogin={isLogin} isLoginChange={isLoginChange} />
 
     </div>
   );
 }
 
- function LoginOrMainControl(props){
+function LoginOrMainControl(props) {
   //로그인 후
-  if(props.isLogin === true){
+  if (props.isLogin === true) {
     return (
       <>
-      <Header/>
-      <Body/>
-      <Footer/>
+        <Suspense fallback={<div>로딩중</div>}>
+          <Header isLogin={props.isLogin} isLoginChange={props.isLoginChange} />
+          <Body />
+          <Footer />
+        </Suspense>
       </>
     )
-  //로그인 페이지
-  } else if(props.isLogin === false){
+    //로그인 페이지
+  } else if (props.isLogin === false) {
     return (
       <>
-      <MN100 isLoginChange={props.isLoginChange}/>
+        <Suspense fallback={<div>로딩중</div>}>
+          <MN100 isLoginChange={props.isLoginChange} />
+        </Suspense>
       </>
     )
   }
-  
+
 }
 
 

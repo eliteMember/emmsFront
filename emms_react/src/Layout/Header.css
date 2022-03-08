@@ -73,7 +73,7 @@ li.dropdown {
   right: 200px;
   text-align: center;
   padding: 14px 16px;
-  text-decoration: none;
+  text-decoration: none;  
 }
 
 .right p{
@@ -116,4 +116,9 @@ li.dropdown {
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
+  cursor: pointer;
+}
+
+.myInfo:hover, .logOut:hover {
+  color: #807c8e;
 }
