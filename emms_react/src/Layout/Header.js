@@ -13,8 +13,8 @@ function Header(props) {
   const setLogout = () => {
     axios.get('/api/logout')
       .then(() => {
+        props.isLoginChange(false);
         dispatch(ACT_USER_INFO_EXPIRE());
-    props.isLoginChange(false);
       }).catch(() => {
         alert("로그아웃 시도 중 오류가 발생하였습니다.");
       })

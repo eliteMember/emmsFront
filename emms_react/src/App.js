@@ -2,7 +2,7 @@ import React, { useState, useEffect, lazy, Suspense } from 'react';
 import axios from 'axios';
 
 let Header = lazy(() => { return import('./Layout/Header.js') });
-let Body = lazy(() => { return import('./Layout/Footer.js') });
+let Body = lazy(() => { return import('./Layout/Body.js') });
 let Footer = lazy(() => { return import('./Layout/Footer.js') });
 let MN100 = lazy(() => { return import('./MN/MN100.js') });
 
