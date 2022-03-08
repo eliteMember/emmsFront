@@ -1,8 +1,21 @@
-import React from 'react';
+import {React , useEffect, useState} from 'react';
 import './Body.css';
 import { Route, Switch} from 'react-router-dom';
+import axios from 'axios';
 
 function Body(props){
+
+  let [code, setCode] = useState(null);
+
+  useEffect(() => {
+    axios.get('http://localhost:8080/api/code/getCode')
+      .then((rs) => {
+        setCode(rs.data);
+      }).catch(() => {
+        alert("코드 호출 에러");
+      })
+  }, [])
+
     return (
       <Switch>
         {/* 메인 */}
