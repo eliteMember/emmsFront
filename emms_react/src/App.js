@@ -13,9 +13,8 @@ function App() {
   useEffect(() => {
     axios.get('/api/cmmn/getSession')
       .then(res => {
-        console.log(res);
         if( res.data.login === true ){
-          isLoginChange(false);
+          isLoginChange(true);
         }else{
           isLoginChange(false);
         }
