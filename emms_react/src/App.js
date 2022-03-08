@@ -15,7 +15,7 @@ function App() {
       .then(res => {
         console.log(res);
         if( res.data.login === true ){
-          isLoginChange(true);
+          isLoginChange(false);
         }else{
           isLoginChange(false);
         }

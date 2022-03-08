@@ -2,22 +2,19 @@ import axios from 'axios';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import './MN100.css';
-import { useHistory } from "react-router-dom";
-import { ACT_USER_INFO_UPDATE, ACT_USER_INFO_EXPIRE } from "../reducers/userInfo.js";
+import { ACT_USER_INFO_UPDATE } from "../reducers/userInfo";
 import { useDispatch } from 'react-redux';
 
 function MN100(props) {
-  const history = useHistory();
 
   //redux dispatch 사용준비
   const dispatch = useDispatch();
   //reducer store에 접근하여 userInfo state를 가져옴
   const setUser = (userInfo) => {
     // store에 있는 state 바꾸는 함수 실행
-    dispatch(ACT_USER_INFO_UPDATE({payload: userInfo}));
+    dispatch(ACT_USER_INFO_UPDATE({userInfo:userInfo}));
   };
   
-
   const { register, watch, handleSubmit, formState: { errors } } = useForm();
   const onSubmit = (data) => {
     axios.post('/api/login', data)

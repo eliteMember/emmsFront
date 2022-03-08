@@ -9,9 +9,7 @@ import { useSelector } from "react-redux";
 function Header(props) {
   let [menuList, setMenuList] = useState(null);
 
-  const { USER_INFO } = useSelector(state => state.userInfo);
-
-  console.log(USER_INFO);
+  const { userInfo } = useSelector(state => state.userInfo);
 
   useEffect(() => {
     axios.get('http://localhost:8080/api/menu/getList')
@@ -35,7 +33,7 @@ function Header(props) {
               </li>
           )
         }
-        <li className="right">오태윤<p> 님</p></li>
+        <li className="right">{userInfo.usrName}<p> 님</p></li>
         <div className="vl1"></div>
         <li><Link to="/myInfo" className="myInfo">사용자관리</Link></li>
         <div className="vl2"></div>
