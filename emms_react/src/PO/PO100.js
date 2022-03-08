@@ -1,6 +1,5 @@
-import React from 'react';
+import { React, useState, useEffect } from 'react';
 import { Link, Router, useHistory } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import './PO100.css';
 
@@ -9,33 +8,35 @@ import './PO100.css';
 function PO100(props){
   
   const history = useHistory();
+
+  //이름, 이메일, 비밀번호, 비밀번호 확인
+  const [prjNm, setPrjNm] = useState('')
+
+  //오류메시지 상태저장
+  const [prjNmMessage, setPrjNmMessage] = useState('')
+
+  // 유효성 검사
+  const [isPrjNm, setIsPrjNm] = useState(false);
   
-  const { register, watch, handleSubmit, formState: { errors } } = useForm();
-
-  const onSubmit = (data) => {
-    console.log(data);
-
-    axios.post('/api/po100', data)
-    .then(function(res){
-      console.log(res);
-      alert('앙?');
-    })
-    .catch(function(res){
-      console.log('오류');
-      alert('오류');
-    })
-
+  const handleSubmit = () => {
+    return false;
   }
 
-  const onError = (error) => {
-    console.log(error);
-  }
-
-
-  console.log(watch());
-
+  // 이름
+  const onChangePrjNm = ((e) => {
+    setPrjNm(e.target.value)
+    if( e.target.value.length == 0 ){
+      setPrjNmMessage('프로젝트명을 입력해주세요.')
+      setIsPrjNm(false)
+    }else{
+      setPrjNmMessage('')
+      setIsPrjNm(true)
+    }
+    
+  }, [])
+  
   return (
-        <div className='PO100_DIV' onSubmit={handleSubmit(onSubmit, onError)}>
+        <div className='PO100_DIV' onSubmit={handleSubmit}>
           <h1>프로젝트 기본정보</h1>
           <form id="loginFrm" name="loginFrm">
             <div>
@@ -45,25 +46,26 @@ function PO100(props){
                 <button type='button'>신규</button>
               </span>
             </div>
+            <button type="submit">로그인</button>
           </form>
         </div>
     )
 }
 
 function ProjectNmSetChangeTAG(props){
-  
-  
+    
   return (
 
-    <span className='PO100_span_1'>
-      <input
-        type="text" 
-        id="prjNm"
-        name="prjNm"
-      />
-    </span>
-
+      <span className='PO100_span_1'>
+        <input
+          type="text" 
+          id="prjNm"
+          name="prjNm"
+        />
+      </span>
+  
   )
+
 }
 
 export default PO100;
