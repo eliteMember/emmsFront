@@ -2,6 +2,7 @@ import {React , useEffect, useState} from 'react';
 import './Body.css';
 import { Route, Switch} from 'react-router-dom';
 import axios from 'axios';
+import PO100 from '../PO/PO100';
 
 function Body(props){
 
@@ -32,7 +33,7 @@ function Body(props){
         </Route>
         {/* 프로젝트제안 */}
         <Route path="/PRJINFO">
-          <div>프로젝트기본정보</div>
+          <PO100 />
         </Route>
         <Route path="/PRJMHR">
           <div>제안공수산정</div>
