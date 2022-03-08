@@ -3,10 +3,15 @@ import './Header.css';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios'
+import { useSelector } from "react-redux";
 
 
 function Header(props) {
   let [menuList, setMenuList] = useState(null);
+
+  const { USER_INFO } = useSelector(state => state.userInfo);
+
+  console.log(USER_INFO);
 
   useEffect(() => {
     axios.get('http://localhost:8080/api/menu/getList')
@@ -30,6 +35,11 @@ function Header(props) {
               </li>
           )
         }
+        <li className="right">오태윤<p> 님</p></li>
+        <div className="vl1"></div>
+        <li><Link to="/myInfo" className="myInfo">사용자관리</Link></li>
+        <div className="vl2"></div>
+        <li><Link to="/myInfo" className="logOut">로그아웃</Link></li>
       </ul>
     </div>
   )
@@ -38,14 +48,13 @@ function Header(props) {
     return (<Link to="" className="dropbtn">{props.menu.mnuNm}</Link>);
   }
 
-  
+
   function NavDrop(props) {
-    console.log(menuList[props.prtMnuNum]);
     return (
       <div className="dropdown-content">
         {
           menuList[props.prtMnuNum].map(
-            (menu) => <Link className="menu" to={"/"+menu.mnuUrl} key={menu.mnuNum}>{menu.mnuNm}</Link>
+            (menu) => <Link className="menu" to={"/" + menu.mnuUrl} key={menu.mnuNum}>{menu.mnuNm}</Link>
           )
         }
       </div>

@@ -65,3 +65,55 @@ li.dropdown {
 .dropdown:hover .dropdown-content {
   display: block;
 }
+
+
+.right{
+  position : absolute;
+  color: white;
+  right: 200px;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+.right p{
+  text-align: right;
+  display: inline;
+  font-size: 13px;
+}
+
+.myInfo {
+  position : absolute;
+  color: white;
+  right: 90px;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+.vl1 {
+  position: absolute;
+  border-left: 1px solid #f9f4ff;
+  right: 200px;
+  height: 25px;
+  text-align: center;
+  top: 15px;  
+}
+
+.vl2 {
+  position: absolute;
+  border-left: 1px solid #f9f4ff;
+  right: 93px;
+  height: 25px;
+  text-align: center;
+  top: 15px;  
+}
+
+.logOut {
+  position : absolute;
+  color: white;
+  right: 0px;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
