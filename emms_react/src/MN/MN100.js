@@ -9,12 +9,11 @@ function MN100(props) {
 
   //redux dispatch 사용준비
   const dispatch = useDispatch();
-  //reducer store에 접근하여 userInfo state를 가져옴
+
   const setUser = (userInfo) => {
-    // store에 있는 state 바꾸는 함수 실행
-    dispatch(ACT_USER_INFO_UPDATE({userInfo:userInfo}));
+    dispatch(ACT_USER_INFO_UPDATE({ userInfo: userInfo }));
   };
-  
+
   const { register, watch, handleSubmit, formState: { errors } } = useForm();
   const onSubmit = (data) => {
     axios.post('/api/login', data)
@@ -51,31 +50,33 @@ function MN100(props) {
   console.log(watch());
 
   return (
-    <div className='MN100_DIV'>
-      <form id="loginFrm" name="loginFrm" onSubmit={handleSubmit(onSubmit, onError)}>
-        <h1>로그인</h1>
-        <div>
-          <input type="text" id="loginId" name="loginId" placeholder='아이디'
-            {...register("loginId",
-              {
-                required: { value: true, message: "아이디를 입력하세요." },
-                minLength: { value: 3, message: "아이디는 3자리 이상" }
-              }
-            )}
-          />
-          {errors && <h1>{errors?.loginId?.message}</h1>}
-          <br />
-          <input type="password" id="password" name="password" placeholder='비밀번호'
-            {...register("password",
-              {
-                required: { value: true, message: "비밀번호를 입력하세요." }
-              }
-            )}
-          />
-          {errors && <h1>{errors?.password?.message}</h1>}
-        </div>
-        <button type="submit">로그인</button>
-      </form>
+    <div className="wrap">
+      <div className='MN100_DIV'>
+        <form id="loginFrm" name="loginFrm" onSubmit={handleSubmit(onSubmit, onError)}>
+          <h1>로그인</h1>
+          <div>
+            <input type="text" id="loginId" name="loginId" placeholder='아이디'
+              {...register("loginId",
+                {
+                  required: { value: true, message: "아이디를 입력하세요." },
+                  minLength: { value: 3, message: "아이디는 3자리 이상" }
+                }
+              )}
+            />
+            {errors && <p className="valid">{errors?.loginId?.message}</p>}
+            <br />
+            <input type="password" id="password" name="password" placeholder='비밀번호'
+              {...register("password",
+                {
+                  required: { value: true, message: "비밀번호를 입력하세요." }
+                }
+              )}
+            />
+            {errors && <p className="valid">{errors?.password?.message}</p>}
+          </div>
+          <button type="submit">로그인</button>
+        </form>
+      </div>
     </div>
   )
 }

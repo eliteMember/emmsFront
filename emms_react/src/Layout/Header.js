@@ -3,27 +3,40 @@ import './Header.css';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios'
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { ACT_USER_INFO_EXPIRE } from "../reducers/userInfo";
 
 
 function Header(props) {
+  const dispatch = useDispatch();
+
+  const setLogout = () => {
+    axios.get('/api/logout')
+      .then(() => {
+        props.isLoginChange(false);
+        dispatch(ACT_USER_INFO_EXPIRE());
+      }).catch(() => {
+        alert("로그아웃 시도 중 오류가 발생하였습니다.");
+      })
+  };
+
   let [menuList, setMenuList] = useState(null);
 
   const { userInfo } = useSelector(state => state.userInfo);
 
   useEffect(() => {
-    axios.get('http://localhost:8080/api/menu/getList')
+    axios.get('/api/menu/getList')
       .then((rs) => {
         setMenuList(rs.data);
       }).catch(() => {
         setMenuList("메뉴 호출 오류");
       })
-  }, [])
+  }, [userInfo])
 
   return (
     <div>
       <ul className="nav">
-        <li><Link to="/MAIN" className="home">정예멤버</Link></li>
+        <li><Link to="/MAIN" className="home">EMMS</Link></li>
         {menuList
           && menuList.parent.map(
             (menu) =>
@@ -37,7 +50,7 @@ function Header(props) {
         <div className="vl1"></div>
         <li><Link to="/MN400" className="myInfo">사용자관리</Link></li>
         <div className="vl2"></div>
-        <li><Link to="/myInfo" className="logOut">로그아웃</Link></li>
+        <li><a className="logOut" onClick={() => setLogout()}>로그아웃</a></li>
       </ul>
     </div>
   )

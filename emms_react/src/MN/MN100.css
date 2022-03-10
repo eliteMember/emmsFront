@@ -1,0 +1,10 @@
+.wrap{
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+}
+.valid{
+    margin-left: 5px;
+    color: red;
+    font-size: 13px;
+}
