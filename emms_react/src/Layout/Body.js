@@ -3,11 +3,18 @@ import './Body.css';
 import { Route, Switch } from 'react-router-dom';
 import axios from 'axios';
 import PO100 from '../PO/PO100';
+import { useDispatch } from 'react-redux';
+import { ACT_CMMN_CODE_GETLIST } from '../reducers/cmmnCode'
 
 function Body(props) {
 
-  let [code, setCode] = useState(null);
-
+  //redux dispatch 사용준비
+  const dispatch = useDispatch();
+  //reducer store에 접근하여 userInfo state를 가져옴
+  const setCode = (cmmnCode) =>{
+    // store에 있는 state 바꾸는 함수 실행
+    dispatch(ACT_CMMN_CODE_GETLIST({cmmnCode:cmmnCode}));
+  };
   useEffect(() => {
     axios.get('/api/code/getCode')
       .then((rs) => {
