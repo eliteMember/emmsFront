@@ -25,9 +25,7 @@ function App() {
 
   return (
     <div className="App">
-
       <LoginOrMainControl isLogin={isLogin} isLoginChange={isLoginChange} />
-
     </div>
   );
 }

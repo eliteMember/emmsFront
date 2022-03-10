@@ -18,6 +18,7 @@ function Body(props) {
   }, [])
 
   return (
+    <div className="body">
     <Switch>
       {/* 메인 */}
       <Route path="/MAIN">
@@ -69,6 +70,7 @@ function Body(props) {
         <div>error</div>
       </Route>
     </Switch>
+    </div>
   )
 }
 
