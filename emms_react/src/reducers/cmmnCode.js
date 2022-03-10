@@ -13,11 +13,6 @@ const initialState = {
         , cdVal : null
         , cdDivNm : null
         , cdNm : null
-        , useYn : null
-        , crtDtm : null
-        , crtUsrNum : null
-        , mdfDtm : null
-        , mdfUsrNum : null
     }
 };
 
