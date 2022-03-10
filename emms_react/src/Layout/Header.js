@@ -36,7 +36,7 @@ function Header(props) {
   return (
     <div>
       <ul className="nav">
-        <li><Link to="/MAIN" className="home">정예멤버</Link></li>
+        <li><Link to="/MAIN" className="home">EMMS</Link></li>
         {menuList
           && menuList.parent.map(
             (menu) =>
