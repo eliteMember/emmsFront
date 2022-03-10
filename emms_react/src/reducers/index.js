@@ -7,6 +7,7 @@ import storage from "redux-persist/lib/storage";
 
 // reducer list
 import userInfo from './userInfo';
+import cmmnCode from './cmmnCode';
 
 const persistConfig = {
     key: "root",
@@ -22,6 +23,7 @@ const persistConfig = {
 // 여러 reducer를 사용하는 경우 reducer를 하나로 묶어주는 메소드
 const rootReducer = combineReducers({
     userInfo
+    , cmmnCode
 });
 
 export default persistReducer(persistConfig, rootReducer);
