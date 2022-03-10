@@ -35,7 +35,7 @@ function Header(props) {
         }
         <li className="right">{userInfo.usrName}<p> 님</p></li>
         <div className="vl1"></div>
-        <li><Link to="/myInfo" className="myInfo">사용자관리</Link></li>
+        <li><Link to="/MN400" className="myInfo">사용자관리</Link></li>
         <div className="vl2"></div>
         <li><Link to="/myInfo" className="logOut">로그아웃</Link></li>
       </ul>

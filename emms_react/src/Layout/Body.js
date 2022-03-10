@@ -3,10 +3,18 @@ import './Body.css';
 import { Route, Switch} from 'react-router-dom';
 import axios from 'axios';
 import PO100 from '../PO/PO100';
+import MN400 from '../MN/MN400';
+import {ACT_CMMN_CODE_GETLIST} from "../reducers/cmmnCode";
+import { useDispatch } from 'react-redux';
 
 function Body(props){
-
-  let [code, setCode] = useState(null);
+  //redux dispatch 사용준비
+  const dispatch = useDispatch();
+  //reducer store에 접근하여 userInfo state를 가져옴
+  const setCode = (cmmnCode) =>{
+    // store에 있는 state 바꾸는 함수 실행
+    dispatch(ACT_CMMN_CODE_GETLIST({cmmnCode:cmmnCode}));
+  };
 
   useEffect(() => {
     axios.get('http://localhost:8080/api/code/getCode')
@@ -64,6 +72,9 @@ function Body(props){
         {/* 문서관리 */}
         <Route path="/DOCMNG">
           <div>문서관리</div>
+        </Route>
+        <Route path="/MN400">
+          <MN400></MN400>  
         </Route>
         <Route path="/:id">
           <div>error</div>
