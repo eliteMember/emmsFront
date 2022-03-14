@@ -1,0 +1,165 @@
+﻿<!DOCTYPE html>
+<html lang="ko" xml:lang="ko">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>회원가입 | 정예맴버 프로젝트관리시스템</title>
+
+<link rel="stylesheet" href="../css/daycare_user_layout.css">
+<link rel="stylesheet" href="../css/jquery-ui.css">
+
+<script src="../js/jquery-1.12.4.min.js"></script>
+<script src="../js/jquery-ui.js"></script>
+<script src="../js/jquery.ui.monthpicker.js"></script>
+<script src="../js/jquery.slimscroll.js"></script>
+<script src="../js/default.js"></script>
+
+</head>
+<body class="loginPage">
+
+            <!--loginWrap-->
+            <div class="loginWrap">
+                <section class="loginHeader">
+                    <h1><img src="../imgs/logo_01.png" alt="정예맴버로고"><span>정예맴버 프로젝트관리시스템</span></h1>
+                </section>
+                <section class="loginBody h600">
+
+                    <div class="loginLeft"><div class="txtLogin">회원가입</div></div>
+                    
+                    <div class="loginRight">
+                        <div class="gridUtil">
+                            <div class="fl">
+                                <h3 class="font16">사용자 정보입력</h3>
+                            </div>
+                            <div class="fr">
+                                <span class="font13"><em class="important">*</em>표시는 필수 입력사항입니다.</span>
+                            </div>
+                        </div>
+                        <div class="tb05 mt10">
+                            <table>
+                                <colgroup>
+                                    <col style="width:130px">
+                                    <col style="width:auto">
+                                </colgroup>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row"><em class="important">*</em>이름</th>
+                                        <td>
+                                            <input type="text" placeholder="" class="w110" value="">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"><em class="important">*</em>아이디</th>
+                                        <td>
+                                            <input type="text" placeholder="" class="w110" value="">
+                                            <button type="button" class="btn btn03s ml5"><span>중복확인</span></button>
+                                            <span class="ml10 point01 bold">영문,숫자 조합 6~12자</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"><em class="important">*</em>비밀번호</th>
+                                        <td>
+                                            <div class="diFlex inputKeypad w110">
+                                                <input type="password" placeholder="" value="" class="w100p">
+                                            </div>
+                                            <span class="ml10 point01 bold">영문,숫자,특수문자(!@#$%^&()*) 조합 8~12자</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"><em class="important">*</em>비밀번호확인</th>
+                                        <td>
+                                            <div class="diFlex inputKeypad w110">
+                                                <input type="password" placeholder="" value="" class="w100p">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"><em class="important">*</em>생년월일</th>
+                                            <td>
+                                                <!--
+                                                <span class="datepickerBox"><input type="text" placeholder="2021-01-12"></span>
+                                                <span class="wave">~</span>-->
+                                                <span class="datepickerBox"><input type="text" placeholder="1997-09-02"></span>
+                                            </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"><em class="important">*</em>휴대폰번호</th>
+                                        <td>
+                                            <select class="w70">
+                                                <option>010</option>
+                                                <option>02</option>
+                                                <option>070</option>
+                                            </select> 
+                                            <span class="wave">-</span> 
+                                            <input type="text" placeholder="" value="" class="w70">
+                                            <span class="wave">-</span> 
+                                            <input type="text" placeholder="" value="" class="w70">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">이메일</th>
+                                        <td>
+                                            <input type="text" placeholder="" value="" class="w110">
+                                            <span class="wave">@</span> 
+                                            <input type="text" placeholder="" value="" class="w110">
+                                            <select class="w130">
+                                                <option>직접입력</option>
+                                                <option>u2w.co.kr</option>
+                                                <option>naver.com</option>
+                                                <option>daum.com</option>
+                                                <option>google.com</option>
+                                                <option>hanmail.com</option>
+                                            </select> 
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"><em class="important">*</em>직위</th>
+                                        <td>
+                                            <select class="w110">
+                                                <option>부장</option>
+                                                <option>차장</option>
+                                                <option>과장</option>
+                                                <option>대리</option>
+                                                <option>사원</option>
+                                                <option>대표</option>
+                                                <option>부사장</option>
+                                                <option>상무</option>
+                                                <option>이사</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"><em class="important">*</em>직책</th>
+                                        <td>
+                                            <select class="w110">
+                                                <option>팀장</option>
+                                                <option>관리</option>
+                                                <option>영업</option>
+                                                <option>사업지원</option>
+                                                <option>팀원</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"><em class="important">*</em>팀명</th>
+                                        <td>
+                                            <input type="text" placeholder="" value="" class="w110">
+                                            <button type="button" class="btn btn03s ml5"><i class="ic_search_gray"></i><span class="hidden">찾기</span></button>
+                                        </td>
+                                    </tr>               
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="btnArea mt30">
+                            <button type="button" class="btn01 w150"><span>회원가입</span></button>
+                        </div> 
+            
+                    </div>
+                </section>
+
+            </div>
+            <!--//loginWrap-->
+
+
+</body>
+</html>

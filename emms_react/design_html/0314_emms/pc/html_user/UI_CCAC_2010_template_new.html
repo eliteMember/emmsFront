@@ -1,0 +1,795 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>정예맴버 프로젝트관리시스템</title>
+
+<link rel="stylesheet" href="../css/daycare_user_layout.css">
+<link rel="stylesheet" href="../css/jquery-ui.css">
+<link rel="stylesheet" href="../css/daycare_user_main.css">
+
+<script src="../js/jquery-1.12.4.min.js"></script>
+<script src="../js/jquery-ui.js"></script>
+<script src="../js/jquery.ui.monthpicker.js"></script>
+<script src="../js/jquery.slimscroll.js"></script>
+<script src="../js/default.js"></script>
+<style>
+/* 여러 스킨을 보여주기 위한 임시 속성 */
+.header {position:relative; height:150px;}
+.subPage {overflow-y:auto;}
+</style>
+
+</head>
+<body class="subPage">
+
+    <div class="wrapper">
+		
+		<!-- 20210506 수정 -->
+		<!--
+		// @header
+		// - header클래스를 가진 태그에 아래의 클래스를 추가시 색상별 디자인으로 적용
+		//	blue(default)	: #4157DC
+		//	mint				: #43c1bc
+		//	darkSlateBlue	: #546fc6
+		//	pourple			: #915fdc
+		//	pink				: #ca52c9
+		//	darkBlue			: #1d6fb4
+		-->
+		<!-- //20210506 수정 -->
+		<!--header-->
+        <div class="header blue">		
+            <div class="inner">
+
+                <h1 class="logo"><a href="#none"><img src="../imgs/logo_02.png" alt="회사로고"><span>정예맴버 프로젝트관리시스템</span></a></h1>
+				
+				<!-- 20210506 수정 -->
+                <nav class="gnbWrap">
+                    <ul>
+						<!--
+						// 1뎁스 페이지 활성화시 li태그에 on클래스 추가
+						-->
+                        <li class="on">
+                            <a href="#none"><i class="iconGnb menu01"></i>팀관리</a>
+                            <div class="twoDepth">
+                                <ul>
+									<!--
+									//	2뎁스 페이지 활성화시 li태그에 on클래스 추가
+									-->
+                                    <li class="on"><a href=""><span>팀관리</span></a></li>
+                                    <li><a href=""><span>회계 2</span></a></li>
+                                    <li><a href=""><span>회계 3</span></a></li>
+                                    <li><a href=""><span>회계 4</span></a></li>
+                                    <li><a href=""><span>회계 5</span></a></li>
+                                </ul>
+                            </div>                        
+                        </li>
+                        <li>
+                            <a href="#none"><i class="iconGnb menu02"></i>아동</a>
+                            <div class="twoDepth">
+                                <ul>
+									<!--
+									//	2뎁스 페이지 활성화시 li태그에 on클래스 추가
+									-->
+                                    <li><a href=""><span>아동 1</span></a></li>
+                                    <li><a href=""><span>아동 2</span></a></li>
+                                    <li><a href=""><span>아동 3</span></a></li>
+                                    <li><a href=""><span>아동 4</span></a></li>
+                                    <li><a href=""><span>아동 5</span></a></li>
+                                </ul>
+                            </div>                        
+                        </li>
+                        <li>
+                            <a href="#none"><i class="iconGnb menu03"></i>교직원</a>
+                            <div class="twoDepth">
+                                <ul>
+                                    <li><a href=""><span>교직원 1</span></a></li>
+                                    <li><a href=""><span>교직원 2</span></a></li>
+                                    <li><a href=""><span>교직원 3</span></a></li>
+                                    <li><a href=""><span>교직원 4</span></a></li>
+                                    <li><a href=""><span>교직원 5</span></a></li>
+                                </ul>
+                            </div>                        
+                        </li>
+                        <li>
+                            <a href="#none"><i class="iconGnb menu04"></i>물품</a>
+                            <div class="twoDepth">
+                                <ul>
+                                    <li><a href=""><span>물품 1</span></a></li>
+                                    <li><a href=""><span>물품 2</span></a></li>
+                                    <li><a href=""><span>물품 3</span></a></li>
+                                    <li><a href=""><span>물품 4</span></a></li>
+                                    <li><a href=""><span>물품 5</span></a></li>
+                                </ul>
+                            </div>                        
+                        </li>
+                        <li>
+                            <a href="#none"><i class="iconGnb menu05"></i>커뮤니티</a>
+                            <div class="twoDepth">
+                                <ul>
+                                    <li><a href=""><span>커뮤니티 1</span></a></li>
+                                    <li><a href=""><span>커뮤니티 2</span></a></li>
+                                    <li><a href=""><span>커뮤니티 3</span></a></li>
+                                    <li><a href=""><span>커뮤니티 4</span></a></li>
+                                    <li><a href=""><span>커뮤니티 5</span></a></li>
+                                </ul>
+                            </div>                        
+                        </li>
+                    </ul>
+                </nav>
+				<!-- //20210506 수정 -->
+				
+                <ul class="gnbUtil">
+					<!-- 20210506 수정 -->
+                    <li class="userInfo">
+						<a href="#none" class="ic_position"><i class="ic_home"></i>아이사랑어린이집</a>
+						<div class="utilSub">
+							<div class="utilSubMenu">
+								<div class="utilSubTitle">어린이집정보</div>
+								<ul>
+									<li><a href="#">- 기본정보</a></li>
+									<li><a href="#">- 현원정보</a></li>
+									<li><a href="#">- 사용자관리</a></li>
+								</ul>
+							</div>
+						</div>
+					</li>
+                    <li class="userMypage">
+						<a href="#none" class="name">홍길동 님</a>
+						<div class="utilSub">
+							<div class="utilSubMenu">
+								<ul>
+									<li><a href="#">- 개인정보관리</a></li>
+								</ul>
+							</div>
+						</div>
+					</li>
+					<!-- //20210506 수정 -->
+                    <li><a href="#none" class="ic_logout" title="로그아웃">로그아웃</a></li>
+                    <li><a href="#none" class="ic_fullMenu" title="전체메뉴">전체메뉴</a></li>
+                </ul>
+            </div>
+            <div class="tabsArea">
+                <div class="tabs">
+                    <ul>
+                        <li class="on"><a href="#none" class="">예산작성</a></li>
+                        <li><a href="#none" class="">과목적용</a></li>
+                        <li><a href="#none" class="">예산보고서</a></li>
+                        <li><a href="#none" class="">보육통합예산보고</a></li>
+                        <li><a href="#none" class="">예산대비집행현황</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+		<!--//header-->
+		<!--header-->
+        <div class="header mint">		
+            <div class="inner">
+
+                <h1 class="logo"><a href="#none"><img src="../imgs/logo_08.png" alt="충청남도"><span>어린이집 관리시스템</span></a></h1>
+				
+				<!-- 20210506 수정 -->
+                <nav class="gnbWrap">
+                    <ul>
+						<!--
+						// 1뎁스 페이지 활성화시 li태그에 on클래스 추가
+						-->
+                        <li class="on">
+                            <a href="#none"><i class="iconGnb menu01"></i>회계</a>
+                            <div class="twoDepth">
+                                <ul>
+									<!--
+									//	2뎁스 페이지 활성화시 li태그에 on클래스 추가
+									-->
+                                    <li class="on"><a href=""><span>회계 1</span></a></li>
+                                    <li><a href=""><span>회계 2</span></a></li>
+                                    <li><a href=""><span>회계 3</span></a></li>
+                                    <li><a href=""><span>회계 4</span></a></li>
+                                    <li><a href=""><span>회계 5</span></a></li>
+                                </ul>
+                            </div>                        
+                        </li>
+                        <li>
+                            <a href="#none"><i class="iconGnb menu02"></i>아동</a>
+                            <div class="twoDepth">
+                                <ul>
+									<!--
+									//	2뎁스 페이지 활성화시 li태그에 on클래스 추가
+									-->
+                                    <li><a href=""><span>아동 1</span></a></li>
+                                    <li><a href=""><span>아동 2</span></a></li>
+                                    <li><a href=""><span>아동 3</span></a></li>
+                                    <li><a href=""><span>아동 4</span></a></li>
+                                    <li><a href=""><span>아동 5</span></a></li>
+                                </ul>
+                            </div>                        
+                        </li>
+                        <li>
+                            <a href="#none"><i class="iconGnb menu03"></i>교직원</a>
+                            <div class="twoDepth">
+                                <ul>
+                                    <li><a href=""><span>교직원 1</span></a></li>
+                                    <li><a href=""><span>교직원 2</span></a></li>
+                                    <li><a href=""><span>교직원 3</span></a></li>
+                                    <li><a href=""><span>교직원 4</span></a></li>
+                                    <li><a href=""><span>교직원 5</span></a></li>
+                                </ul>
+                            </div>                        
+                        </li>
+                        <li>
+                            <a href="#none"><i class="iconGnb menu04"></i>물품</a>
+                            <div class="twoDepth">
+                                <ul>
+                                    <li><a href=""><span>물품 1</span></a></li>
+                                    <li><a href=""><span>물품 2</span></a></li>
+                                    <li><a href=""><span>물품 3</span></a></li>
+                                    <li><a href=""><span>물품 4</span></a></li>
+                                    <li><a href=""><span>물품 5</span></a></li>
+                                </ul>
+                            </div>                        
+                        </li>
+                        <li>
+                            <a href="#none"><i class="iconGnb menu05"></i>커뮤니티</a>
+                            <div class="twoDepth">
+                                <ul>
+                                    <li><a href=""><span>커뮤니티 1</span></a></li>
+                                    <li><a href=""><span>커뮤니티 2</span></a></li>
+                                    <li><a href=""><span>커뮤니티 3</span></a></li>
+                                    <li><a href=""><span>커뮤니티 4</span></a></li>
+                                    <li><a href=""><span>커뮤니티 5</span></a></li>
+                                </ul>
+                            </div>                        
+                        </li>
+                    </ul>
+                </nav>
+				<!-- //20210506 수정 -->
+				
+                <ul class="gnbUtil">
+					<!-- 20210506 수정 -->
+                    <li class="userInfo">
+						<a href="#none" class="ic_position"><i class="ic_home"></i>아이사랑어린이집</a>
+						<div class="utilSub">
+							<div class="utilSubMenu">
+								<div class="utilSubTitle">어린이집정보</div>
+								<ul>
+									<li><a href="#">- 기본정보</a></li>
+									<li><a href="#">- 현원정보</a></li>
+									<li><a href="#">- 사용자관리</a></li>
+								</ul>
+							</div>
+						</div>
+					</li>
+                    <li class="userMypage">
+						<a href="#none" class="name">홍길동 님</a>
+						<div class="utilSub">
+							<div class="utilSubMenu">
+								<ul>
+									<li><a href="#">- 개인정보관리</a></li>
+								</ul>
+							</div>
+						</div>
+					</li>
+					<!-- //20210506 수정 -->
+                    <li><a href="#none" class="ic_logout" title="로그아웃">로그아웃</a></li>
+                    <li><a href="#none" class="ic_fullMenu" title="전체메뉴">전체메뉴</a></li>
+                </ul>
+            </div>
+            <div class="tabsArea">
+                <div class="tabs">
+                    <ul>
+                        <li class="on"><a href="#none" class="">예산작성</a></li>
+                        <li><a href="#none" class="">과목적용</a></li>
+                        <li><a href="#none" class="">예산보고서</a></li>
+                        <li><a href="#none" class="">보육통합예산보고</a></li>
+                        <li><a href="#none" class="">예산대비집행현황</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+		<!--//header-->
+		<!--header-->
+        <div class="header darkSlateBlue">		
+            <div class="inner">
+
+                <h1 class="logo"><a href="#none"><img src="../imgs/logo_08.png" alt="충청남도"><span>어린이집 관리시스템</span></a></h1>
+				
+				<!-- 20210506 수정 -->
+                <nav class="gnbWrap">
+                    <ul>
+						<!--
+						// 1뎁스 페이지 활성화시 li태그에 on클래스 추가
+						-->
+                        <li class="on">
+                            <a href="#none"><i class="iconGnb menu01"></i>회계</a>
+                            <div class="twoDepth">
+                                <ul>
+									<!--
+									//	2뎁스 페이지 활성화시 li태그에 on클래스 추가
+									-->
+                                    <li class="on"><a href=""><span>회계 1</span></a></li>
+                                    <li><a href=""><span>회계 2</span></a></li>
+                                    <li><a href=""><span>회계 3</span></a></li>
+                                    <li><a href=""><span>회계 4</span></a></li>
+                                    <li><a href=""><span>회계 5</span></a></li>
+                                </ul>
+                            </div>                        
+                        </li>
+                        <li>
+                            <a href="#none"><i class="iconGnb menu02"></i>아동</a>
+                            <div class="twoDepth">
+                                <ul>
+									<!--
+									//	2뎁스 페이지 활성화시 li태그에 on클래스 추가
+									-->
+                                    <li><a href=""><span>아동 1</span></a></li>
+                                    <li><a href=""><span>아동 2</span></a></li>
+                                    <li><a href=""><span>아동 3</span></a></li>
+                                    <li><a href=""><span>아동 4</span></a></li>
+                                    <li><a href=""><span>아동 5</span></a></li>
+                                </ul>
+                            </div>                        
+                        </li>
+                        <li>
+                            <a href="#none"><i class="iconGnb menu03"></i>교직원</a>
+                            <div class="twoDepth">
+                                <ul>
+                                    <li><a href=""><span>교직원 1</span></a></li>
+                                    <li><a href=""><span>교직원 2</span></a></li>
+                                    <li><a href=""><span>교직원 3</span></a></li>
+                                    <li><a href=""><span>교직원 4</span></a></li>
+                                    <li><a href=""><span>교직원 5</span></a></li>
+                                </ul>
+                            </div>                        
+                        </li>
+                        <li>
+                            <a href="#none"><i class="iconGnb menu04"></i>물품</a>
+                            <div class="twoDepth">
+                                <ul>
+                                    <li><a href=""><span>물품 1</span></a></li>
+                                    <li><a href=""><span>물품 2</span></a></li>
+                                    <li><a href=""><span>물품 3</span></a></li>
+                                    <li><a href=""><span>물품 4</span></a></li>
+                                    <li><a href=""><span>물품 5</span></a></li>
+                                </ul>
+                            </div>                        
+                        </li>
+                        <li>
+                            <a href="#none"><i class="iconGnb menu05"></i>커뮤니티</a>
+                            <div class="twoDepth">
+                                <ul>
+                                    <li><a href=""><span>커뮤니티 1</span></a></li>
+                                    <li><a href=""><span>커뮤니티 2</span></a></li>
+                                    <li><a href=""><span>커뮤니티 3</span></a></li>
+                                    <li><a href=""><span>커뮤니티 4</span></a></li>
+                                    <li><a href=""><span>커뮤니티 5</span></a></li>
+                                </ul>
+                            </div>                        
+                        </li>
+                    </ul>
+                </nav>
+				<!-- //20210506 수정 -->
+				
+                <ul class="gnbUtil">
+					<!-- 20210506 수정 -->
+                    <li class="userInfo">
+						<a href="#none" class="ic_position"><i class="ic_home"></i>아이사랑어린이집</a>
+						<div class="utilSub">
+							<div class="utilSubMenu">
+								<div class="utilSubTitle">어린이집정보</div>
+								<ul>
+									<li><a href="#">- 기본정보</a></li>
+									<li><a href="#">- 현원정보</a></li>
+									<li><a href="#">- 사용자관리</a></li>
+								</ul>
+							</div>
+						</div>
+					</li>
+                    <li class="userMypage">
+						<a href="#none" class="name">홍길동 님</a>
+						<div class="utilSub">
+							<div class="utilSubMenu">
+								<ul>
+									<li><a href="#">- 개인정보관리</a></li>
+								</ul>
+							</div>
+						</div>
+					</li>
+					<!-- //20210506 수정 -->
+                    <li><a href="#none" class="ic_logout" title="로그아웃">로그아웃</a></li>
+                    <li><a href="#none" class="ic_fullMenu" title="전체메뉴">전체메뉴</a></li>
+                </ul>
+            </div>
+            <div class="tabsArea">
+                <div class="tabs">
+                    <ul>
+                        <li class="on"><a href="#none" class="">예산작성</a></li>
+                        <li><a href="#none" class="">과목적용</a></li>
+                        <li><a href="#none" class="">예산보고서</a></li>
+                        <li><a href="#none" class="">보육통합예산보고</a></li>
+                        <li><a href="#none" class="">예산대비집행현황</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+		<!--//header-->
+		<!--header-->
+        <div class="header pourple">		
+            <div class="inner">
+
+                <h1 class="logo"><a href="#none"><img src="../imgs/logo_08.png" alt="충청남도"><span>어린이집 관리시스템</span></a></h1>
+				
+				<!-- 20210506 수정 -->
+                <nav class="gnbWrap">
+                    <ul>
+						<!--
+						// 1뎁스 페이지 활성화시 li태그에 on클래스 추가
+						-->
+                        <li class="on">
+                            <a href="#none"><i class="iconGnb menu01"></i>회계</a>
+                            <div class="twoDepth">
+                                <ul>
+									<!--
+									//	2뎁스 페이지 활성화시 li태그에 on클래스 추가
+									-->
+                                    <li class="on"><a href=""><span>회계 1</span></a></li>
+                                    <li><a href=""><span>회계 2</span></a></li>
+                                    <li><a href=""><span>회계 3</span></a></li>
+                                    <li><a href=""><span>회계 4</span></a></li>
+                                    <li><a href=""><span>회계 5</span></a></li>
+                                </ul>
+                            </div>                        
+                        </li>
+                        <li>
+                            <a href="#none"><i class="iconGnb menu02"></i>아동</a>
+                            <div class="twoDepth">
+                                <ul>
+									<!--
+									//	2뎁스 페이지 활성화시 li태그에 on클래스 추가
+									-->
+                                    <li><a href=""><span>아동 1</span></a></li>
+                                    <li><a href=""><span>아동 2</span></a></li>
+                                    <li><a href=""><span>아동 3</span></a></li>
+                                    <li><a href=""><span>아동 4</span></a></li>
+                                    <li><a href=""><span>아동 5</span></a></li>
+                                </ul>
+                            </div>                        
+                        </li>
+                        <li>
+                            <a href="#none"><i class="iconGnb menu03"></i>교직원</a>
+                            <div class="twoDepth">
+                                <ul>
+                                    <li><a href=""><span>교직원 1</span></a></li>
+                                    <li><a href=""><span>교직원 2</span></a></li>
+                                    <li><a href=""><span>교직원 3</span></a></li>
+                                    <li><a href=""><span>교직원 4</span></a></li>
+                                    <li><a href=""><span>교직원 5</span></a></li>
+                                </ul>
+                            </div>                        
+                        </li>
+                        <li>
+                            <a href="#none"><i class="iconGnb menu04"></i>물품</a>
+                            <div class="twoDepth">
+                                <ul>
+                                    <li><a href=""><span>물품 1</span></a></li>
+                                    <li><a href=""><span>물품 2</span></a></li>
+                                    <li><a href=""><span>물품 3</span></a></li>
+                                    <li><a href=""><span>물품 4</span></a></li>
+                                    <li><a href=""><span>물품 5</span></a></li>
+                                </ul>
+                            </div>                        
+                        </li>
+                        <li>
+                            <a href="#none"><i class="iconGnb menu05"></i>커뮤니티</a>
+                            <div class="twoDepth">
+                                <ul>
+                                    <li><a href=""><span>커뮤니티 1</span></a></li>
+                                    <li><a href=""><span>커뮤니티 2</span></a></li>
+                                    <li><a href=""><span>커뮤니티 3</span></a></li>
+                                    <li><a href=""><span>커뮤니티 4</span></a></li>
+                                    <li><a href=""><span>커뮤니티 5</span></a></li>
+                                </ul>
+                            </div>                        
+                        </li>
+                    </ul>
+                </nav>
+				<!-- //20210506 수정 -->
+				
+                <ul class="gnbUtil">
+					<!-- 20210506 수정 -->
+                    <li class="userInfo">
+						<a href="#none" class="ic_position"><i class="ic_home"></i>아이사랑어린이집</a>
+						<div class="utilSub">
+							<div class="utilSubMenu">
+								<div class="utilSubTitle">어린이집정보</div>
+								<ul>
+									<li><a href="#">- 기본정보</a></li>
+									<li><a href="#">- 현원정보</a></li>
+									<li><a href="#">- 사용자관리</a></li>
+								</ul>
+							</div>
+						</div>
+					</li>
+                    <li class="userMypage">
+						<a href="#none" class="name">홍길동 님</a>
+						<div class="utilSub">
+							<div class="utilSubMenu">
+								<ul>
+									<li><a href="#">- 개인정보관리</a></li>
+								</ul>
+							</div>
+						</div>
+					</li>
+					<!-- //20210506 수정 -->
+                    <li><a href="#none" class="ic_logout" title="로그아웃">로그아웃</a></li>
+                    <li><a href="#none" class="ic_fullMenu" title="전체메뉴">전체메뉴</a></li>
+                </ul>
+            </div>
+            <div class="tabsArea">
+                <div class="tabs">
+                    <ul>
+                        <li class="on"><a href="#none" class="">예산작성</a></li>
+                        <li><a href="#none" class="">과목적용</a></li>
+                        <li><a href="#none" class="">예산보고서</a></li>
+                        <li><a href="#none" class="">보육통합예산보고</a></li>
+                        <li><a href="#none" class="">예산대비집행현황</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+		<!--//header-->
+		<!--header-->
+        <div class="header pink">		
+            <div class="inner">
+
+                <h1 class="logo"><a href="#none"><img src="../imgs/logo_08.png" alt="충청남도"><span>어린이집 관리시스템</span></a></h1>
+				
+				<!-- 20210506 수정 -->
+                <nav class="gnbWrap">
+                    <ul>
+						<!--
+						// 1뎁스 페이지 활성화시 li태그에 on클래스 추가
+						-->
+                        <li class="on">
+                            <a href="#none"><i class="iconGnb menu01"></i>회계</a>
+                            <div class="twoDepth">
+                                <ul>
+									<!--
+									//	2뎁스 페이지 활성화시 li태그에 on클래스 추가
+									-->
+                                    <li class="on"><a href=""><span>회계 1</span></a></li>
+                                    <li><a href=""><span>회계 2</span></a></li>
+                                    <li><a href=""><span>회계 3</span></a></li>
+                                    <li><a href=""><span>회계 4</span></a></li>
+                                    <li><a href=""><span>회계 5</span></a></li>
+                                </ul>
+                            </div>                        
+                        </li>
+                        <li>
+                            <a href="#none"><i class="iconGnb menu02"></i>아동</a>
+                            <div class="twoDepth">
+                                <ul>
+									<!--
+									//	2뎁스 페이지 활성화시 li태그에 on클래스 추가
+									-->
+                                    <li><a href=""><span>아동 1</span></a></li>
+                                    <li><a href=""><span>아동 2</span></a></li>
+                                    <li><a href=""><span>아동 3</span></a></li>
+                                    <li><a href=""><span>아동 4</span></a></li>
+                                    <li><a href=""><span>아동 5</span></a></li>
+                                </ul>
+                            </div>                        
+                        </li>
+                        <li>
+                            <a href="#none"><i class="iconGnb menu03"></i>교직원</a>
+                            <div class="twoDepth">
+                                <ul>
+                                    <li><a href=""><span>교직원 1</span></a></li>
+                                    <li><a href=""><span>교직원 2</span></a></li>
+                                    <li><a href=""><span>교직원 3</span></a></li>
+                                    <li><a href=""><span>교직원 4</span></a></li>
+                                    <li><a href=""><span>교직원 5</span></a></li>
+                                </ul>
+                            </div>                        
+                        </li>
+                        <li>
+                            <a href="#none"><i class="iconGnb menu04"></i>물품</a>
+                            <div class="twoDepth">
+                                <ul>
+                                    <li><a href=""><span>물품 1</span></a></li>
+                                    <li><a href=""><span>물품 2</span></a></li>
+                                    <li><a href=""><span>물품 3</span></a></li>
+                                    <li><a href=""><span>물품 4</span></a></li>
+                                    <li><a href=""><span>물품 5</span></a></li>
+                                </ul>
+                            </div>                        
+                        </li>
+                        <li>
+                            <a href="#none"><i class="iconGnb menu05"></i>커뮤니티</a>
+                            <div class="twoDepth">
+                                <ul>
+                                    <li><a href=""><span>커뮤니티 1</span></a></li>
+                                    <li><a href=""><span>커뮤니티 2</span></a></li>
+                                    <li><a href=""><span>커뮤니티 3</span></a></li>
+                                    <li><a href=""><span>커뮤니티 4</span></a></li>
+                                    <li><a href=""><span>커뮤니티 5</span></a></li>
+                                </ul>
+                            </div>                        
+                        </li>
+                    </ul>
+                </nav>
+				<!-- //20210506 수정 -->
+				
+                <ul class="gnbUtil">
+					<!-- 20210506 수정 -->
+                    <li class="userInfo">
+						<a href="#none" class="ic_position"><i class="ic_home"></i>아이사랑어린이집</a>
+						<div class="utilSub">
+							<div class="utilSubMenu">
+								<div class="utilSubTitle">어린이집정보</div>
+								<ul>
+									<li><a href="#">- 기본정보</a></li>
+									<li><a href="#">- 현원정보</a></li>
+									<li><a href="#">- 사용자관리</a></li>
+								</ul>
+							</div>
+						</div>
+					</li>
+                    <li class="userMypage">
+						<a href="#none" class="name">홍길동 님</a>
+						<div class="utilSub">
+							<div class="utilSubMenu">
+								<ul>
+									<li><a href="#">- 개인정보관리</a></li>
+								</ul>
+							</div>
+						</div>
+					</li>
+					<!-- //20210506 수정 -->
+                    <li><a href="#none" class="ic_logout" title="로그아웃">로그아웃</a></li>
+                    <li><a href="#none" class="ic_fullMenu" title="전체메뉴">전체메뉴</a></li>
+                </ul>
+            </div>
+            <div class="tabsArea">
+                <div class="tabs">
+                    <ul>
+                        <li class="on"><a href="#none" class="">예산작성</a></li>
+                        <li><a href="#none" class="">과목적용</a></li>
+                        <li><a href="#none" class="">예산보고서</a></li>
+                        <li><a href="#none" class="">보육통합예산보고</a></li>
+                        <li><a href="#none" class="">예산대비집행현황</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+		<!--//header-->
+		<!--header-->
+        <div class="header darkBlue">		
+            <div class="inner">
+
+                <h1 class="logo"><a href="#none"><img src="../imgs/logo_08.png" alt="충청남도"><span>어린이집 관리시스템</span></a></h1>
+				
+				<!-- 20210506 수정 -->
+                <nav class="gnbWrap">
+                    <ul>
+						<!--
+						// 1뎁스 페이지 활성화시 li태그에 on클래스 추가
+						-->
+                        <li class="on">
+                            <a href="#none"><i class="iconGnb menu01"></i>회계</a>
+                            <div class="twoDepth">
+                                <ul>
+									<!--
+									//	2뎁스 페이지 활성화시 li태그에 on클래스 추가
+									-->
+                                    <li class="on"><a href=""><span>회계 1</span></a></li>
+                                    <li><a href=""><span>회계 2</span></a></li>
+                                    <li><a href=""><span>회계 3</span></a></li>
+                                    <li><a href=""><span>회계 4</span></a></li>
+                                    <li><a href=""><span>회계 5</span></a></li>
+                                </ul>
+                            </div>                        
+                        </li>
+                        <li>
+                            <a href="#none"><i class="iconGnb menu02"></i>아동</a>
+                            <div class="twoDepth">
+                                <ul>
+									<!--
+									//	2뎁스 페이지 활성화시 li태그에 on클래스 추가
+									-->
+                                    <li><a href=""><span>아동 1</span></a></li>
+                                    <li><a href=""><span>아동 2</span></a></li>
+                                    <li><a href=""><span>아동 3</span></a></li>
+                                    <li><a href=""><span>아동 4</span></a></li>
+                                    <li><a href=""><span>아동 5</span></a></li>
+                                </ul>
+                            </div>                        
+                        </li>
+                        <li>
+                            <a href="#none"><i class="iconGnb menu03"></i>교직원</a>
+                            <div class="twoDepth">
+                                <ul>
+                                    <li><a href=""><span>교직원 1</span></a></li>
+                                    <li><a href=""><span>교직원 2</span></a></li>
+                                    <li><a href=""><span>교직원 3</span></a></li>
+                                    <li><a href=""><span>교직원 4</span></a></li>
+                                    <li><a href=""><span>교직원 5</span></a></li>
+                                </ul>
+                            </div>                        
+                        </li>
+                        <li>
+                            <a href="#none"><i class="iconGnb menu04"></i>물품</a>
+                            <div class="twoDepth">
+                                <ul>
+                                    <li><a href=""><span>물품 1</span></a></li>
+                                    <li><a href=""><span>물품 2</span></a></li>
+                                    <li><a href=""><span>물품 3</span></a></li>
+                                    <li><a href=""><span>물품 4</span></a></li>
+                                    <li><a href=""><span>물품 5</span></a></li>
+                                </ul>
+                            </div>                        
+                        </li>
+                        <li>
+                            <a href="#none"><i class="iconGnb menu05"></i>커뮤니티</a>
+                            <div class="twoDepth">
+                                <ul>
+                                    <li><a href=""><span>커뮤니티 1</span></a></li>
+                                    <li><a href=""><span>커뮤니티 2</span></a></li>
+                                    <li><a href=""><span>커뮤니티 3</span></a></li>
+                                    <li><a href=""><span>커뮤니티 4</span></a></li>
+                                    <li><a href=""><span>커뮤니티 5</span></a></li>
+                                </ul>
+                            </div>                        
+                        </li>
+                    </ul>
+                </nav>
+				<!-- //20210506 수정 -->
+				
+                <ul class="gnbUtil">
+					<!-- 20210506 수정 -->
+                    <li class="userInfo">
+						<a href="#none" class="ic_position"><i class="ic_home"></i>아이사랑어린이집</a>
+						<div class="utilSub">
+							<div class="utilSubMenu">
+								<div class="utilSubTitle">어린이집정보</div>
+								<ul>
+									<li><a href="#">- 기본정보</a></li>
+									<li><a href="#">- 현원정보</a></li>
+									<li><a href="#">- 사용자관리</a></li>
+								</ul>
+							</div>
+						</div>
+					</li>
+                    <li class="userMypage">
+						<a href="#none" class="name">홍길동 님</a>
+						<div class="utilSub">
+							<div class="utilSubMenu">
+								<ul>
+									<li><a href="#">- 개인정보관리</a></li>
+								</ul>
+							</div>
+						</div>
+					</li>
+					<!-- //20210506 수정 -->
+                    <li><a href="#none" class="ic_logout" title="로그아웃">로그아웃</a></li>
+                    <li><a href="#none" class="ic_fullMenu" title="전체메뉴">전체메뉴</a></li>
+                </ul>
+            </div>
+            <div class="tabsArea">
+                <div class="tabs">
+                    <ul>
+                        <li class="on"><a href="#none" class="">예산작성</a></li>
+                        <li><a href="#none" class="">과목적용</a></li>
+                        <li><a href="#none" class="">예산보고서</a></li>
+                        <li><a href="#none" class="">보육통합예산보고</a></li>
+                        <li><a href="#none" class="">예산대비집행현황</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+		<!--//header-->
+
+    </div>
+    <!--//wrapper-->
+
+</body>
+</html>

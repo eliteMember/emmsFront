@@ -1,0 +1,254 @@
+﻿<!DOCTYPE html>
+<html lang="ko" xml:lang="ko">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>문서양식 | 정예맴버 프로젝트관리시스템</title>
+
+<link rel="stylesheet" href="../css/daycare_user_layout.css">
+<link rel="stylesheet" href="../css/jquery-ui.css">
+
+<script src="../js/jquery-1.12.4.min.js"></script>
+<script src="../js/jquery-ui.js"></script>
+<script src="../js/jquery.ui.monthpicker.js"></script>
+<script src="../js/jquery.slimscroll.js"></script>
+<script src="../js/default.js"></script>
+
+</head>
+<body class="subPage">
+
+            <!--subWrap-->
+            <div class="subWrap">
+                <div class="inner mt10">
+
+                    <!--문서양식-->
+                    <section>
+
+                        <!--s : 조회-->
+                        <div class="gridUtil">
+                            <div class="fl">
+                                
+                                <div class="tb01">
+                                    <table>
+                                        <colgroup>
+                                            <col style="width:80px">
+                                            <col style="width:auto">
+                                        </colgroup>
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row"><span class="tit">프로젝트</span></th>
+                                                <td>
+                                                    <select class="w180">
+                                                        <option>미래에셋생명 비대면업무확대</option>
+                                                        <option>NH차세대지방재정</option>
+                                                        <option>푸르덴셜 KB 비대면업무확대</option>
+                                                        <option>정예맴버 프로젝트관리시스템 구축</option>
+                                                    </select>
+                                                </td>
+                                                <th scope="row"><span class="tit ml20">문서종류</span></th>
+                                                <td>
+                                                    <select class="w180">
+                                                        <option>전체</option>
+                                                        <option>제안요청서</option>
+                                                        <option>제안서</option>
+                                                        <option>견적서</option>
+                                                        <option>공수표</option>
+                                                        <option>원가표</option>
+                                                    </select>
+                                                </td>
+                                                <th scope="row"><span class="tit ml20">등록기간</span></th>
+                                                <td class="txtC">
+                                                    <span class="datepickerBox"><input type="text" placeholder="2022-03-01"></span>
+                                                    <span class="wave">~</span>
+                                                    <span class="datepickerBox"><input type="text" placeholder="2022-03-11"></span>
+                                                </td>
+                                                <th scope="row"><span class="tit ml20">등록자</span></th>
+                                                <td class="txtC">
+                                                    <input type="text" placeholder="입력하세요" class="w130">
+                                                </td>
+                                                <th scope="row"><span class="tit ml20">파일명</span></th>
+                                                <td class="txtC">
+                                                    <input type="text" placeholder="입력하세요" class="w245">
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            
+                            </div>
+                            <div class="fr">
+                                <button type="button" class="btn01"><i class="ic_search"></i><span>조회</span></button>
+                            </div>
+                        </div>
+                        <!--e : 조회--> 
+
+                        <div class="hr20"></div>
+
+                        <!--s : 목록-->
+                        <div class="gridUtil">
+                            <div class="fl">
+                                <p class="txtGuide">첨부파일을 클릭하여 해당 문서를 다운로드할 수 있습니다.</p>
+                            </div>
+                        </div>
+
+                        <div class="tb02">                            
+                            <table style="">
+                                <caption>테이블</caption>
+                                <colgroup>
+                                    <col style="width:60px">
+                                    <col style="width:auto">
+                                    <col style="width:100px">
+                                    <col style="width:auto">
+                                    <col style="width:60px">
+                                    <col style="width:60px">
+                                    <col style="width:130px">
+                                    <col style="width:80px">
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th scope="col">번호</th>
+                                        <th scope="col">프로젝트명</th>
+                                        <th scope="col">문서종류</th>
+                                        <th scope="col">문서명</th>
+                                        <th scope="col">파일크기</th>
+                                        <th scope="col">첨부파일</th>
+                                        <th scope="col">등록일</th>
+                                        <th scope="col">등록자</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="txtC">10</td>
+                                        <td class="txtL">미래에셋생명 비대면업무확대</td>
+                                        <td class="txtC">제안서</td>
+                                        <td class="txtC">미래에셋생명_RFP_v0.1_20220224.Doc</td>
+                                        <td class="txtC">201KB</td>
+                                        <td class="txtC"><button type="button" class="btn00"><i class="ic_file"></i><span class="hidden">제안요청서</span></button></td>
+                                        <td class="txtC">2021-01-27</td>
+                                        <td class="txtC">홍길동</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="txtC">9</td>
+                                        <td class="txtL">푸르덴셜 KB 비대면업무확대</td>
+                                        <td class="txtC">제안요청서</td>
+                                        <td class="txtC">푸르덴셜_RFP_v0.1_20220311.Doc</td>
+                                        <td class="txtC">201KB</td>
+                                        <td class="txtC"><button type="button" class="btn00"><i class="ic_file"></i><span class="hidden">제안요청서</span></button></td>
+                                        <td class="txtC">2021-01-27</td>
+                                        <td class="txtC">홍길동</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="txtC">8</td>
+                                        <td class="txtL">NH차세대지방재정</td>
+                                        <td class="txtC">견적서</td>
+                                        <td class="txtC">NH_견적서전송_v0.3_20220224.Doc</td>
+                                        <td class="txtC">10GB</td>
+                                        <td class="txtC"><button type="button" class="btn00"><i class="ic_file"></i><span class="hidden">제안요청서</span></button></td>
+                                        <td class="txtC">2021-01-27</td>
+                                        <td class="txtC">홍길동</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="txtC">7</td>
+                                        <td class="txtL">미래에셋생명 비대면업무확대</td>
+                                        <td class="txtC">공수표</td>
+                                        <td class="txtC">미래에셋생명_RFP_v0.1_20220224.Doc</td>
+                                        <td class="txtC">201KB</td>
+                                        <td class="txtC"><button type="button" class="btn00"><i class="ic_file"></i><span class="hidden">제안요청서</span></button></td>
+                                        <td class="txtC">2021-01-27</td>
+                                        <td class="txtC">홍길동</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="txtC">6</td>
+                                        <td class="txtL">NH차세대지방재정</td>
+                                        <td class="txtC">원가표</td>
+                                        <td class="txtC">NH_견적서전송_v0.3_20220224.Doc</td>
+                                        <td class="txtC">10GB</td>
+                                        <td class="txtC"><button type="button" class="btn00"><i class="ic_file"></i><span class="hidden">제안요청서</span></button></td>
+                                        <td class="txtC">2021-01-27</td>
+                                        <td class="txtC">홍길동</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="txtC">5</td>
+                                        <td class="txtL">NH차세대지방재정</td>
+                                        <td class="txtC">견적서</td>
+                                        <td class="txtC">NH_견적서전송_v0.3_20220224.Doc</td>
+                                        <td class="txtC">10GB</td>
+                                        <td class="txtC"><button type="button" class="btn00"><i class="ic_file"></i><span class="hidden">제안요청서</span></button></td>
+                                        <td class="txtC">2021-01-27</td>
+                                        <td class="txtC">홍길동</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="txtC">4</td>
+                                        <td class="txtL">푸르덴셜 KB 비대면업무확대</td>
+                                        <td class="txtC">제안요청서</td>
+                                        <td class="txtC">푸르덴셜_RFP_v0.1_20220311.Doc</td>
+                                        <td class="txtC">201KB</td>
+                                        <td class="txtC"><button type="button" class="btn00"><i class="ic_file"></i><span class="hidden">제안요청서</span></button></td>
+                                        <td class="txtC">2021-01-27</td>
+                                        <td class="txtC">홍길동</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="txtC">3</td>
+                                        <td class="txtL">NH차세대지방재정</td>
+                                        <td class="txtC">견적서</td>
+                                        <td class="txtC">NH_견적서전송_v0.3_20220224.Doc</td>
+                                        <td class="txtC">10GB</td>
+                                        <td class="txtC"><button type="button" class="btn00"><i class="ic_file"></i><span class="hidden">제안요청서</span></button></td>
+                                        <td class="txtC">2021-01-27</td>
+                                        <td class="txtC">홍길동</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="txtC">2</td>
+                                        <td class="txtL">푸르덴셜 KB 비대면업무확대</td>
+                                        <td class="txtC">제안요청서</td>
+                                        <td class="txtC">푸르덴셜_RFP_v0.1_20220311.Doc</td>
+                                        <td class="txtC">201KB</td>
+                                        <td class="txtC"><button type="button" class="btn00"><i class="ic_file"></i><span class="hidden">제안요청서</span></button></td>
+                                        <td class="txtC">2021-01-27</td>
+                                        <td class="txtC">홍길동</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="txtC">1</td>
+                                        <td class="txtL">미래에셋생명 비대면업무확대</td>
+                                        <td class="txtC">공수표</td>
+                                        <td class="txtC">미래에셋생명_RFP_v0.1_20220224.Doc</td>
+                                        <td class="txtC">201KB</td>
+                                        <td class="txtC"><button type="button" class="btn00"><i class="ic_file"></i><span class="hidden">제안요청서</span></button></td>
+                                        <td class="txtC">2021-01-27</td>
+                                        <td class="txtC">홍길동</td>
+                                
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="gridUtilBottom mt30">
+                            <div class="paging">
+                                <a href="#none" class="prev btn_paging_first">맨앞으로</a>
+                                <a href="#none" class="prev btn_paging_prev">이전</a>
+                                <a href="#none" class="num current">1</a>
+                                <a href="#none" class="num">2</a>
+                                <a href="#none" class="num">3</a>
+                                <a href="#none" class="num">4</a>
+                                <a href="#none" class="num">5</a>
+                                <a href="#none" class="num">6</a>
+                                <a href="#none" class="num">7</a>
+                                <a href="#none" class="num">8</a>
+                                <a href="#none" class="num">9</a>
+                                <a href="#none" class="num">10</a>
+                                <a href="#none" class="next btn_paging_next">다음</a>
+                                <a href="#none" class="next btn_paging_last">맨끝으로</a>
+                            </div>
+                        </div>
+                        <!--e : 목록-->
+
+                    </section>
+                    <!--//문서양식-->
+
+                          
+                </div><!--//inner-->
+            </div>
+            <!--//subWrap-->
+
+
+</body>
+</html>

@@ -1,0 +1,220 @@
+﻿<!DOCTYPE html>
+<html lang="ko" xml:lang="ko">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>인력관리 | 정예맴버 프로젝트관리시스템</title>
+
+<link rel="stylesheet" href="../css/daycare_user_layout.css">
+<link rel="stylesheet" href="../css/jquery-ui.css">
+
+<script src="../js/jquery-1.12.4.min.js"></script>
+<script src="../js/jquery-ui.js"></script>
+<script src="../js/jquery.ui.monthpicker.js"></script>
+<script src="../js/jquery.slimscroll.js"></script>
+<script src="../js/default.js"></script>
+
+</head>
+<body class="subPage">
+
+    <!--subWrap-->
+    <div class="subWrap">
+        <div class="inner mt10">
+
+            <!--인력관리-->
+            <section>
+                <!--s : 조회-->
+                <div class="gridUtil">
+                    <div class="fl">
+                        <div class="tb01">
+                            <table>
+                                <colgroup>
+                                    <col style="width:auto">
+                                    <col style="width:auto">
+                                    <col style="width:auto">
+                                    <col style="width:auto">
+                                    <col style="width:auto">
+                                    <col style="width:auto">
+                                </colgroup>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row"><span class="tit">성명</span></th>
+                                        <td>
+                                            <input type="text" value="" class="w130">
+                                        </td>
+                                        <th scope="row"><span class="tit ml30">등급</span></th>
+                                        <td>
+                                            <select class="w130  mr30">
+                                                <option>전체</option>
+                                                <option>특급</option>
+                                                <option>고급</option>
+                                                <option>중급</option>
+                                                <option>초급</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    
+                    </div>
+                    <div class="fr">
+                        <button type="button" class="btn01"><i class="ic_search"></i><span>조회</span></button>
+                    </div>
+                </div>
+                <!--e : 조회--> 
+
+                <div class="hr20"></div>
+
+                <!--s : 조회결과-->
+                <div class="gridUtil">
+                    <div class="fl">
+                        <p class="txtGuide">신규인력을 등록하거나 인력 상세정보를 수정할 수 있습니다.</p>
+                    </div>
+                    <div class="fr">
+                        <button type="button" class="btn05"><i class="ic_excel"></i><span>다운로드</span></button> 
+                        <button type="button" class="btn02 rad50"><i class="ic_print"></i><span>인력관리부 출력</span></button>
+                    </div>
+                </div>
+
+                <div class="gridWrap">
+                    <div class="tb02">
+                        <table style="">
+                            <caption>표</caption>
+                            <colgroup>
+                                <col style="width:60px">
+                                <col style="width:60px">
+                                <col style="width:80px">
+                                <col style="width:130px">
+                                <col style="width:80px">
+                                <col style="width:80px">
+                                <col style="width:80px">
+                                <col style="width:auto">
+                                <col style="width:130px">
+                                <col style="width:130px">
+                                <col style="width:130px">
+                                <col style="width:auto">
+                            <thead>
+
+                                <tr>
+                                    <th scope="col">번호</th>
+                                    <th scope="col"><span class="customForm"><input type="checkbox" id="checkAll"><label for="checkAll"></label></span></th>
+                                    <th scope="col">성명</th>
+                                    <th scope="col">생년월일</th>
+                                    <th scope="col">직위</th>
+                                    <th scope="col">등급</th>
+                                    <th scope="col">학력</th>
+                                    <th scope="col">자격증</th>
+                                    <th scope="col">단가</th>
+                                    <th scope="col">원가</th>
+                                    <th scope="col">연락처</th>
+                                    <th scope="col">주소</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="txtC">1</td>
+                                    <td class="txtC"><span class="customForm"><input type="checkbox" id="check01"><label for="check01"></label></span></td>
+                                    <td class="txtC">홍길동</td>
+                                    <td class="txtC">1974-06-26</td>
+                                    <td class="txtC">팀장</td>
+                                    <td class="txtC">특급</td>
+                                    <td class="txtC">석사</td>
+                                    <td class="txtC">정보처리기사</td>
+                                    <td class="txtR">10,000,000</td>
+                                    <td class="txtR">14,000,000</td>
+                                    <td class="txtC">010-1234-5678</td>
+                                    <td class="txtL">서울시 영등포구 여의도동 12-34, 304호</td>
+                                </tr>
+                                <tr>
+                                    <td class="txtC">2</td>
+                                    <td class="txtC"><span class="customForm"><input type="checkbox" id="check01"><label for="check01"></label></span></td>
+                                    <td class="txtC">김동욱</td>
+                                    <td class="txtC">1974-06-26</td>
+                                    <td class="txtC">부장</td>
+                                    <td class="txtC">고급</td>
+                                    <td class="txtC">학사</td>
+                                    <td class="txtC">정보처리기사</td>
+                                    <td class="txtR">8,000,000</td>
+                                    <td class="txtR">8,000,000</td>
+                                    <td class="txtC">010-1234-5678</td>
+                                    <td class="txtL">서울시 강남구 대치동 12-34, 1208호</td>
+                                </tr>
+                                <tr>
+                                    <td class="txtC">3</td>
+                                    <td class="txtC"><span class="customForm"><input type="checkbox" id="check03"><label for="check03"></label></span></td>
+                                    <td class="txtC">김태희</td>
+                                    <td class="txtC">1985-03-20</td>
+                                    <td class="txtC">차장</td>
+                                    <td class="txtC">중급</td>
+                                    <td class="txtC">고졸</td>
+                                    <td class="txtC">정보처리기능사</td>
+                                    <td class="txtR">8,000,000</td>
+                                    <td class="txtR">8,000,000</td>
+                                    <td class="txtC">010-1234-5678</td>
+                                    <td class="txtL">경기도 안산시 청계동 123-8길, 505호</td>
+                                </tr>
+                                <tr>
+                                    <td class="txtC">4</td>
+                                    <td class="txtC"><span class="customForm"><input type="checkbox" id="check03"><label for="check03"></label></span></td>
+                                    <td class="txtC">장원영</td>
+                                    <td class="txtC">1982-08-30</td>
+                                    <td class="txtC">차장</td>
+                                    <td class="txtC">중급</td>
+                                    <td class="txtC">전문학사</td>
+                                    <td class="txtC">없음</td>
+                                    <td class="txtR">8,000,000</td>
+                                    <td class="txtR">8,000,000</td>
+                                    <td class="txtC">010-1234-5678</td>
+                                    <td class="txtL">인천시</td>
+                                </tr>
+                                <tr>
+                                    <td class="txtC">5</td>
+                                    <td class="txtC"><span class="customForm"><input type="checkbox" id="check03"><label for="check03"></label></span></td>
+                                    <td class="txtC">원빈</td>
+                                    <td class="txtC">1991-02-12</td>
+                                    <td class="txtC">과장</td>
+                                    <td class="txtC">중급</td>
+                                    <td class="txtC">학사</td>
+                                    <td class="txtC">없음</td>
+                                    <td class="txtR">5,000,000</td>
+                                    <td class="txtR">5,000,000</td>
+                                    <td class="txtC">010-1234-5678</td>
+                                    <td class="txtL">충남시</td>
+                                </tr>
+                                <tr>
+                                    <td class="txtC">6</td>
+                                    <td class="txtC"><span class="customForm"><input type="checkbox" id="check03"><label for="check03"></label></span></td>
+                                    <td class="txtC">민효린</td>
+                                    <td class="txtC">1995-09-12</td>
+                                    <td class="txtC">대리</td>
+                                    <td class="txtC">초급</td>
+                                    <td class="txtC">학사</td>
+                                    <td class="txtC">정보처리산업기사</td>
+                                    <td class="txtR">3,000,000</td>
+                                    <td class="txtR">3,000,000</td>
+                                    <td class="txtC">010-1234-5678</td>
+                                    <td class="txtL">서울시 은평구</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div><!--//gridWrap-->
+                <!--e : 조회결과-->
+
+            </section>
+            <!--//인력관리-->
+
+            <div class="gridUtilBottom">
+                <div class="fr">
+                    <button type="button" class="btn01"><span>신규등록</span></button>
+                </div>
+            </div>
+                    
+        </div><!--//inner-->
+    </div>
+    <!--//subWrap-->
+
+
+</body>
+</html>
