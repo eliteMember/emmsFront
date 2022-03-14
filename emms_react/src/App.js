@@ -1,7 +1,6 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react';
 import axios from 'axios';
 
-//임승재
 import { Route, Switch } from 'react-router-dom';
 import MN100_1 from './MN/MN100_1.js';
 
