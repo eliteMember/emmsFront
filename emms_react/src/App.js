@@ -1,6 +1,10 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react';
 import axios from 'axios';
 
+//임승재
+import { Route, Switch } from 'react-router-dom';
+import MN100_1 from './MN/MN100_1.js';
+
 let Header = lazy(() => { return import('./Layout/Header.js') });
 let Body = lazy(() => { return import('./Layout/Body.js') });
 let Footer = lazy(() => { return import('./Layout/Footer.js') });
@@ -25,7 +29,14 @@ function App() {
 
   return (
     <div className="App">
-      <LoginOrMainControl isLogin={isLogin} isLoginChange={isLoginChange} />
+      <Switch>
+        <Route path="/MN100_1" >
+          <MN100_1/>
+        </Route>
+        <Route path="/">
+          <LoginOrMainControl isLogin={isLogin} isLoginChange={isLoginChange} />
+        </Route>
+      </Switch>
     </div>
   );
 }
