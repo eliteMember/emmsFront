@@ -1,0 +1,289 @@
+﻿<!DOCTYPE html>
+<html lang="ko" xml:lang="ko">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>사전원가계산 | 정예맴버 프로젝트관리시스템</title>
+
+<link rel="stylesheet" href="../css/daycare_user_layout.css">
+<link rel="stylesheet" href="../css/jquery-ui.css">
+
+<script src="../js/jquery-1.12.4.min.js"></script>
+<script src="../js/jquery-ui.js"></script>
+<script src="../js/jquery.ui.monthpicker.js"></script>
+<script src="../js/jquery.slimscroll.js"></script>
+<script src="../js/default.js"></script>
+
+</head>
+<body class="subPage">
+
+            <!--subWrap-->
+            <div class="subWrap">
+                <div class="inner mt10">
+
+                    <!--조회-->  
+                    <div class="gridUtil">
+                        <div class="fl">
+                            <div class="tb01">
+                                <table>
+                                    <colgroup>
+                                        <col style="width:auto">
+                                        <col style="width:auto">
+                                        <col style="width:auto">
+                                        <col style="width:auto">
+                                    </colgroup>
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row"><span class="tit">프로젝트</span></th>
+                                            <td class="txtL">
+                                                <select class="mr20">
+                                                    <option>미래에셋생명 비대면업무확대</option>
+                                                    <option>NH차세대지방재정 구축</option>
+                                                </select> 
+                                            </td>
+                                            <th scope="row"><span class="tit">프로젝트 기간</span></th>
+                                            <td class="txtL" colspan="3">
+                                                <span class="datepickerBox"><input type="text" placeholder="2021-08-15"></span>
+                                                ~
+                                                <span class="datepickerBox"><input type="text" placeholder="2022-11-15"></span>
+                                            </td>   
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        
+                        </div>
+                        <div class="fr">
+                            <button type="button" class="btn01"><i class="ic_search"></i><span>조회</span></button>
+                        </div>
+                    </div>
+                    
+                        <!--e : 조회--> 
+
+                        <div class="hr20"></div>
+
+                        <!--s : 조회결과-->
+                        <div class="gridUtil">
+
+                            <div class="fr">
+                                <button type="button" class="btn btn02 rad50 borderC2"><i class="ic_rowPlusBlue"></i><span>행추가</span></button>
+                                <button type="button" class="btn btn02 rad50 borderC2"><i class="ic_rowMinusRed"></i><span>행삭제</span></button>
+                                <button type="button" class="btn02 rad50"><i class="ic_print"></i><span>전체출력</span></button>
+                            </div>
+                        </div>
+
+                        <div class="gridWrap">
+                            <div class="tb02">
+                                <table style="">
+                                    <caption>표</caption>
+                                    <colgroup>
+                                        <col style="width:80px">
+                                        <col style="width:130px">
+                                        <col style="width:80px">
+                                        <col style="width:80px">
+                                        <col style="width:80px">
+                                        <col style="width:80px">
+
+                                        <col style="width:150px">
+                                        <col style="width:80px">
+                                        <col style="width:80px">
+                                        <col style="width:80px">
+
+                                        <col style="width:130px">
+                                        <col style="width:130px">
+                                        <col style="width:130px">
+                                        <col style="width:130px">
+                                        <col style="width:130px">
+                                        <col style="width:auto">
+
+                                    <thead>
+        
+                                        <tr>
+                                            <th scope="col" rowspan="2">성명</th>
+                                            <th scope="col" rowspan="2">생년월일</th>
+                                            <th scope="col" rowspan="2">직위</th>
+                                            <th scope="col" rowspan="2">실등급</th>
+                                            <th scope="col" rowspan="2">계약등급</th>
+                                            <th scope="col" rowspan="2">역할</th>
+                                            <th scope="col" rowspan="2">소속</th>
+                                            <th scope="col" colspan="3">투입기간</th>
+                                            <th scope="col" colspan="2">매출</th>
+                                            <th scope="col" colspan="2">매입</th>
+                                            <th scope="col" rowspan="2">매출이익</th>
+                                            <th scope="col" rowspan="2">비고</th>
+                                        </tr>
+                                        <tr>
+                                            <th scope="col">시작일</td>
+                                            <th scope="col">종료일</td>
+                                            <th scope="col">M/M</td>
+                                            <th scope="col">단가</td>
+                                            <th scope="col">총액</td>
+                                            <th scope="col">단가</td>
+                                            <th scope="col">총액</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="txtC">홍길동</td>
+                                            <td class="txtC">1974-06-26</td>
+                                            <td class="txtC">팀장</td>
+                                            <td class="txtC">고급</td>
+                                            <td class="txtC">특급</td>
+                                            <td class="txtC">PL</td>
+                                            <td class="txtC">정직원</td>
+                                            <td class="txtL">2021.07.05</td>
+                                            <td class="txtL">2022.02.12</td>
+                                            <td class="txtC">7.0</td>
+                                            <td class="txtR">12,258,938</td>
+                                            <td class="txtR">1,000</td>
+                                            <td class="txtR">1,000</td>
+                                            <td class="txtR">1,000</td>
+                                            <td class="txtR">1,000</td>
+                                            <td class="txtL"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="txtC">김동욱</td>
+                                            <td class="txtC">1974-06-26</td>
+                                            <td class="txtC">부장</td>
+                                            <td class="txtC">고급</td>
+                                            <td class="txtC">중급</td>
+                                            <td class="txtC">개발1</td>
+                                            <td class="txtC">정직원</td>
+                                            <td class="txtL">2021.07.05</td>
+                                            <td class="txtL">2022.03.12</td>
+                                            <td class="txtC">8.0</td>
+                                            <td class="txtR">12,258,938</td>
+                                            <td class="txtR">1,000</td>
+                                            <td class="txtR">1,000</td>
+                                            <td class="txtR">1,000</td>
+                                            <td class="txtR">1,000</td>
+                                            <td class="txtL"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="txtC">김태희</td>
+                                            <td class="txtC">1985-03-20</td>
+                                            <td class="txtC">차장</td>
+                                            <td class="txtC">중급</td>
+                                            <td class="txtC">중급</td>
+                                            <td class="txtC">개발1</td>
+                                            <td class="txtC">회사명</td>
+                                            <td class="txtL">2021.07.05</td>
+                                            <td class="txtL">2022.12.12</td>
+                                            <td class="txtC">5.0</td>
+                                            <td class="txtR">12,258,938</td>
+                                            <td class="txtR">1,000</td>
+                                            <td class="txtR">1,000</td>
+                                            <td class="txtR">1,000</td>
+                                            <td class="txtR">1,000</td>
+                                            <td class="txtL"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="txtC">이나영</td>
+                                            <td class="txtC">1988-03-26</td>
+                                            <td class="txtC">팀장</td>
+                                            <td class="txtC">고급</td>
+                                            <td class="txtC">특급</td>
+                                            <td class="txtC">PL</td>
+                                            <td class="txtC">정직원</td>
+                                            <td class="txtL">2021.07.05</td>
+                                            <td class="txtL">2022.02.12</td>
+                                            <td class="txtC">7.0</td>
+                                            <td class="txtR">12,258,938</td>
+                                            <td class="txtR">1,000</td>
+                                            <td class="txtR">1,000</td>
+                                            <td class="txtR">1,000</td>
+                                            <td class="txtR">1,000</td>
+                                            <td class="txtL"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="txtC">이병헌</td>
+                                            <td class="txtC">1974-06-26</td>
+                                            <td class="txtC">부장</td>
+                                            <td class="txtC">고급</td>
+                                            <td class="txtC">중급</td>
+                                            <td class="txtC">개발1</td>
+                                            <td class="txtC">정직원</td>
+                                            <td class="txtL">2021.07.05</td>
+                                            <td class="txtL">2022.03.12</td>
+                                            <td class="txtC">8.0</td>
+                                            <td class="txtR">12,258,938</td>
+                                            <td class="txtR">1,000</td>
+                                            <td class="txtR">1,000</td>
+                                            <td class="txtR">1,000</td>
+                                            <td class="txtR">1,000</td>
+                                            <td class="txtL"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="txtC">강동원</td>
+                                            <td class="txtC">1985-03-20</td>
+                                            <td class="txtC">차장</td>
+                                            <td class="txtC">중급</td>
+                                            <td class="txtC">중급</td>
+                                            <td class="txtC">디자인</td>
+                                            <td class="txtC">회사명</td>
+                                            <td class="txtL">2021.07.05</td>
+                                            <td class="txtL">2022.12.12</td>
+                                            <td class="txtC">5.0</td>
+                                            <td class="txtR">12,258,938</td>
+                                            <td class="txtR">1,000</td>
+                                            <td class="txtR">1,000</td>
+                                            <td class="txtR">1,000</td>
+                                            <td class="txtR">1,000</td>
+                                            <td class="txtL"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="txtC">TBD</td>
+                                            <td class="txtC"></td>
+                                            <td class="txtC"></td>
+                                            <td class="txtC"></td>
+                                            <td class="txtC">초급</td>
+                                            <td class="txtC">개발3</td>
+                                            <td class="txtC">회사명</td>
+                                            <td class="txtL">2021.07.05</td>
+                                            <td class="txtL">2022.12.12</td>
+                                            <td class="txtC">5.0</td>
+                                            <td class="txtR">12,258,938</td>
+                                            <td class="txtR">1,000</td>
+                                            <td class="txtR">1,000</td>
+                                            <td class="txtR">1,000</td>
+                                            <td class="txtR">1,000</td>
+                                            <td class="txtL"></td>
+                                        </tr>
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div><!--//gridWrap-->
+                        <!--e : 조회결과-->
+
+
+
+                        <!--탭시작-->
+                        <div class="tbTabWrap mt20">
+
+                            <!--s -->
+                            <div class="tabCont mt20" id="tab06" style="display: block;">
+
+                            </div>
+                            <!--e -->
+
+                        </div><!--//tbTabWrap-->
+                        <!--//탭끝-->
+
+                        <div class="gridUtilBottom">
+                            <div class="fr">
+                                <button type="button" class="btn01"><span>저장</span></button>
+                            </div>
+                        </div>
+                        <!--e : 조회결과-->
+
+                    </section>
+                    <!--//사전원가계산-->
+                          
+                </div><!--//inner-->
+            </div>
+            <!--//subWrap-->
+
+
+</body>
+</html>

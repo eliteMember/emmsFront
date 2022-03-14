@@ -1,0 +1,358 @@
+﻿<!DOCTYPE html>
+<html lang="ko" xml:lang="ko">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>팀관리 | 어린이집관리시스템</title>
+
+<link rel="stylesheet" href="../css/daycare_user_layout.css">
+<link rel="stylesheet" href="../css/jquery-ui.css">
+
+<script src="../js/jquery-1.12.4.min.js"></script>
+<script src="../js/jquery-ui.js"></script>
+<script src="../js/jquery.ui.monthpicker.js"></script>
+<script src="../js/jquery.slimscroll.js"></script>
+<script src="../js/default.js"></script>
+
+</head>
+<body class="subPage">
+
+            <!--subWrap-->
+            <div class="subWrap">
+                <div class="inner mt10">
+
+                    
+
+                    <!--아동기본정보-->
+                    <section>
+                        <!--s : 조회-->
+                        <div class="gridUtil">
+                            <div class="fl">
+                                <div class="tb01">
+                                    <table>
+                                        <colgroup>
+                                            <col style="width:auto">
+                                            <col style="width:auto">
+                                            <col style="width:auto">
+                                            <col style="width:auto">
+                                            <col style="width:auto">
+                                            <col style="width:auto">
+                                            <col style="width:auto">
+                                            <col style="width:auto">
+                                        </colgroup>
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row"><span class="tit">팀명</span></th>
+                                                <td class="txtR"><input type="text" value="푸르덴셜 팀" class="w100p txtR"></td> 
+                                                <th scope="row"><span class="tit ml20">팀장</span></th>
+                                                <td class="txtR"><input type="text" value="홍길동" class="w100p txtR"></td> 
+                                                <th scope="row"><span class=""></span></th>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            
+                            </div>
+                            <div class="fr">
+                                <button type="button" class="btn01"><i class="ic_search"></i><span>조회</span></button>
+                            </div>
+                        </div>
+                        <!--e : 조회--> 
+
+                        <div class="hr20"></div>
+
+                        <!--s : 조회결과-->
+                        <div class="gridUtil mt20">
+                            <div class="fl">
+                                <h3 class="title">프로젝트</h3>
+                            </div>
+                            <div class="fr">
+                                <button type="button" class="btn btn02 rad50 borderC2"><i class="ic_rowPlusBlue"></i><span>행추가</span></button>
+                                <button type="button" class="btn btn02 rad50 borderC2"><i class="ic_rowMinusRed"></i><span>행삭제</span></button>
+                                <button type="button" class="btn btn02 rad50 borderC2"><i class="ic_rowUp"></i><span>위로</span></button>
+                                <button type="button" class="btn btn02 rad50 borderC2"><i class="ic_rowDown"></i><span>아래로</span></button>
+                                <button type="button" class="btn btn02 rad50 borderC2"><span>복사</span></button>
+                                <button type="button" class="btn btn02 rad50 borderC2"><span>붙여넣기</span></button>
+                                <button type="button" class="btn05"><i class="ic_excel"></i><span>다운로드</span></button> 
+                            </div>
+                        </div>
+
+                        <div class="tb02">
+                            <table>
+                                <caption>표</caption>
+                                <colgroup>
+                                    <col style="width:40px">
+                                    <col style="width:auto">
+                                    <col style="width:100px">
+                                    <col style="width:100px">
+                                    <col style="width:100px">
+                                    <col style="width:280px">
+                                    <col style="width:150px;">
+                                    <col style="width:150px">
+                                    <col style="width:150px">
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th scope="col">번호</th>
+                                        <th scope="col">프로젝트명</th>
+                                        <th scope="col">고객사</th>
+                                        <th scope="col">수행사</th>
+                                        <th scope="col">PM</th>
+                                        <th scope="col">기간</th>
+                                        <th scope="col">진행단계</th>
+                                        <th scope="col">총 투입현황</th>
+                                        <th scope="col">현재투입</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="txtC">1</td>
+                                        <td class="txtL">미래에셋 차세대</td>
+                                        <td class="txtC">미래에셋</td>
+                                        <td class="txtC">U2W</td>
+                                        <td class="txtC">신창호</td>
+                                        <td class="txtC">
+                                            <span class="datepickerBox"><input type="text" placeholder="2021-12-11"></span>
+                                            <span class="wave">~</span>
+                                            <span class="datepickerBox"><input type="text" placeholder="2022-05-02"></span>
+                                        </td>
+                                        <td class="txtC">
+                                            <select class="w110">
+                                                <option>유지보수</option>
+                                                <option>신규개발</option>
+                                                <option>업데이트</option>
+                                            </select> 
+                                        </td>
+                                        <td class="txtC">
+                                            <span class>특급
+                                                <input type="text" value="1" class="w40p mr5 txtR">명 (1.5)
+                                            </span><br>
+                                            <span class>고급
+                                                <input type="text" value="5" class="w40p mr5 txtR">명 (1.5) 
+                                            </span><br>
+                                            <span class>중급
+                                                <input type="text" value="3" class="w40p mr5 txtR">명 (1.5)
+                                            </span><br>
+                                            <span class>초급
+                                                <input type="text" value="4" class="w40p mr5 txtR">명 (1.5)
+                                            </span><br>
+                                            <span class>TBD
+                                                <input type="text" value="2" class="w40p mr5 txtR">명 (1.5)
+                                            </span>
+                                        </td>
+                                        <td class="txtC">
+                                            <span class>특급
+                                                <input type="text" value="7" class="w40p mr5 txtR">명
+                                            </span><br>
+                                            <span class>고급
+                                                <input type="text" value="24" class="w40p mr5 txtR">명
+                                            </span><br>
+                                            <span class>중급
+                                                <input type="text" value="15" class="w40p mr5 txtR">명
+                                            </span><br>
+                                            <span class>초급
+                                                <input type="text" value="10" class="w40p mr5 txtR">명
+                                            </span><br>
+                                            <span class>TBD
+                                                <input type="text" value="2" class="w40p mr5 txtR">명
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="txtC">2</td>
+                                        <td class="txtL">NH차세대 지방재정시스템 구축</td>
+                                        <td class="txtC">NH농협</td>
+                                        <td class="txtC">U2W</td>
+                                        <td class="txtC">홍길동</td>
+                                        <td class="txtC">
+                                            <span class="datepickerBox"><input type="text" placeholder="2022-01-20"></span>
+                                            <span class="wave">~</span>
+                                            <span class="datepickerBox"><input type="text" placeholder="2022-12-02"></span>
+                                        </td>
+                                        <td class="txtC">
+                                            <select class="w110">
+                                                <option>예정</option>
+                                                <option>유지보수</option>
+                                                <option>신규개발</option>
+                                                <option>업데이트</option>
+                                            </select> 
+                                        </td>
+                                        <td class="txtC">
+                                            <span class>특급
+                                                <input type="text" value="1" class="w40p mr5 txtR">명 (1.5)
+                                            </span><br>
+                                            <span class>고급
+                                                <input type="text" value="24" class="w40p mr5 txtR">명 (1.5)
+                                            </span><br>
+                                            <span class>중급
+                                                <input type="text" value="15" class="w40p mr5 txtR">명 (1.5)
+                                            </span><br>
+                                            <span class>초급
+                                                <input type="text" value="10" class="w40p mr5 txtR">명 (1.5)
+                                            </span><br>
+                                            <span class>TBD
+                                                <input type="text" value="2" class="w40p mr5 txtR">명 (1.5)
+                                            </span>
+                                        </td>
+                                        <td class="txtC">
+                                            <span class>특급
+                                                <input type="text" value="7" class="w40p mr5 txtR">명
+                                            </span><br>
+                                            <span class>고급
+                                                <input type="text" value="24" class="w40p mr5 txtR">명
+                                            </span><br>
+                                            <span class>중급
+                                                <input type="text" value="15" class="w40p mr5 txtR">명
+                                            </span><br>
+                                            <span class>초급
+                                                <input type="text" value="10" class="w40p mr5 txtR">명
+                                            </span><br>
+                                            <span class>TBD
+                                                <input type="text" value="2" class="w40p mr5 txtR">명
+                                            </span>
+                                        </td>
+                                    </tr>
+                                        
+                                        
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="gridUtilBottom">
+                            <div class="fr">
+                                <button type="button" class="btn01"><span>등록/수정</span></button>
+                            </div>
+                        </div>
+
+
+                        <div class="gridUtil">
+                            <div class="fl">
+                                <h3 class="title">팀원</h3>
+                            </div>
+                            <div class="fr">
+                                <button type="button" class="btn btn02 rad50 borderC2"><i class="ic_rowPlusBlue"></i><span>행추가</span></button>
+                                <button type="button" class="btn btn02 rad50 borderC2"><i class="ic_rowMinusRed"></i><span>행삭제</span></button>
+                                <button type="button" class="btn btn02 rad50 borderC2"><i class="ic_rowUp"></i><span>위로</span></button>
+                                <button type="button" class="btn btn02 rad50 borderC2"><i class="ic_rowDown"></i><span>아래로</span></button>
+                                <button type="button" class="btn btn02 rad50 borderC2"><span>복사</span></button>
+                                <button type="button" class="btn btn02 rad50 borderC2"><span>붙여넣기</span></button>
+                                <button type="button" class="btn05"><i class="ic_excel"></i><span>다운로드</span></button> 
+                            </div>
+                        </div>
+
+                        <div class="tb02">
+                            <table>
+                                <caption>표</caption>
+                                <colgroup>
+                                    <col style="width:40px">
+                                    <col style="width:auto">
+                                    <col style="width:100px">
+                                    <col style="width:100px">
+                                    <col style="width:100px">
+                                    <col style="width:100px">
+                                    <col style="width:100px;">
+                                    <col style="width:150px">
+                                    <col style="width:auto">
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th scope="col">번호</th>
+                                        <th scope="col">프로젝트명</th>
+                                        <th scope="col">역할</th>
+                                        <th scope="col">이름</th>
+                                        <th scope="col">직위</th>
+                                        <th scope="col">등급</th>
+                                        <th scope="col">학력</th>
+                                        <th scope="col">연락처</th>
+                                        <th scope="col">주소</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="txtC">1</td>
+                                        <td class="txtL">미래에셋 차세대</td>
+                                        <td class="txtC">PM</td>
+                                        <td class="txtC">신창호</td>
+                                        <td class="txtC">부장</td>
+                                        <td class="txtC">특급</td>
+                                        <td class="txtC">석사</td>
+                                        <td class="txtC">010-1234-5678</td>
+                                        <td class="txtL">서울시 영등포구 여의도동</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="txtC">2</td>
+                                        <td class="txtL">NH차세대 지방재정시스템 구축</td>
+                                        <td class="txtC">개발</td>
+                                        <td class="txtC">홍길동</td>
+                                        <td class="txtC">차장</td>
+                                        <td class="txtC">고급</td>
+                                        <td class="txtC">석사</td>
+                                        <td class="txtC">010-1234-5678</td>
+                                        <td class="txtL">경기도 안성시</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="txtC">3</td>
+                                        <td class="txtL">정예맴버 내부개발</td>
+                                        <td class="txtC">디자인</td>
+                                        <td class="txtC">강소라</td>
+                                        <td class="txtC">대리</td>
+                                        <td class="txtC">중급</td>
+                                        <td class="txtC">석사</td>
+                                        <td class="txtC">010-1234-5678</td>
+                                        <td class="txtL">세종시</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="txtC">4</td>
+                                        <td class="txtL">NH차세대 지방재정시스템 구축</td>
+                                        <td class="txtC">개발</td>
+                                        <td class="txtC">홍길동</td>
+                                        <td class="txtC">사원</td>
+                                        <td class="txtC">초급</td>
+                                        <td class="txtC">학사</td>
+                                        <td class="txtC">010-1234-5678</td>
+                                        <td class="txtL">서울시 영등포구 여의도동</td>
+                                    </tr>
+                                        
+                                        
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="gridUtilBottom">
+                            <div class="fr">
+                                <button type="button" class="btn01"><span>등록/수정</span></button>
+                            </div>
+                        </div>
+                        <!--e : 조회결과-->
+
+                        <div class="gridUtilBottom mt30">
+                            <div class="paging">
+                                <a href="#none" class="prev btn_paging_first">맨앞으로</a>
+                                <a href="#none" class="prev btn_paging_prev">이전</a>
+                                <a href="#none" class="num current">1</a>
+                                <a href="#none" class="num">2</a>
+                                <a href="#none" class="num">3</a>
+                                <a href="#none" class="num">4</a>
+                                <a href="#none" class="num">5</a>
+                                <a href="#none" class="num">6</a>
+                                <a href="#none" class="num">7</a>
+                                <a href="#none" class="num">8</a>
+                                <a href="#none" class="num">9</a>
+                                <a href="#none" class="num">10</a>
+                                <a href="#none" class="next btn_paging_next">다음</a>
+                                <a href="#none" class="next btn_paging_last">맨끝으로</a>
+                            </div>
+                        </div>
+                        <!--e : 목록-->
+                    </section>
+                    <!--//아동기본정보-->
+                          
+                </div><!--//inner-->
+            </div>
+            <!--//subWrap-->
+
+
+</body>
+</html>

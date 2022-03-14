@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ko" xml:lang="ko">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>사용자관리 | 정예맴버 프로젝트관리시스템</title>
+
+<link rel="stylesheet" href="../css/daycare_user_layout.css">
+<link rel="stylesheet" href="../css/jquery-ui.css">
+
+<script src="../js/jquery-1.12.4.min.js"></script>
+<script src="../js/jquery-ui.js"></script>
+<script src="../js/jquery.ui.monthpicker.js"></script>
+<script src="../js/jquery.slimscroll.js"></script>
+<script src="../js/default.js"></script>
+
+</head>
+<body class="subPage">
+
+            <!--subWrap-->
+            <div class="subWrap">
+                <div class="inner">
+
+                    <!--회사정보-->
+                    <!--//회사정보-->
+                          
+                </div><!--//inner-->
+            </div>
+            <!--//subWrap-->
+
+    <!--popup-->
+    <div class="dimmed"></div>
+    <div class="popup sizeL">
+        <div class="popTitle">
+            <h2>사용자관리</h2>
+        </div>
+        <div class="popCont">
+            <div class="inner oh">
+
+                <div class="tbTabWrap">
+
+                    <ul class="tbTab01 noAction">
+                        <li class="current"><a href="#tab01">사용자관리</a></li>
+                        <li><a href="#tab02">회사정보</a></li>
+                    </ul>
+
+
+                    <!--s : 사용자관리-->
+                    <div class="tabCont mt20" id="tab01" style="display: block;">
+
+                        
+                        <div class="gridUtil">
+                            <div class="fl">
+                                <h3 class="title">사용자관리</h3>
+                            </div>
+                        </div> 
+                        <div class="gridWrap">
+                            <div class="tb02">
+                                <table style="width:1200px">
+                                    <caption>표</caption>
+                                    <colgroup>
+                                        <col style="width:40px">
+                                        <col style="width:40px">
+                                        <col style="width:120px">
+                                        <col style="width:100px">
+                                        <col style="width:100px">
+                                        <col style="width:100px">
+                                        <col style="width:100px">
+                                        <col style="width:auto">
+                                        <col style="width:auto">
+                                        <col style="width:auto">
+                                        <col style="width:auto">
+                                        
+                                    </colgroup>
+                                    <thead>
+
+                                        <tr>
+                                            <th scope="col" rowspan="1">번호</th>
+                                            <th scope="col" rowspan="1"><span class="customForm"><input type="checkbox" id="checkAll"><label for="checkAll"></label></span></th>
+                                            <th scope="col" rowspan="1">아이디</th>
+                                            <th scope="col" rowspan="1">이름</th>
+                                            <th scope="col" rowspan="1">생년월일</th>
+                                            <th scope="col" rowspan="1">직위</th>
+                                            <th scope="col" rowspan="1">직책</th>
+                                            <th scope="col" rowspan="1">이메일</th>
+                                            <th scope="col" rowspan="1">전화번호</th>
+                                            <th scope="col" rowspan="1">소속팀</th>
+                                            <th scope="col" rowspan="1">가입여부</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="txtC">1</td>
+                                            <td class="txtC"><span class="customForm"><input type="checkbox" id="check01"><label for="check01"></label></span></td>
+                                            <td class="txtL">project1234</td>
+                                            <td class="txtC">홍길동</td>
+                                            <td class="txtC">1983-12-12</td>
+                                            <td class="txtC">부장</td>
+                                            <td class="txtC">팀장</td>
+                                            <td class="txtC">project1234@u2w.co.kr</td>
+                                            <td class="txtC">010-1234-5678</td>
+                                            <td class="txtL">정예맴버프로젝트</td>
+                                            <td class="txtC">가입완료</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="txtC">2</td>
+                                            <td class="txtC"><span class="customForm"><input type="checkbox" id="check01"><label for="check01"></label></span></td>
+                                            <td class="txtL">project1234</td>
+                                            <td class="txtC">장근석</td>
+                                            <td class="txtC">1972-02-21</td>
+                                            <td class="txtC">이사</td>
+                                            <td class="txtC">영업관리</td>
+                                            <td class="txtC">project1234@u2w.co.kr</td>
+                                            <td class="txtC">010-1234-5678</td>
+                                            <td class="txtL">정예맴버프로젝트</td>
+                                            <td class="txtC">미가입</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="txtC">3</td>
+                                            <td class="txtC"><span class="customForm"><input type="checkbox" id="check01"><label for="check01"></label></span></td>
+                                            <td class="txtL">project1234</td>
+                                            <td class="txtC">서성한</td>
+                                            <td class="txtC">1983-01-21</td>
+                                            <td class="txtC">과장</td>
+                                            <td class="txtC">사업관리</td>
+                                            <td class="txtC">project1122@u2w.co.kr</td>
+                                            <td class="txtC">010-1234-5678</td>
+                                            <td class="txtL">정예맴버프로젝트</td>
+                                            <td class="txtC">가입완료</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="txtC">4</td>
+                                            <td class="txtC"><span class="customForm"><input type="checkbox" id="check01"><label for="check01"></label></span></td>
+                                            <td class="txtL">project1234</td>
+                                            <td class="txtC">이순재</td>
+                                            <td class="txtC">1988-01-21</td>
+                                            <td class="txtC">차장</td>
+                                            <td class="txtC">팀원</td>
+                                            <td class="txtC">project1234@u2w.co.kr</td>
+                                            <td class="txtC">010-1234-5678</td>
+                                            <td class="txtL">정예맴버프로젝트</td>
+                                            <td class="txtC">미가입</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="txtC">5</td>
+                                            <td class="txtC"><span class="customForm"><input type="checkbox" id="check01"><label for="check01"></label></span></td>
+                                            <td class="txtL">project1234</td>
+                                            <td class="txtC">박영희</td>
+                                            <td class="txtC">1992-01-21</td>
+                                            <td class="txtC">대리</td>
+                                            <td class="txtC">팀원</td>
+                                            <td class="txtC">project1234@u2w.co.kr</td>
+                                            <td class="txtC">010-1234-5678</td>
+                                            <td class="txtL">정예맴버프로젝트</td>
+                                            <td class="txtC">미가입</td>
+                                        </tr>
+                                        <tr class="tblank">
+                                            <td class="txtC" colspan="11"></td>  
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div><!--//gridWrap-->
+                        
+                        <div class="gridUtilBottom">
+                            <div class="paging">
+                                <a href="#none" class="prev btn_paging_first">맨앞으로</a>
+                                <a href="#none" class="prev btn_paging_prev">이전</a>
+                                <a href="#none" class="num current">1</a>
+                                <a href="#none" class="num">2</a>
+                                <a href="#none" class="num">3</a>
+                                <a href="#none" class="num">4</a>
+                                <a href="#none" class="num">5</a>
+                                <a href="#none" class="num">6</a>
+                                <a href="#none" class="num">7</a>
+                                <a href="#none" class="num">8</a>
+                                <a href="#none" class="num">9</a>
+                                <a href="#none" class="num">10</a>
+                                <a href="#none" class="next btn_paging_next">다음</a>
+                                <a href="#none" class="next btn_paging_last">맨끝으로</a>
+                            </div>
+                            <div class="fr">
+                            </div>
+                        </div> 
+
+                        <div class="gridUtilBottom">
+                            <div class="fl">
+                                <div class="">
+                                    <p class="bullet01"><span class="important">*</span>표시가 있는 항목만 수정 가능합니다.</p>
+                                </div>
+                            </div>  
+                            <div class="fr">
+                                <button type="button" class="btn01"><span>수정</span></button>
+                            </div>
+                        </div>  
+
+
+
+
+                   
+                    </div>
+                    <!--e : 사용자관리-->
+         
+
+                </div><!--//tbTabWrap-->
+
+            </div><!--//inner-->
+        </div><!--//popCont-->
+        <a href="#none" class="popClose">창닫기</a>
+    </div>
+    <!--//popup-->
+
+
+</body>
+</html>

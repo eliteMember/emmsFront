@@ -1,0 +1,278 @@
+﻿<!DOCTYPE html>
+<html lang="ko" xml:lang="ko">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>사전비용 계산 | 프로젝트 제안 | 정예맴버 프로젝트관리시스템</title>
+
+<link rel="stylesheet" href="../css/daycare_user_layout.css">
+<link rel="stylesheet" href="../css/jquery-ui.css">
+
+<script src="../js/jquery-1.12.4.min.js"></script>
+<script src="../js/jquery-ui.js"></script>
+<script src="../js/jquery.ui.monthpicker.js"></script>
+<script src="../js/jquery.slimscroll.js"></script>
+<script src="../js/default.js"></script>
+
+</head>
+<body class="subPage">
+
+            <!--subWrap-->
+            <div class="subWrap">
+                <div class="inner mt10">
+
+                    <!--조회-->  
+                    <div class="gridUtil">
+                        <div class="fl">
+                            <div class="tb01">
+                                <table>
+                                    <colgroup>
+                                        <col style="width:auto">
+                                        <col style="width:auto">
+                                        <col style="width:auto">
+                                        <col style="width:auto">
+                                    </colgroup>
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row"><span class="tit">프로젝트</span></th>
+                                            <td class="txtL">
+                                                <select class="mr20">
+                                                    <option>미래에셋생명 비대면업무확대</option>
+                                                    <option>NH차세대지방재정 구축</option>
+                                                </select> 
+                                            </td>
+                                            <th scope="row"><span class="tit">프로젝트 기간</span></th>
+                                            <td class="txtL" colspan="3">
+                                                <span class="datepickerBox"><input type="text" placeholder="2021-08-15"></span>
+                                                ~
+                                                <span class="datepickerBox"><input type="text" placeholder="2022-11-15"></span>
+                                            </td>   
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        
+                        </div>
+                        <div class="fr">
+                            <button type="button" class="btn01"><i class="ic_search"></i><span>조회</span></button>
+                        </div>
+                    </div>
+
+    
+                    <!--//조회-->  
+    
+                    <div class="hr20"></div>
+    
+                    <!--조회결과-->  
+                    <div class="gridUtil mt20">
+                        <div class="fr">
+                            <button type="button" class="btn btn02 rad50 borderC2"><i class="ic_rowPlusBlue"></i><span>행추가</span></button>
+                            <button type="button" class="btn btn02 rad50 borderC2"><i class="ic_rowMinusRed"></i><span>행삭제</span></button>
+                            <button type="button" class="btn btn02 rad50 borderC2"><i class="ic_rowUp"></i><span>위로</span></button>
+                            <button type="button" class="btn btn02 rad50 borderC2"><i class="ic_rowDown"></i><span>아래로</span></button>
+                            <button type="button" class="btn btn02 rad50 borderC2"><span>복사</span></button>
+                            <button type="button" class="btn btn02 rad50 borderC2"><span>붙여넣기</span></button>
+                            <button type="button" class="btn05"><i class="ic_excel"></i><span>다운로드</span></button> 
+                        </div>
+                    </div><!--//gridUtil-->
+
+                    
+                    <div class="gridWrap mt10">
+                        <div class="tb02">
+                            <table style="">
+                                <caption>비용처리</caption>
+                                <colgroup>
+                                    <col style="width:130px">
+                                    <col style="width:130px">
+                                    <col style="width:200px">
+                                    <col style="width:200px">
+                                    <col style="width:200px">
+                                    <col style="width:200px">
+                                    <col style="width:200px">
+                                    <col style="width:200px">
+                                    <col style="width:auto">
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th scope="col">구분</th>
+                                        <th scope="col">품목</th>
+                                        <th scope="col">월단가</th>
+                                        <th scope="col">월수량</th>
+                                        <th scope="col">인원단가</th>
+                                        <th scope="col">인원수량</th>
+                                        <th scope="col">처리비용</th>
+                                        <th scope="col">매출이익</th>
+                                        <th scope="col">비고</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="txtC">원가총액</td>
+                                        <td class="txtC"></td>
+                                        <td class="txtR"></td>
+                                        <td class="txtC"></td>
+                                        <td class="txtR"></td>
+                                        <td class="txtC"></td>
+                                        <td class="txtR"></td>
+                                        <td class="txtR">429,265,781</td>
+                                        <td class="txtL"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="txtC" rowspan="3">인건비</td>
+                                        <td class="txtC">노무비</td>
+                                        <td class="txtR"></td>
+                                        <td class="txtC">7</td>
+                                        <td class="txtR"></td>
+                                        <td class="txtC">7</td>
+                                        <td class="txtR">7,000</td>
+                                        <td class="txtR"></td>
+                                        <td class="txtL"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="txtC">외주비</td>
+                                        <td class="txtR"></td>
+                                        <td class="txtC">5</td>
+                                        <td class="txtR"></td>
+                                        <td class="txtC">7</td>
+                                        <td class="txtR">7,000</td>
+                                        <td class="txtR"></td>
+                                        <td class="txtL"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="txtC">인건비계</td>
+                                        <td class="txtR"></td>
+                                        <td class="txtC">5</td>
+                                        <td class="txtR"></td>
+                                        <td class="txtC">5</td>
+                                        <td class="txtR">15,000</td>
+                                        <td class="txtR"></td>
+                                        <td class="txtL"></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="txtC" rowspan="4">경비</td>
+                                        <td class="txtC">영업비</td>
+                                        <td class="txtR"></td>
+                                        <td class="txtC">7</td>
+                                        <td class="txtR"></td>
+                                        <td class="txtC">7</td>
+                                        <td class="txtR">7,000</td>
+                                        <td class="txtR"></td>
+                                        <td class="txtL"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="txtC">회식비</td>
+                                        <td class="txtR"></td>
+                                        <td class="txtC">5</td>
+                                        <td class="txtR"></td>
+                                        <td class="txtC">7</td>
+                                        <td class="txtR">7,000</td>
+                                        <td class="txtR"></td>
+                                        <td class="txtL"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="txtC">잡비</td>
+                                        <td class="txtR"></td>
+                                        <td class="txtC">5</td>
+                                        <td class="txtR"></td>
+                                        <td class="txtC">5</td>
+                                        <td class="txtR">15,000</td>
+                                        <td class="txtR"></td>
+                                        <td class="txtL"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="txtC">경비계</td>
+                                        <td class="txtR"></td>
+                                        <td class="txtC">5</td>
+                                        <td class="txtR"></td>
+                                        <td class="txtC">5</td>
+                                        <td class="txtR">15,000</td>
+                                        <td class="txtR"></td>
+                                        <td class="txtL"></td>
+                                    </tr>
+
+
+                                    
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tb02 mt10">
+                        <table>
+                            <caption>실투입공수관리</caption>
+                            <colgroup>
+                                <col style="width:auto">
+                                <col style="width:auto">
+                                <col style="width:auto">
+                                <col style="width:auto">
+                                <col style="width:auto">
+                                <col style="width:auto">
+                                <col style="width:auto">
+                                <col style="width:auto">
+                                <col style="width:auto">
+                                <col style="width:auto">
+                                <col style="width:auto">
+                                <col style="width:auto">
+                                <col style="width:auto">
+                                <col style="width:auto">
+                                <col style="width:auto">
+                                <col style="width:auto">
+                                <col style="width:auto">
+                                <col style="width:auto">
+                                <col style="width:auto">
+                                <col style="width:auto">
+                                <col style="width:auto">
+                                <col style="width:auto">
+                            </colgroup>
+                            <tbody>
+                                <tr class="tfoot">
+                                    <td class="txtR"></td>
+                                    <td class="txtR"></td>
+                                    <td class="txtR"></td>
+                                    <td class="txtR"></td>
+                                    <td class="txtR"></td>
+                                    <td class="txtR"></td>
+                                    <td class="txtR"></td>
+                                    <td class="txtR"></td>
+                                    <td class="txtR"></td>
+                                    <td class="txtR"></td>
+                                    <td class="txtR"></td>
+                                    <td class="txtR"></td>
+                                    <td class="txtR"></td>
+                                    <td class="txtR"></td>
+                                    <td class="txtR"></td>
+                                    <td class="txtR"></td>
+                                    <td class="txtR"></td>
+                                    <td class="txtR"></td>
+                                    <td class="txtR"></td>
+                                    <td class="txtR"></td>
+                                    <td class="txtR"></td>
+                                    <td class="txtR">189,072,917</td>
+                                </tr>
+    
+                            </tbody>
+                        </table>
+                    </div> 
+                    <!--//조회결과-->  
+    
+                    <div class="gridUtilBottom">
+                        <div class="fl">
+                            <div>
+                                <p class="bullet01">안내문 내용사항입니다.</p>
+                            </div>
+                        </div>
+                        <div class="fr">
+                            <button type="button" class="btn01"><span>등록/수정</span></button>
+                        </div>
+                    </div>
+    
+    
+                </div><!--//inner-->
+            </div>
+            <!--//subWrap-->
+
+
+</body>
+</html>

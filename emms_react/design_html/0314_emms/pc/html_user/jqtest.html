@@ -1,0 +1,124 @@
+﻿<!DOCTYPE html>
+<html lang="ko" xml:lang="ko">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>급여기초정보 | 인사 | 교직원 | 어린이집관리시스템</title>
+
+<link rel="stylesheet" href="../css/jquery-ui.css">
+<link rel="stylesheet" href="../css/daycare_user_layout.css">
+
+
+<script src="../js/jquery-1.12.4.min.js"></script>
+<!--<script src="../js/jquery-ui.js"></script>-->
+<script src="../js/jquery.ui.monthpicker.js"></script>
+<script src="../js/jquery.slimscroll.js"></script>
+<script src="../js/default.js"></script>
+
+<!--<link rel="stylesheet" type="text/css" media ="screen" href="../css/ui.jqgrid.css"/>-->
+<script src="../js/jquery.jqgrid.min.js"></script>
+</head>
+<body class="subPage">
+
+            <!--subWrap-->
+            <div class="subWrap">
+                <div class="inner">
+
+                    <!--교직원 - 급여기초정보-->
+                    <section>
+                        <!--s : 조회-->
+                        <div class="gridUtil">
+                            <div class="fl">
+                                <div class="tb01">
+                                    <table>
+                                        <colgroup>
+                                            <col style="width:auto">
+                                            <col style="width:auto">
+                                            <col style="width:auto">
+                                            <col style="width:auto">
+                                        </colgroup>
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row"><span class="tit">검색대상</span></th>
+                                                <td>
+                                                    <select class="w130 mr20">
+                                                        <option>재직</option>
+                                                        <option>휴직(유급)</option>
+                                                        <option>휴직(무급)</option>
+                                                        <option>퇴사</option>
+                                                    </select>
+                                                </td>
+                                                <th scope="row"><span class="tit">교직원명</span></th>
+                                                <td>
+                                                    <input type="text" class="w130" placeholder="">
+                                                    <select class="w130 mr20">
+                                                        <option>전체</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            
+                            </div>
+                            <div class="fr">
+                                <button type="button" class="btn01"><i class="ic_search"></i><span>조회</span></button>
+                            </div>
+                        </div>
+                        <!--e : 조회--> 
+
+                        <div class="hr20"></div>
+
+                        <!--s : 조회결과-->
+
+                            <!-- s : 1 그라드테이블  테스트-->
+                            <script type="text/javascript"> 
+                                $(document).ready(function () {
+                                    $("#grid1").jqGrid({
+                                        url: 'http://trirand.com/blog/phpjqgrid/examples/jsonp/getjsonp.php?callback=?&qwery=longorders',
+                                        mtype: "GET",
+                                        datatype: "json",
+                                        colModel: [
+                                            { label: '번호', name: 'OrderID', key: true, width: 100 ,frozen : true  },
+                                            { label: 'Customer ID', name: 'CustomerID', width: 150,frozen : true  },
+                                            { label: 'Order Date', name: 'OrderDate', width: 150, formatter : 'date', formatoptions: { srcformat : 'Y-m-d H:i:s', newformat :'ShortDate'}},
+                                            { label: 'Freight', name: 'Freight', width: 150 },
+                                            { label:'Ship Name', name: 'ShipName', width: 150 }
+                                        ],
+                                        rowNum:10,
+                                        //rowList:[10,20,30],
+                                        viewrecords: true,
+                                        width: 'auto',
+                                        height: 250,
+                                        rowNum: 20,
+                                        //pager: "#jqGridPager",
+                                        shrinkToFit :false,
+                                        //autowidth:true
+                                    });
+                                    $("#grid1").jqGrid('setFrozenColumns');
+                                    $(window).on('resize.jqGrid', function () {
+                                        $("#grid1").jqGrid( 'setGridWidth', $(".gridWrap").width() );
+                                    });
+
+                                });
+                            </script>
+                            <div class="">
+                                <div class="gridWrap">
+                                    <table id="grid1" class="ui-jqgrid-view"></table>
+                                </div>
+                            </div>
+                            <!-- e : 1. 그라드테이블  테스트-->
+
+
+
+                        <!--e : 조회결과-->
+                    </section>
+                    <!--//교직원 - 급여기초정보-->
+                          
+                </div><!--//inner-->
+            </div>
+            <!--//subWrap-->
+
+
+</body>
+</html>

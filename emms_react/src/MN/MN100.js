@@ -2,8 +2,10 @@ import axios from 'axios';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import './MN100.css';
+
 import { ACT_USER_INFO_UPDATE } from "../reducers/userInfo";
 import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 function MN100(props) {
 
@@ -75,10 +77,14 @@ function MN100(props) {
             {errors && <p className="valid">{errors?.password?.message}</p>}
           </div>
           <button type="submit">로그인</button>
+          <button><Link to="/MN100_1" className="join_register">회원가입</Link></button>
+
         </form>
       </div>
+
     </div>
   )
 }
+
 
 export default MN100;

@@ -1,0 +1,899 @@
+﻿<!DOCTYPE html>
+<html lang="ko" xml:lang="ko">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>프로젝트 기본정보 | 정예맴버 프로젝트관리시스템</title>
+
+<link rel="stylesheet" href="../css/daycare_user_layout.css">
+<link rel="stylesheet" href="../css/jquery-ui.css">
+
+<script src="../js/jquery-1.12.4.min.js"></script>
+<script src="../js/jquery-ui.js"></script>
+<script src="../js/jquery.ui.monthpicker.js"></script>
+<script src="../js/jquery.slimscroll.js"></script>
+<script src="../js/default.js"></script>
+
+</head>
+<body class="subPage">
+
+            <!--subWrap-->
+            <div class="subWrap">
+                <div class="inner">
+
+                    <div class="dTable mt10">
+                        <div class="colL vt" style="width:500px">
+
+    
+                            <!--s : 조회-->
+
+                            <div class="gridUtil mt10">
+                                <div class="fl">
+                                    <h3 class="title">프로젝트 정보 조회</h3>
+                                </div>
+                                <div class="fr">
+                                    <button type="button" class="btn02 borderC2"><i class="ic_search_blue"></i><span>조회</span></button>
+                                </div>
+                            </div>
+                            <!--e : 조회--> 
+                            <div class="tb03 mt20">
+                                <table>
+                                    <colgroup>
+                                        <col style="width:100px">
+                                        <col style="width:auto">
+                                    </colgroup>
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row"><span class="tit">프로젝트명</span></th>
+                                            <td>
+                                                <select class="w250 mr10">
+                                                    <option>KB 푸르덴셜 비대면 구축(예정)</option>
+                                                    <option>NH농협 차세대 지방재정 구축(진행중)</option>
+                                                    <option>미래에셋생명 비대면 업무확대(진행중)</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row"><span class="tit">프로젝트팀</span></th>
+                                            <td>
+                                                정예맴버팀 (프로젝트 클릭시 자동변경. 미정 시 미정 표시)
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row"><span class="tit">프로젝트 상태</span></th>
+                                            <td class="txtL" colspan="">
+                                                <select class="w130">
+                                                    <option>예정</option>
+                                                    <option>제안</option>
+                                                    <option>분석</option>
+                                                    <option>설계</option>
+                                                    <option>개발</option>
+                                                    <option>테스트</option>
+                                                    <option>유지보수</option>
+                                                    <option>종료</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="gridWrap mt20" style="height:400px">
+                                <div class="tb02">
+                                    <table>
+                                        <colgroup>
+                                            <col style="width:40px">
+                                            <col style="width:auto">
+                                            <col style="width:auto">
+                                        </colgroup>
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">번호</th>
+                                                <th scope="col">프로젝트명</th>
+                                                <th scope="col">프로젝트 기간</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="txtC">1</td>
+                                                <td class="txtC">KB 푸르덴셜 비대면 구축(예정)</td>
+                                                <td class="txtC">원장</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="txtC">2</td>
+                                                <td class="txtC">NH농협 차세대 교육금고 구축(예정)</td>
+                                                <td class="txtC">보육교사</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                
+                        </div>
+                        <div class="colR" style="width:1000px">
+                            <div class="ml10">
+
+                                <div class="tbTabWrap mt10">
+
+                                    <ul class="tbTab01">
+                                        <li class="current"><a href="#tab01">기본정보</a></li>
+                                        <li><a href="#tab02">급여기초정보</a></li>
+                                        <li><a href="#tab03">근로계약서</a></li>
+                                    </ul>
+
+                                    <!--s : 프로젝트기본정보-->
+                                    <div class="tabCont mt20" id="tab01" style="display: block;">
+
+                                        <div class="abTR">
+                                            <button type="button" class="btn05 borderC2"><i class="ic_reset"></i><span>초기화</span></button>
+                                        </div>
+                                        <div class="tb03">
+                                            <table>
+                                                <colgroup>
+                                                    <col style="width:130px">
+                                                    <col style="width:320px">
+                                                    <col style="width:130px">
+                                                    <col style="width:auto">
+                                                </colgroup>
+                                                <tbody>
+                                                    <tr>
+                                                        <th scope="row"><span class="tit">프로젝트명</span></th>
+                                                        <td class="txtL">
+                                                            <input type="text" value="KB 푸르덴셜 비대면 구축(예정)" class="w250">
+                                                        </td>
+                                                        <th scope="row"><span class="tit">프로젝트팀</span></th>
+                                                        <td class="txtL">
+                                                            <select class="w250">
+                                                                <option>개발2팀</option>
+                                                                <option>개발1팀</option>
+                                                                <option>디자인1팀</option>
+                                                            </select>
+                                                            <button type="button" class="btn01"><span>우리팀진행</span></button>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <div class="tb03 mt5 lineTopGray">
+                                            <table>
+                                                <colgroup>
+                                                    <col style="width:130px">
+                                                    <col style="width:320px">
+                                                    <col style="width:130px">
+                                                    <col style="width:auto">
+                                                </colgroup>
+                                                <tbody>
+                                                    <tr>
+                                                        <th scope="row"><span class="tit">프로젝트 구분</span></th>
+                                                        <td class="txtL">
+                                                            <select class="w110">
+                                                                <option>하도급</option>
+                                                                <option>내부프로젝트</option>
+                                                                <option>수의계약</option>
+                                                                <option>용역계약</option>
+                                                            </select>
+                                                        </td>
+                                                        <th scope="row"><span class="tit">프로젝트 상태</span></th>
+                                                        <td class="txtL" colspan="">
+                                                            <select class="w110">
+                                                                <option>예정</option>
+                                                                <option>제안</option>
+                                                                <option>분석</option>
+                                                                <option>설계</option>
+                                                                <option>개발</option>
+                                                                <option>테스트</option>
+                                                                <option>유지보수</option>
+                                                                <option>종료</option>
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row"><span class="tit">프로젝트 기간</span></th>
+                                                        <td class="txtL" colspan="3">
+                                                            <span class="datepickerBox"><input type="text" placeholder="2022-03-20"></span>
+                                                            ~
+                                                            <span class="datepickerBox"><input type="text" placeholder="2022-10-31"></span>
+                                                            <input type="text" value="0" class="w50 ml30 mr5">년
+                                                            <input type="text" value="7" class="w50 ml10 mr5">개월
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row"><span class="tit">프로젝트 장소</span></th>
+                                                        <td class="txtL" colspan="3">
+                                                            <input type="text" value="여의도 SK증권빌딩 12층" style="width:560px">
+                                                            <button type="button" class="btn02s"><i class="ic_search_blue"></i></button>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <div class="tb03 mt10 lineTopGray">
+                                            <table>
+                                                <colgroup>
+                                                    <col style="width:130px">
+                                                    <col style="width:auto">
+                                                    <col style="width:auto">
+                                                    <col style="width:auto">
+                                                    <col style="width:auto">
+                                                    <col style="width:auto">
+                                                </colgroup>
+                                                <tbody>
+                                                    <tr>
+                                                        <th scope="row">고객사</th>
+                                                        <td>
+                                                            <input type="text" value="미래에셋생명" class="w250">
+                                                        </td>
+                                                        <th scope="row">담당자</th>
+                                                        <td>
+                                                            <input type="text" value="" class="w100" placeholder="홍길동 부장">
+                                                        </td>
+                                                        <th scope="row">연락처</th>
+                                                        <td>
+                                                            <input type="text" value="010" class="w60">
+                                                            -
+                                                            <input type="text" value="2345" class="w60">
+                                                            -
+                                                            <input type="text" value="6789" class="w60">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">수행사</th>
+                                                        <td>
+                                                            <input type="text" value="아시아나IDT" class="w250">
+                                                        </td>
+                                                        <th scope="row">담당자</th>
+                                                        <td>
+                                                            <input type="text" value="" class="w100" placeholder="박민영 차장">
+                                                        </td>
+                                                        <th scope="row">연락처</th>
+                                                        <td>
+                                                            <input type="text" value="010" class="w60">
+                                                            -
+                                                            <input type="text" value="1234" class="w60">
+                                                            -
+                                                            <input type="text" value="5678" class="w60">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">협력사</th>
+                                                        <td>
+                                                            <input type="text" value="누리어시스템" class="w250">
+                                                        </td>
+                                                        <th scope="row">담당자</th>
+                                                        <td>
+                                                            <input type="text" value="" class="w100" placeholder="김우빈 부장">
+                                                        </td>
+                                                        <th scope="row">연락처</th>
+                                                        <td>
+                                                            <input type="text" value="010" class="w60">
+                                                            -
+                                                            <input type="text" value="8282" class="w60">
+                                                            -
+                                                            <input type="text" value="1234" class="w60">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">참조사항</th>
+                                                        <td colspan="6">
+                                                            <textarea class="h150">8시 30분 출근, 점심시간 12시~1시 지켜야함
+                                                            </textarea>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        
+                                        <div class="tb03 mt5 lineTopGray">
+                                            <table>
+                                                <colgroup>
+                                                    <col style="width:130px">
+                                                    <col style="width:auto">
+                                                </colgroup>
+                                                <tbody>
+
+                                                    <tr>
+                                                        <th class="txtC">첨부파일</th>
+                                                        <td class="txtL">
+                                                            <div class="mt10 mb10">
+                                                            
+                                                                <!--테이블-->
+                                                                <div class="dFlex">
+
+                                                                    <div class="tb04 mr20">                            
+
+                                                                            <div class="txtL mb10">
+                                                                                <select class="w110">
+                                                                                    <option>제안요청서</option>
+                                                                                    <option>제안서</option>
+                                                                                    <option>견적서</option>
+                                                                                    <option>공수표</option>
+                                                                                    <option>원가표</option>
+                                                                                    <option>산출물</option>
+                                                                                    <option>기타첨부</option>
+                                                                                </select>
+                                                                                <span class="filebox ml5"> 
+                                                                                    <input type="file" id="file"> 
+                                                                                    <input class="uploadName" value="" style="width:540px">
+                                                                                        <button type="button" class="btn01s"><span>파일찾기</span></button>
+                                                                                        <button type="button" class="btn02s"><span>삭제</span></button>
+                                                                                </span>
+                                                                            </div>
+
+                                                                        <table>
+                                                                            <caption>테이블</caption>
+                                                                            <colgroup>
+                                                                                <col style="width:50px">
+                                                                                <col style="width:50px">
+                                                                                <col style="width:580px">
+                                                                                <col style="width:90px">
+                                                                            </colgroup>
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th scope="col">선택</th>
+                                                                                    <th scope="col">번호</th>
+                                                                                    <th scope="col">파일명</th>
+                                                                                    <th scope="col">크기</th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                
+                                                                                <tr>
+                                                                                    <td class="txtC"><span class="customForm"><input type="checkbox" name="check1" id="check11"><label for="check11"><span></span></label></span></td>
+                                                                                    <td class="txtC">1</td>
+                                                                                    <td class="txtL">
+                                                                                        <button type="button" class="attachedFile"><i class="ic_file"></i><span class="">정예맴버프로젝트관리시스템 사용자 매뉴얼_v1.0.pdf</span></button>
+                                                                                    </td>
+                                                                                    <td class="txtC">3Mb</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td class="txtC"><span class="customForm"><input type="checkbox" name="check1" id="check12"><label for="check12"><span></span></label></span></td>
+                                                                                    <td class="txtC">2</td>
+                                                                                    <td class="txtL">
+                                                                                        <button type="button" class="attachedFile"><i class="ic_file"></i><span class="">KB 푸르덴셜 비대면 구축 RFP_v2.0KB 푸르덴셜 비대면 구축 RFP_v2.0..pdf</span></button>
+                                                                                    </td>
+                                                                                    <td class="txtC">3Mb</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td class="txtC"><span class="customForm"><input type="checkbox" name="check1" id="check13"><label for="check13"><span></span></label></span></td>
+                                                                                    <td class="txtC">3</td>
+                                                                                    <td class="txtL">
+                                                                                        <button type="button" class="attachedFile"><i class="ic_file"></i><span class="">KB 푸르덴셜 비대면 구축 공수산정_v1.0.pdf</span></button>
+                                                                                    </td>
+                                                                                    <td class="txtC">3Mb</td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+
+
+
+                                                                </div>
+                                                                <!--//테이블-->
+
+                                                            </div>
+                                                        </td>
+                                                    </tr> 
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <div class="gridUtilBottom">
+                                            <div class="fr">
+                                                <button type="button" class="btn01"><span>저장</span></button>
+                                                <button type="button" class="btn03"><span>취소</span></button>
+                                            </div>
+                                        </div> 
+
+
+                                    </div>
+                                    <!--e : 프로젝트기본정보-->
+                                    <!--s : 급여기초정보-->
+                                    <div class="tabCont mt20" id="tab02" style="display: none;">
+
+                                        <div class="abTR">
+                                            <button type="button" class="btn05 borderC2"><i class="ic_reset"></i><span>초기화</span></button>
+                                        </div>
+                                        <div class="tb03">
+                                            <table>
+                                                <colgroup>
+                                                    <col style="width:40px">
+                                                    <col style="width:180px">
+                                                    <col style="width:50px">
+                                                    <col style="width:180px">
+                                                    <col style="width:120px">
+                                                    <col style="width:80px">
+                                                </colgroup>
+                                                <tbody>
+
+                                                    <!--호봉-->
+                                                    <tr>
+                                                        <th scope="row"><span class="tit">기본급기준</span></th>
+                                                        <td class="txtL">
+                                                            <span class="customForm"><input type="radio" name="radio1" id="radio21"  checked=""><label for="radio21"><span>호봉</span></label></span>
+                                                            <span class="customForm mr0"><input type="radio" name="radio1" id="radio22"><label for="radio22"><span>직접입력</span></label></span>
+                                                        </td>
+                                                        <th scope="row"><span class="tit">호봉</span></th>
+                                                        <td class="txtL">
+                                                            <select class="w80">
+                                                                <option>선택</option>
+                                                            </select>
+                                                        </td>
+                                                        <th scope="row"><span class="tit">기타 인건비여부</span></th>
+                                                        <td class="txtL">
+                                                            <span class="customForm"><input type="checkbox" name="check2" id="check2"  checked=""><label for="check2"><span></span></label></span>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <th scope="row"><span class="tit">기본급기준</span></th>
+                                                        <td class="txtL">
+                                                            <span class="customForm"><input type="radio" name="radio2" id="radio31"><label for="radio31"><span>호봉</span></label></span>
+                                                            <span class="customForm mr0"><input type="radio" name="radio2" id="radio32"  checked=""><label for="radio32"><span>직접입력</span></label></span>
+                                                        </td>
+                                                        <th scope="row"><span class="tit">기본급</span></th>
+                                                        <td class="txtL">
+                                                            <input type="text" class="w80 txtR"><span class="ml5">원</span>
+                                                        </td>
+                                                        <th scope="row"><span class="tit">기타 인건비여부</span></th>
+                                                        <td class="txtL">
+                                                            <span class="customForm"><input type="checkbox" name="check" id="check1"  checked=""><label for="check1"><span></span></label></span>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <div class="dTable">
+                                            <div class="colL w50p">
+
+                                                    <!--left-->
+                                                    <div class="tb05 mt5 lineTopGray">
+                                                        <table>
+                                                            <colgroup>
+                                                                <col style="width:50px">
+                                                                <col style="width:auto">
+                                                                <col style="width:auto">
+                                                                <col style="width:auto">
+                                                            </colgroup>
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class="txtC" colspan="2">항목</th>
+                                                                    <th class="txtC">가입여부</th>
+                                                                    <th class="txtC">금액</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <th class="txtL" rowspan="4" scope="rowgroup">사회<br>보험</th>
+                                                                    <td class="txtC">국민연금</td>
+                                                                    <td class="txtC">
+                                                                        <span class="customForm"><input type="checkbox" name="check31" id="check31"  checked=""><label for="check31"><span></span></label></span>
+                                                                    </td>
+                                                                    <td class="txtC">
+                                                                        <input type="text" placeholder="입력하세요" class="w100 txtR" value="1,999,999">
+                                                                        <span class="won">원</span>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="txtC">건강보험</td>
+                                                                    <td class="txtC">
+                                                                        <span class="customForm"><input type="checkbox" name="check32" id="check32"  checked=""><label for="check32"><span></span></label></span>
+                                                                    </td>
+                                                                    <td class="txtC">
+                                                                        <input type="text" placeholder="입력하세요" class="w100 txtR" value="1,999,999">
+                                                                        <span class="won">원</span>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="txtC">고용보험</td>
+                                                                    <td class="txtC">
+                                                                        <span class="customForm"><input type="checkbox" name="check33" id="check33"  checked=""><label for="check33"><span></span></label></span>
+                                                                    </td>
+                                                                    <td class="txtC">
+                                                                        <input type="text" placeholder="입력하세요" class="w100 txtR" value="1,999,999">
+                                                                        <span class="won">원</span>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="txtC">산재보험</td>
+                                                                    <td class="txtC">
+                                                                        <span class="customForm"><input type="checkbox" name="check34" id="check34"  checked=""><label for="check34"><span></span></label></span>
+                                                                    </td>
+                                                                    <td class="txtC">
+                                                                        <input type="text" placeholder="입력하세요" class="w100 txtR" value="1,999,999">
+                                                                        <span class="won">원</span>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+
+                                                    <div class="tb05 mt5 lineTopGray">
+                                                        <table>
+                                                            <colgroup>
+                                                                <col style="width:50px">
+                                                                <col style="width:100px">
+                                                                <col style="width:auto">
+                                                            </colgroup>
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class="txtC" colspan="2">항목</th>
+                                                                    <th class="txtC">금액</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <th class="txtL" rowspan="3" scope="rowgroup">세금</th>
+                                                                    <td class="txtC">소득세</td>
+                                                                    <td class="txtC">
+                                                                        <input type="text" placeholder="입력하세요" class="w100 txtR" value="1,999,999">
+                                                                        <span class="won">원</span>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="txtC">지방소득세</td>
+                                                                    <td class="txtC">
+                                                                        <input type="text" placeholder="입력하세요" class="w100 txtR" value="1,999,999">
+                                                                        <span class="won">원</span>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="txtC">고용보험</td>
+                                                                    <td class="txtC">
+                                                                        <button type="button" class="btn01s"><span>근로소득 간이세표</span></button>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    <!--//left-->
+
+                                            </div>
+                                            <div class="colR w50p">
+                                                <div class="ml10">
+
+                                                    <!--right-->
+                                                    <div class="tb05 mt5 lineTopGray">
+                                                        <table>
+                                                            <colgroup>
+                                                                <col style="width:110px">
+                                                                <col style="width:70px">
+                                                                <col style="width:auto">
+                                                            </colgroup>
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class="txtC">항목</th>
+                                                                    <th class="txtC">대상여부</th>
+                                                                    <th class="txtC">내용</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td class="txtC">퇴직적립금</td>
+                                                                    <td class="txtC">
+                                                                        <span class="customForm"><input type="checkbox" name="check41" id="check41"  checked=""><label for="check41"><span></span></label></span>
+                                                                    </td>
+                                                                    <td class="txtL"></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="txtC">노인경감대상</td>
+                                                                    <td class="txtC">
+                                                                        <span class="customForm"><input type="checkbox" name="check42" id="check42"><label for="check42"><span></span></label></span>
+                                                                    </td>
+                                                                    <td class="txtL"></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="txtC" rowspan="2">두루누리대상</td>
+                                                                    <td class="txtC">
+                                                                        <span class="customForm"><input type="checkbox" name="check53" id="check53"><label for="check53"><span></span></label></span>
+                                                                    </td>
+                                                                    <td class="txtL">국민연금 :</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="txtC">
+                                                                        <span class="customForm"><input type="checkbox" name="check63" id="check63"><label for="check63"><span></span></label></span>
+                                                                    </td>
+                                                                    <td class="txtL">고용보험 :</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+
+                                                    <div class="tb05 mt5 lineTopGray">
+                                                        <table>
+                                                            <colgroup>
+                                                                <col style="width:110px">
+                                                                <col style="width:auto">
+                                                            </colgroup>
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class="txtC" colspan="2">급여계좌정보</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td class="txtC">은행명</td>
+                                                                    <td class="txtL">
+                                                                        <select class="w150">
+                                                                            <option>농협은행</option>
+                                                                            <option>우리은행</option>
+                                                                            <option>기업은행</option>
+                                                                        </select>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="txtC">계좌번호</td>
+                                                                    <td class="txtL">
+                                                                        <input type="text" placeholder="입력하세요" class="w150 txtL" value="">
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="txtC">예금주</td>
+                                                                    <td class="txtL">
+                                                                        <input type="text" placeholder="입력하세요" class="w150 txtL" value="">
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+
+
+
+                                                    <div class="tb05 mt5 lineTopGray">
+                                                        <table>
+                                                            <colgroup>
+                                                                <col style="width:110px">
+                                                                <col style="width:auto">
+                                                            </colgroup>
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class="txtC" colspan="2">
+                                                                        <span>퇴직금계좌정보</span>
+                                                                        <span class="customForm ml10"><input type="checkbox" name="check001" id="check001"><label for="check001"><span>급여계좌정보복사</span></label></span>
+                                                                    </th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td class="txtC">은행명</td>
+                                                                    <td class="txtL">
+                                                                        <select class="w150">
+                                                                            <option>농협은행</option>
+                                                                            <option>우리은행</option>
+                                                                            <option>기업은행</option>
+                                                                        </select>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="txtC">계좌번호</td>
+                                                                    <td class="txtL">
+                                                                        <input type="text" placeholder="입력하세요" class="w150 txtL" value="">
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="txtC">예금주</td>
+                                                                    <td class="txtL">
+                                                                        <input type="text" placeholder="입력하세요" class="w150 txtL" value="">
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    <!--//right-->
+
+
+                                                </div>
+                                            </div>
+                                        </div><!--//dTable-->   
+
+                                        <div class="gridUtilBottom">
+                                            <div class="fr">
+                                                <button type="button" class="btn04"><span>급여지급내역</span></button>
+                                                <button type="button" class="btn01"><span>저장</span></button>
+                                                <button type="button" class="btn03"><span>삭제</span></button>
+                                            </div>
+                                        </div> 
+
+                                    </div>
+                                    <!--e : 급여기초정보-->
+                                    <!--s : 근로계약서-->
+                                    <div class="tabCont mt20" id="tab03" style="display: none;">
+
+                                        <div class="gridUtil mt20">
+                                            <div class="fl">                
+                                                <h4 class="title mt5">근로계약서 등록</h4>
+                                            </div>
+                                            <div class="fr">
+                                                <button type="button" class="btn05"><i class="ic_doc"></i><span>중앙육아정보지원센터 서식다운</span></button>  
+                                                <button type="button" class="btn05"><i class="ic_doc"></i><span>고용노동부표준근로계약서 서식다운</span></button>  
+                                            </div>
+                                        </div> 
+                                        <div class="tb05">
+                                            <table>
+                                                <colgroup>
+                                                    <col style="width:130px">
+                                                    <col style="width:200px">
+                                                    <col style="width:100px">
+                                                    <col style="width:auto">
+                                                </colgroup>
+                                                <tbody>
+                                                    <tr>
+                                                        <th scope="row"><span class="tit">성명</span></th>
+                                                        <td class="txtL">홍길동</td>
+                                                        <th scope="row"><span class="tit">직책</span></th>
+                                                        <td class="txtL">원장</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row"><span class="tit">계약일</span></th>
+                                                        <td class="txtL">
+                                                            <span class="datepickerBox"><input type="text" placeholder="년-월-일"></span>
+                                                        </td>
+                                                        <th scope="row"><span class="tit">계약기간</span></th>
+                                                        <td class="txtL">
+                                                            <span class="datepickerBox"><input type="text" placeholder="년-월-일"></span>
+                                                            <span class="wave">~</span>
+                                                            <span class="datepickerBox"><input type="text" placeholder="년-월-일"></span>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row"><span class="tit">계약금액</span></th>
+                                                        <td class="txtL">
+                                                            <input type="text" placeholder="" class="w110 txtR" value="1,999,999">
+                                                            <span class="won">원</span>
+                                                        </td>
+                                                        <th scope="row"><span class="tit">양식</span></th>
+                                                        <td class="txtL">
+                                                            <select class="w200">
+                                                                <option>중앙육아종합지원센터</option>
+                                                                <option>고용노동부</option>
+                                                                <option>기타</option>
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row"><span class="tit">비고</span></th>
+                                                        <td class="txtL" colspan="3">
+                                                            <textarea></textarea>
+                                                        </td>
+                                                    </tr> 
+                                                    <tr>
+                                                        <th scope="row"><span class="tit">문서(첨부파일)</span></th>
+                                                        <td class="txtL" colspan="3">
+                                                            <div class="filebox"> 
+                                                                <input type="file" id="file"> 
+                                                                <input class="uploadName w200" value="">
+                                                                <label for="file">파일찾기</label> 
+                                                                <button type="button" class="btnX">삭제</button>
+                                                            </div>
+                                                        </td>
+                                                    </tr> 
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="gridUtilBottom">
+                                            <div class="fl">
+                                                <div class="info_txt">
+                                                    <p>근로계약서는 어린이집별 작성에 차이가 있으니 서식을 제공받고 업로드 해주세요.</p>
+                                                </div>
+                                            </div>
+                                            <div class="fr">
+                                                <button type="button" class="btn05 borderC2"><i class="ic_reset"></i><span>초기화</span></button>
+                                                <button type="button" class="btn01"><span>저장</span></button>
+                                            </div>
+                                        </div>
+
+                                        <div class="gridUtil mt20">
+                                            <div class="fl">
+                                                <h4 class="title">근로계약서 내역</h4>
+                                            </div>
+                                        </div>
+                                        <div class="gridWrap" style="height:130px">
+                                            <div class="tb02">
+                                                <table>
+                                                    <colgroup>
+                                                        <col style="width:60px">
+                                                        <col style="width:auto">
+                                                        <col style="width:200px">
+                                                        <col style="width:auto">
+                                                        <col style="width:auto">
+                                                        <col style="width:100px">
+                                                    </colgroup>
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">번호</th>
+                                                            <th scope="col">계약일</th>
+                                                            <th scope="col">계약기간</th>
+                                                            <th scope="col">계약금액</th>
+                                                            <th scope="col">양식구분</th>
+                                                            <th scope="col">다운로드</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="txtC"></td>
+                                                            <td class="txtC"></td>
+                                                            <td class="txtC"></td>
+                                                            <td class="txtC"></td>
+                                                            <td class="txtC"></td>
+                                                            <td class="txtC">
+                                                                <button type="button" class="btn01s"><span>다운로드</span></button>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="txtC"></td>
+                                                            <td class="txtC"></td>
+                                                            <td class="txtC"></td>
+                                                            <td class="txtC"></td>
+                                                            <td class="txtC"></td>
+                                                            <td class="txtC">
+                                                                <button type="button" class="btn01s"><span>다운로드</span></button>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="txtC"></td>
+                                                            <td class="txtC"></td>
+                                                            <td class="txtC"></td>
+                                                            <td class="txtC"></td>
+                                                            <td class="txtC"></td>
+                                                            <td class="txtC">
+                                                                <button type="button" class="btn01s"><span>다운로드</span></button>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="txtC"></td>
+                                                            <td class="txtC"></td>
+                                                            <td class="txtC"></td>
+                                                            <td class="txtC"></td>
+                                                            <td class="txtC"></td>
+                                                            <td class="txtC">
+                                                                <button type="button" class="btn01s"><span>다운로드</span></button>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="txtC"></td>
+                                                            <td class="txtC"></td>
+                                                            <td class="txtC"></td>
+                                                            <td class="txtC"></td>
+                                                            <td class="txtC"></td>
+                                                            <td class="txtC">
+                                                                <button type="button" class="btn01s"><span>다운로드</span></button>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="txtC"></td>
+                                                            <td class="txtC"></td>
+                                                            <td class="txtC"></td>
+                                                            <td class="txtC"></td>
+                                                            <td class="txtC"></td>
+                                                            <td class="txtC">
+                                                                <button type="button" class="btn01s"><span>다운로드</span></button>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                        <div class="gridUtilBottom">
+                                            <div class="fr">
+                                                <button type="button" class="btn04"><span>급여지급내역</span></button>
+                                            </div>
+                                        </div> 
+
+                                    </div>
+                                    <!--e : 근로계약서-->
+
+                                </div><!--//tbTabWrap-->
+     
+                            </div>
+                        </div>
+                    </div><!--//dTable-->   
+
+                </div><!--//inner-->
+            </div>
+            <!--//subWrap-->
+
+
+</body>
+</html>
