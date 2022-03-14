@@ -1,10 +1,2 @@
-.wrap{
-    display: grid;
-    place-items: center;
-    min-height: 100vh;
-}
-.valid{
-    margin-left: 5px;
-    color: red;
-    font-size: 13px;
-}
+@import '../css/daycare_user_layout.css';
+@import '../css/jquery-ui.css';
