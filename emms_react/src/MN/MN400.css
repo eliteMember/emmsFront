@@ -42,8 +42,11 @@ table.type11 {
     vertical-align: top;
     border-bottom: 1px solid #000000;
     background: #ffffff;
+    
     }
     table.type11 td input{
         border: 0;
         outline: 0;
+        text-align: center;
+        width: 100%;
     }
