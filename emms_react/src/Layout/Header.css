@@ -1,4 +1,9 @@
-.nav{
+@import '../css/daycare_user_layout.css';
+@import '../css/jquery-ui.css';
+@import '../css/daycare_user_main.css';
+
+
+/* .nav{
   padding-left: 20px;
   text-align: center;
   box-shadow: 0px 3px 10px 0px rgba(32,30,41,0.3);
@@ -121,4 +126,4 @@ li.dropdown {
 
 .myInfo:hover, .logOut:hover {
   color: #807c8e;
-}
+} */
