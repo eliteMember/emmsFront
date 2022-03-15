@@ -44,13 +44,15 @@ function LoginOrMainControl(props) {
   //로그인 후
   if (props.isLogin === true) {
     return (
-      <>
         <Suspense fallback={<div>로딩중</div>}>
-          <Header isLogin={props.isLogin} isLoginChange={props.isLoginChange} />
-          <Body />
-          <Footer />
+          <div className="subPage">
+            <div className="wrapper">
+              <Header isLogin={props.isLogin} isLoginChange={props.isLoginChange} />
+              <Body />
+              <Footer />
+            </div>
+          </div>
         </Suspense>
-      </>
     )
     //로그인 페이지
   } else if (props.isLogin === false) {
