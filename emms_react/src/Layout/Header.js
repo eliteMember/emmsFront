@@ -54,7 +54,8 @@ function Header(props) {
                     (menu) =>
                       <li key={menu.mnuNum}
                         onClick={() => { setSubMenu(menu, true) }}
-                        onMouseOver={() => { setSubMenu(menu, true); overSubMenu({ menu: null, toggle: false }) }}>
+                        onMouseOver={() => { setSubMenu(menu, true); overSubMenu({ menu: null, toggle: false }) }}
+                        className={subMenuList&&subMenuList.toggle&&menu.mnuNum === subMenuList.mnuNum? "on":""}>
                         <a><i className={"iconGnb " + menu.mnuNum}></i>{menu.mnuNm}</a>
                       </li>
                   )}

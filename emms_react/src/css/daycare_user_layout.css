@@ -101,16 +101,16 @@ body.mainPage .tabsArea{display:none}
 .iconGnb {position:relative; display:inline-block; width:24px; height:24px; background-repeat:no-repeat; background-position:center center;}
 .iconGnb:before {content:''; position:absolute; top:0; left:0; display:block; width:100%; height:100%;  background-repeat:no-repeat; background-position:center center; opacity:1; transition:opacity 0.35s ease;}
 .iconGnb:after {content:''; position:absolute; top:0; left:0; display:block; width:100%; height:100%;  background-repeat:no-repeat; background-position:center center; opacity:0; transition:opacity 0.35s ease;}
-.iconGnb.menu01:before {background-image:url(../imgs/icon_gnb_01.png);}
-.iconGnb.menu02:before {background-image:url(../imgs/icon_gnb_02.png);}
-.iconGnb.menu03:before {background-image:url(../imgs/icon_gnb_03.png);}
-.iconGnb.menu04:before {background-image:url(../imgs/icon_gnb_04.png);}
-.iconGnb.menu05:before {background-image:url(../imgs/icon_gnb_05.png);}
-.iconGnb.menu01:after {background-image:url(../imgs/icon_gnb_01_on.png);}
-.iconGnb.menu02:after {background-image:url(../imgs/icon_gnb_02_on.png);}
-.iconGnb.menu03:after {background-image:url(../imgs/icon_gnb_03_on.png);}
-.iconGnb.menu04:after {background-image:url(../imgs/icon_gnb_04_on.png);}
-.iconGnb.menu05:after {background-image:url(../imgs/icon_gnb_05_on.png);}
+.iconGnb.TM100:before {background-image:url(../imgs/icon_gnb_01.png);}
+.iconGnb.PO100:before {background-image:url(../imgs/icon_gnb_02.png);}
+.iconGnb.PM100:before {background-image:url(../imgs/icon_gnb_03.png);}
+.iconGnb.ME100:before {background-image:url(../imgs/icon_gnb_04.png);}
+.iconGnb.DO100:before {background-image:url(../imgs/icon_gnb_05.png);}
+.iconGnb.TM100:after {background-image:url(../imgs/icon_gnb_01_on.png);}
+.iconGnb.PO100:after {background-image:url(../imgs/icon_gnb_02_on.png);}
+.iconGnb.PM100:after {background-image:url(../imgs/icon_gnb_03_on.png);}
+.iconGnb.ME100:after {background-image:url(../imgs/icon_gnb_04_on.png);}
+.iconGnb.DO100:after {background-image:url(../imgs/icon_gnb_05_on.png);}
 
 .header.blue .gnbWrap:before {background-color:#3f52df;}
 .header.mint .gnbWrap:before {background-color:#43c1bc;}
