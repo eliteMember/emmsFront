@@ -30,7 +30,7 @@ function Body(props) {
     <>
     <Switch>
       {/* 메인 */}
-      <Route path="/MAIN"><MN500 /></Route>
+      <Route path="/MAIN"><div className='mainFrame'><MN500 /></div></Route>      
       {/* 팀관리 */}
       <Route path="/TIMMNG">{/* TODO */}<div>팀관리</div></Route>
       {/* 프로젝트제안 */}

@@ -48,9 +48,7 @@ function LoginOrMainControl(props) {
           <div className="subPage">
             <div className="wrapper">
               <Header isLogin={props.isLogin} isLoginChange={props.isLoginChange} />
-              <div className="subFrame">
-                <Body />
-              </div>
+              <Body />
               <Footer />
             </div>
           </div>

@@ -5,10 +5,8 @@ import './MN500.css';
 function MN500(props) {
   return (
     <div className="mainPage">
-
       {/*s : mainWrap*/}
       <div className="mainWrap">
-
         <div className="mainVisual">
 
           <div className="mainTit">

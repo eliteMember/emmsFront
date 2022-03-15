@@ -45,7 +45,7 @@ function Header(props) {
         <div className="header blue">
           <div className="inner">
 
-            <h1 className="logo"><a onClick={() => {setInitialize(); history.push('/MAIN')}}><img src={require('../imgs/logo_02.png')} alt="회사로고" /><span>정예맴버 프로젝트관리시스템</span></a></h1>
+            <h1 className="logo"><a onClick={() => { setInitialize(); history.push('/MAIN') }}><img src={require('../imgs/logo_02.png')} alt="회사로고" /><span>정예맴버 프로젝트관리시스템</span></a></h1>
 
             <nav className="gnbWrap">
               <ul>
@@ -55,7 +55,7 @@ function Header(props) {
                       <li key={menu.mnuNum}
                         onClick={() => { setSubMenu(menu, true) }}
                         onMouseOver={() => { setSubMenu(menu, true); overSubMenu({ menu: null, toggle: false }) }}
-                        className={subMenuList&&subMenuList.toggle&&menu.mnuNum === subMenuList.mnuNum? "on":""}>
+                        className={subMenuList && subMenuList.toggle && menu.mnuNum === subMenuList.mnuNum ? "on" : ""}>
                         <a><i className={"iconGnb " + menu.mnuNum}></i>{menu.mnuNm}</a>
                       </li>
                   )}
@@ -124,15 +124,14 @@ function Header(props) {
             {props.menuList && props.subMenuList &&
               props.menuList[props.subMenuList.mnuNum].map(
                 (menu) =>
-                  <li onClick={() => { clickSubMenu(menu, true) }}
-                    onMouseEnter={() => { overSubMenu(menu, true) }}
-                    onMouseLeave={() => { overSubMenu(menu, false) }}
+                  <li key={menu.mnuNum}
                     className={(props.subMenuOver && menu.mnuNum === props.subMenuOver['mnuNum'] && props.subMenuOver['toggle'])
                       || (props.subMenuClick && menu.mnuNum === props.subMenuClick['mnuNum'] && props.subMenuClick['toggle'])
                       ? "on"
-                      : ""}
-                    key={menu.mnuNum} >
-                    <a>{menu.mnuNm}</a>
+                      : ""}>
+                    <a onClick={() => { clickSubMenu(menu, true) }}
+                      onMouseEnter={() => { overSubMenu(menu, true) }}
+                      onMouseLeave={() => { overSubMenu(menu, false) }}>{menu.mnuNm}</a>
                   </li>
               )
             }
