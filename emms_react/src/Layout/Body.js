@@ -27,7 +27,7 @@ function Body(props) {
   }, [])
 
   return (
-    <div className="body">
+    <>
     <Switch>
       {/* 메인 */}
       <Route path="/MAIN"><MN500 /></Route>
@@ -56,7 +56,7 @@ function Body(props) {
       {/* 예외상황 */}
       <Route path="/:id">{/* TODO */}<div>error</div></Route>
     </Switch>
-    </div>
+    </>
   )
 }
 
