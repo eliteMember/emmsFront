@@ -45,7 +45,7 @@ function Header(props) {
         <div className="header blue">
           <div className="inner">
 
-            <h1 className="logo"><a onClick={() => history.push('/MAIN')}><img src={require('../imgs/logo_02.png')} alt="회사로고" /><span>정예맴버 프로젝트관리시스템</span></a></h1>
+            <h1 className="logo"><a onClick={() => {setInitialize(); history.push('/MAIN')}}><img src={require('../imgs/logo_02.png')} alt="회사로고" /><span>정예맴버 프로젝트관리시스템</span></a></h1>
 
             <nav className="gnbWrap">
               <ul>
@@ -53,7 +53,7 @@ function Header(props) {
                   && menuList.parent.map(
                     (menu) =>
                       <li key={menu.mnuNum}
-                        onClick={() => { setSubMenu(menu, true)}}
+                        onClick={() => { setSubMenu(menu, true) }}
                         onMouseOver={() => { setSubMenu(menu, true); overSubMenu({ menu: null, toggle: false }) }}>
                         <a><i className={"iconGnb " + menu.mnuNum}></i>{menu.mnuNm}</a>
                       </li>
@@ -97,6 +97,12 @@ function Header(props) {
     </div >
   )
 
+  function setInitialize() {
+    setSubMenuList(null);
+    setSubMenuOver(null);
+    setSubMenuClick(null);
+    setSubMenuClickList(null);
+  }
   function setSubMenu(menu, toggle) {
     setSubMenuList({ 'mnuNum': Object.keys(menuList).find(key => key === menu.mnuNum), 'toggle': toggle });
   }
@@ -105,7 +111,7 @@ function Header(props) {
   }
   function clickSubMenu(menu, toggle) {
     setSubMenuClick({ 'mnuNum': menu.mnuNum, 'toggle': toggle });
-    setSubMenuClickList({'mnuNum':menu.prtMnuNum});
+    setSubMenuClickList({ 'mnuNum': menu.prtMnuNum });
     history.push('/' + menu.mnuUrl);
   }
 
@@ -117,7 +123,7 @@ function Header(props) {
             {props.menuList && props.subMenuList &&
               props.menuList[props.subMenuList.mnuNum].map(
                 (menu) =>
-                  <li onClick={() => {clickSubMenu(menu, true) }}
+                  <li onClick={() => { clickSubMenu(menu, true) }}
                     onMouseEnter={() => { overSubMenu(menu, true) }}
                     onMouseLeave={() => { overSubMenu(menu, false) }}
                     className={(props.subMenuOver && menu.mnuNum === props.subMenuOver['mnuNum'] && props.subMenuOver['toggle'])
@@ -134,7 +140,7 @@ function Header(props) {
             (props.subMenuClick === null || props.subMenuClick.toggle === false)
               ? <div onMouseOver={() => { setSubMenuList({ menu: null, toggle: false }); overSubMenu({ menu: null, toggle: false }) }} className='headerOut'></div>
               : props.subMenuClickList && props.subMenuClick.toggle === true
-                ? <div onMouseOver={() => { subMenuClickList && setSubMenu(subMenuClickList,true) }} className='headerOut'></div>
+                ? <div onMouseOver={() => { subMenuClickList && setSubMenu(subMenuClickList, true) }} className='headerOut'></div>
                 : null
           }
         </div>
