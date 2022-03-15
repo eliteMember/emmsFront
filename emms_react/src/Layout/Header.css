@@ -4,6 +4,7 @@
 
 .headerOut{
   position: absolute;
+  z-index: -1;
   height: 300px;
   width: 100%;
 }
