@@ -25,7 +25,8 @@ function Header(props) {
   const [menuList, setMenuList] = useState(null);
   
   const [subMenuList, setSubMenuList] = useState(null);
-
+  const [subMenuOver, setSubMenuOver] = useState(null);
+  const [subMenuClick, setSubMenuClick] = useState(null);
   const { userInfo } = useSelector(state => state.userInfo);
 
   useEffect(() => {
@@ -38,9 +39,14 @@ function Header(props) {
   }, [userInfo])
 
   function setSubMenu(menu){
-    console.log(Object.keys(menuList));
-    console.log(Object.keys(menuList).find(key => key === menu.mnuNm));
-    // setSubMenuList(menuList.find(mnu => mnu === menu.mnuNum));
+    setSubMenuList(Object.keys(menuList).find(key => key === menu.mnuNum));
+  }
+  function overSubMenu(menu,toggle){
+    setSubMenuOver({'mnuNum':menu.mnuNum, 'toggle':toggle});
+  }
+  function clickSubMenu(menu,toggle){
+    setSubMenuClick({'mnuNum':menu.mnuNum, 'toggle':toggle});
+    history.push('/' + menu.mnuUrl);
   }
 
   return (
@@ -95,7 +101,19 @@ function Header(props) {
           <div className="tabsArea">
             <div className='tabs'>
               <ul>
-                
+                {menuList && subMenuList &&
+                  menuList[subMenuList].map(
+                    (menu) =>
+                      <li id={menu.mnuNum} 
+                        onClick={() => {clickSubMenu(menu,true)}} 
+                        onMouseOver={() => { overSubMenu(menu,true) }}
+                        onMouseOut={() => { overSubMenu(menu,false) }}
+                        className={subMenuOver && menu.mnuNum === subMenuOver['mnuNum'] && subMenuOver['toggle']?"on":""}
+                        key={menu.mnuNum} >
+                        <a>{menu.mnuNm}</a>
+                      </li>
+                  )
+                }
               </ul>
             </div>
           </div>
@@ -103,22 +121,6 @@ function Header(props) {
       </div>
     </div >
   )
-
-  function NavDrop(props) {
-    return (
-      <>
-        {menuList
-          &&
-          menuList[props.prtMnuNum].map(
-            (menu) =>
-              <li id={menu.prtMnuNum} onClick={() => history.push('/' + menu.mnuUrl)} key={menu.mnuNum}>
-                <a>{menu.mnuNm}</a>
-              </li>
-          )
-        }
-      </>
-    );
-  }
 }
 
 export default Header;
