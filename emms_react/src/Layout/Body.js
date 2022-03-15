@@ -1,8 +1,9 @@
-import { React, useEffect, useState } from 'react';
+import { React, useEffect } from 'react';
 import './Body.css';
 import { Route, Switch } from 'react-router-dom';
 import axios from 'axios';
 import PO100 from '../PO/PO100';
+import MN500 from '../MN/MN500';
 import { useDispatch } from 'react-redux';
 import { ACT_CMMN_CODE_GETLIST } from '../reducers/cmmnCode'
 
@@ -28,54 +29,31 @@ function Body(props) {
     <div className="body">
     <Switch>
       {/* 메인 */}
-      <Route path="/MAIN">
-        <div className="main">메인</div>
-      </Route>
-      {/* 로그인 */}
-      <Route path="/LOGIN">
-        <div>로그인</div>
-      </Route>
+      <Route path="/MAIN"><MN500 /></Route>
       {/* 팀관리 */}
-      <Route path="/TIMMNG">
-        <div>팀관리</div>
-      </Route>
+      <Route path="/TIMMNG">{/* TODO */}<div>팀관리</div></Route>
       {/* 프로젝트제안 */}
-      <Route path="/PRJINFO">
-        <PO100 />
-      </Route>
-      <Route path="/PRJMHR">
-        <div>제안공수산정</div>
-      </Route>
-      <Route path="/PRJOFR">
-        <div>프로젝트견적</div>
-      </Route>
-      <Route path="/DEPMHR">
-        <div>투입공수산정</div>
-      </Route>
-      <Route path="/BFRFCST">
-        <div>사전원가산정</div>
-      </Route>
-      <Route path="/BFRCST">
-        <div>사전비용계산</div>
-      </Route>
+      <Route path="/PRJINFO"><PO100 /></Route>
+      {/* 제안공수산정 */}
+      <Route path="/PRJMHR">{/* TODO */}<div>제안공수산정</div></Route>
+      {/* 프로젝트견적 */}
+      <Route path="/PRJOFR">{/* TODO */}<div>프로젝트견적</div></Route>
+      {/* 투입공수산정 */}
+      <Route path="/DEPMHR">{/* TODO */}<div>투입공수산정</div></Route>
+      {/* 사전원가산정 */}
+      <Route path="/BFRFCST">{/* TODO */}<div>사전원가산정</div></Route>
+      {/* 사전비용계산 */}
+      <Route path="/BFRCST">{/* TODO */}<div>사전비용계산</div></Route>
       {/* 프로젝트관리 */}
-      <Route path="/RDEPMHR">
-        <div>실투입공수관리</div>
-      </Route>
-      <Route path="/CSTTRT">
-        <div>비용처리</div>
-      </Route>
+      <Route path="/RDEPMHR">{/* TODO */}<div>실투입공수관리</div></Route>
+      {/* 비용처리 */}
+      <Route path="/CSTTRT">{/* TODO */}<div>비용처리</div></Route>
       {/* 인력관리 */}
-      <Route path="/MEMMNG">
-        <div>인력관리</div>
-      </Route>
+      <Route path="/MEMMNG">{/* TODO */}<div>인력관리</div></Route>
       {/* 문서관리 */}
-      <Route path="/DOCMNG">
-        <div>문서관리</div>
-      </Route>
-      <Route path="/:id">
-        <div>error</div>
-      </Route>
+      <Route path="/DOCMNG">{/* TODO */}<div>문서관리</div></Route>
+      {/* 예외상황 */}
+      <Route path="/:id">{/* TODO */}<div>error</div></Route>
     </Switch>
     </div>
   )
