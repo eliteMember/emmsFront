@@ -3,6 +3,7 @@ import './Body.css';
 import { Route, Switch } from 'react-router-dom';
 import axios from 'axios';
 import PO100 from '../PO/PO100';
+import ME101 from '../ME/ME101';
 import { useDispatch } from 'react-redux';
 import { ACT_CMMN_CODE_GETLIST } from '../reducers/cmmnCode'
 
@@ -67,7 +68,7 @@ function Body(props) {
       </Route>
       {/* 인력관리 */}
       <Route path="/MEMMNG">
-        <div>인력관리</div>
+        <ME101 />
       </Route>
       {/* 문서관리 */}
       <Route path="/DOCMNG">
