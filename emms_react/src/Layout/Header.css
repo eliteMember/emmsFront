@@ -1,3 +1,9 @@
 @import '../css/daycare_user_layout.css';
 @import '../css/jquery-ui.css';
 @import '../css/daycare_user_main.css';
+
+.headerOut{
+  position: absolute;
+  height: 300px;
+  width: 100%;
+}

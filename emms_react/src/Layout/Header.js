@@ -23,10 +23,10 @@ function Header(props) {
   };
 
   const [menuList, setMenuList] = useState(null);
-  
   const [subMenuList, setSubMenuList] = useState(null);
   const [subMenuOver, setSubMenuOver] = useState(null);
   const [subMenuClick, setSubMenuClick] = useState(null);
+  const [subMenuClickList, setSubMenuClickList] = useState(null);
   const { userInfo } = useSelector(state => state.userInfo);
 
   useEffect(() => {
@@ -37,17 +37,6 @@ function Header(props) {
         setMenuList("메뉴 호출 오류");
       })
   }, [userInfo])
-
-  function setSubMenu(menu){
-    setSubMenuList(Object.keys(menuList).find(key => key === menu.mnuNum));
-  }
-  function overSubMenu(menu,toggle){
-    setSubMenuOver({'mnuNum':menu.mnuNum, 'toggle':toggle});
-  }
-  function clickSubMenu(menu,toggle){
-    setSubMenuClick({'mnuNum':menu.mnuNum, 'toggle':toggle});
-    history.push('/' + menu.mnuUrl);
-  }
 
   return (
     <div className="subPage">
@@ -64,8 +53,9 @@ function Header(props) {
                   && menuList.parent.map(
                     (menu) =>
                       <li key={menu.mnuNum}
-                        onMouseOver={() => { setSubMenu(menu) }}>
-                        <a onClick={() => history.push('/' + menu.mnuUrl)}><i className={"iconGnb " + menu.mnuNum}></i>{menu.mnuNm}</a>
+                        onClick={() => { setSubMenu(menu, true)}}
+                        onMouseOver={() => { setSubMenu(menu, true); overSubMenu({ menu: null, toggle: false }) }}>
+                        <a><i className={"iconGnb " + menu.mnuNum}></i>{menu.mnuNm}</a>
                       </li>
                   )}
               </ul>
@@ -98,29 +88,61 @@ function Header(props) {
               <li><a href="#none" className="ic_fullMenu" title="전체메뉴">전체메뉴</a></li>
             </ul>
           </div>
-          <div className="tabsArea">
-            <div className='tabs'>
-              <ul>
-                {menuList && subMenuList &&
-                  menuList[subMenuList].map(
-                    (menu) =>
-                      <li id={menu.mnuNum} 
-                        onClick={() => {clickSubMenu(menu,true)}} 
-                        onMouseOver={() => { overSubMenu(menu,true) }}
-                        onMouseOut={() => { overSubMenu(menu,false) }}
-                        className={subMenuOver && menu.mnuNum === subMenuOver['mnuNum'] && subMenuOver['toggle']?"on":""}
-                        key={menu.mnuNum} >
-                        <a>{menu.mnuNm}</a>
-                      </li>
-                  )
-                }
-              </ul>
-            </div>
-          </div>
+          {(subMenuList && subMenuList.toggle === true) || (subMenuClick && subMenuClick.toggle === true)
+            ? <SubMenu menuList={menuList} subMenuList={subMenuList} subMenuOver={subMenuOver} subMenuClick={subMenuClick} subMenuClickList={subMenuClickList} />
+            : null
+          }
         </div>
       </div>
     </div >
   )
+
+  function setSubMenu(menu, toggle) {
+    setSubMenuList({ 'mnuNum': Object.keys(menuList).find(key => key === menu.mnuNum), 'toggle': toggle });
+  }
+  function overSubMenu(menu, toggle) {
+    setSubMenuOver({ 'mnuNum': menu.mnuNum, 'toggle': toggle });
+  }
+  function clickSubMenu(menu, toggle) {
+    setSubMenuClick({ 'mnuNum': menu.mnuNum, 'toggle': toggle });
+    setSubMenuClickList({'mnuNum':menu.prtMnuNum});
+    history.push('/' + menu.mnuUrl);
+  }
+
+  function SubMenu(props) {
+    return (
+      <div className="tabsArea">
+        <div className='tabs'>
+          <ul>
+            {props.menuList && props.subMenuList &&
+              props.menuList[props.subMenuList.mnuNum].map(
+                (menu) =>
+                  <li onClick={() => {clickSubMenu(menu, true) }}
+                    onMouseEnter={() => { overSubMenu(menu, true) }}
+                    onMouseLeave={() => { overSubMenu(menu, false) }}
+                    className={(props.subMenuOver && menu.mnuNum === props.subMenuOver['mnuNum'] && props.subMenuOver['toggle'])
+                      || (props.subMenuClick && menu.mnuNum === props.subMenuClick['mnuNum'] && props.subMenuClick['toggle'])
+                      ? "on"
+                      : ""}
+                    key={menu.mnuNum} >
+                    <a>{menu.mnuNm}</a>
+                  </li>
+              )
+            }
+          </ul>
+          {
+            (props.subMenuClick === null || props.subMenuClick.toggle === false)
+              ? <div onMouseOver={() => { setSubMenuList({ menu: null, toggle: false }); overSubMenu({ menu: null, toggle: false }) }} className='headerOut'></div>
+              : props.subMenuClickList && props.subMenuClick.toggle === true
+                ? <div onMouseOver={() => { subMenuClickList && setSubMenu(subMenuClickList,true) }} className='headerOut'></div>
+                : null
+          }
+        </div>
+      </div>
+    )
+  }
+
+
 }
 
 export default Header;
