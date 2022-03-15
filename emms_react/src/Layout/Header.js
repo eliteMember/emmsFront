@@ -138,9 +138,9 @@ function Header(props) {
           </ul>
           {
             (props.subMenuClick === null || props.subMenuClick.toggle === false)
-              ? <div onMouseOver={() => { setSubMenuList({ menu: null, toggle: false }); overSubMenu({ menu: null, toggle: false }) }} className='headerOut'></div>
+              ? <div onMouseEnter={() => { setSubMenuList({ menu: null, toggle: false }); overSubMenu({ menu: null, toggle: false }) }} className='headerOut'></div>
               : props.subMenuClickList && props.subMenuClick.toggle === true
-                ? <div onMouseOver={() => { subMenuClickList && setSubMenu(subMenuClickList, true) }} className='headerOut'></div>
+                ? <div onMouseEnter={() => { subMenuClickList && setSubMenu(subMenuClickList, true) }} className='headerOut'></div>
                 : null
           }
         </div>
