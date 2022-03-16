@@ -26,7 +26,7 @@
 .footer .inner dl{display: inline-flex;}
 .footer .inner dl dt{padding-right:20px;font-weight: 500;}
 
-.mainFrame{width:100%;background:#fff;display: block;overflow:hidden;padding-top:80px;/*height:calc(100vh - (60px))*/}
+.mainFrame{width:100%;background:#fff;display: block;overflow:hidden;padding-top:60px;/*height:calc(100vh - (60px))*/}
 .subFrame{width:100%;background:#fff;display: block;overflow:hidden;padding-top:120px;/*height:calc(100vh - (60px))*/;}
 
 body.mainPage nav{display:none}
