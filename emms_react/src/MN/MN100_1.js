@@ -5,6 +5,13 @@ import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import { ACT_USER_INFO_UPDATE } from "../reducers/userInfo";
 import { useDispatch } from 'react-redux';
+import Img from "../imgs/logo_01.png";
+// import "../js/jquery-ui.js";
+// import "../js/jquery-1.12.4.min.js";
+// import "../js/default.js";
+
+
+
 
 function MN100_1(props) {
 
@@ -50,150 +57,252 @@ function MN100_1(props) {
 
 
   // 직책 값
-  let [incOptions, setIncOptions] = useState(null);
+  let [apo, setApo] = useState(null);
 
-  // useEffect(() => {
-  //     console.log("useEffect 실행됨");
-  //     axios.get('/MN100_1/api/getApoList')
-  //     .then((rs) =>{
-  //         setusr(rs.data);
-  //         console.log(rs.data);
-  //     }).catch(() => {
-  //         alert("사용자 불러오기 실패");
-  //     })
-  // },[])
+  useEffect(() => {
+      console.log("useEffect 실행됨");
+      axios.get('/api/join/getApoList')
+      .then((rs) =>{
+          setApo(rs.data);
+          console.log(rs.data);
+      }).catch(() => {
+          alert("리스트 불러오기 실패");
+      })
+  },[])
 
+  const ApoSelectBox = () => {
+    return (
+      <select>
+        {apo.apo.APO.map(
+          (apoList, i) =>
+            <option key={i} value={apoList.value}>
+              {apoList.value}
+            </option>
+        )}
+      </select>
+    )
+  }
+
+  const col1 = {width:'130'};
+  const col2 = {width:'auto'};
 
   return (
+    <div className="loginPage">
+      <div className="loginWrap">
+        <section className="loginHeader">
+            <h1><img src={Img}/><span>정예맴버 프로젝트관리시스템</span></h1>
+        </section>
+        <section className="loginBody h600">
 
-    
-    <div className='loginregister'>
-      <form id="signUpFrm" name="signUpFrm" onSubmit={handleSubmit(onSubmit, onError)}>
-        <div className='h2_logo'><h2>emms 가입</h2></div>
+            <div className="loginLeft"><div className="txtLogin">회원가입</div></div>
+            <form id="signUpFrm" name="signUpFrm" onSubmit={handleSubmit(onSubmit, onError)}>
+              <div className="loginRight">
+                  <div className="gridUtil">
+                      <div className="fl">
+                          <h3 className="font16">사용자 정보입력</h3>
+                      </div>
+                      <div className="fr">
+                          <span className="font13"><em className="important">*</em>표시는 필수 입력사항입니다.</span>
+                      </div>
+                  </div>
+                  <div className="tb05 mt10">
+                      <table>
+                          <colgroup>
+                              <col style={col1}></col>
+                              <col style={col2}></col>
+                          </colgroup>
+                          <tbody>
+                              <tr>
+                                  <th scope="row"><em className="important">*</em>이름</th>
+                                  <td>
+                                      <input type="text" placeholder="" className="w110"
+                                        name='name' id='name'
+                                        {...register("name",
+                                          {
+                                            required: { value: true, message: "이름을 작성해 주세요."},
+                                          }
+                                        )}
+                                      />
+                                      {errors.name && <span className="ml10 point01 bold">{errors?.name?.message}</span>}
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <th scope="row"><em className="important">*</em>아이디</th>
+                                  <td>
+                                      <input type="text" placeholder="" className="w110"
+                                        name='loginId' id='loginId'
+                                        {...register("loginId",
+                                          {
+                                            required:  { value: true, message: "영문,숫자 조합 6~12자" },
+                                            minLength: { value: 6, message: "영문,숫자 조합 6~12자" },
+                                            maxLength: { value: 12, message: "영문,숫자 조합 6~12자" },
+                                            pattern:   { value: /^(?=.*\d)(?=.*[a-zA-ZS]).{8,}/,
+                                                        message: "영문,숫자 조합 6~12자" },
+                                          }
+                                        )}
+                                      />
+                                      <button type="button" className="btn btn03s ml5"><span>중복확인</span></button>
+                                      {errors.password && <span className="ml10 point01 bold">{errors?.password?.message}</span>}
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <th scope="row"><em className="important">*</em>비밀번호</th>
+                                  <td>
+                                      <div className="diFlex inputKeypad w110">
+                                          <input type="password" placeholder="" className="w100p"
+                                            name='password' id='password'
+                                            {...register("password",
+                                              {
+                                                required: { value: true, message: "비밀번호를 입력하세요." },
+                                                minLength: {
+                                                  value: 8,
+                                                  message: "8자 이상의 비밀번호를 입력해주세요.",
+                                                },
+                                                maxLength: {
+                                                  value:16,
+                                                  message: "16자 이하만 사용가능합니다.",
+                                                },
+                                                pattern: {
+                                                  value: /^(?=.*\d)(?=.*[a-zA-ZS]).{8,}/,
+                                                  message: "영문, 숫자를 혼용하여 입력해주세요.",
+                                                }
+                                              }
+                                            )}
+                                          />
+                                      </div>
+                                      {errors.password && <span className="ml10 point01 bold">{errors?.password?.message}</span>}
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <th scope="row"><em className="important">*</em>비밀번호확인</th>
+                                  <td>
+                                      <div className="diFlex inputKeypad w110">
+                                          <input type="password" placeholder="" className="w100p"
+                                            name="confirmPassword" id='confirmPassword'
+                                            {...register("confirmPassword",
+                                              { 
+                                                value: true,
+                                                message:"비밀번호가 일치하지 않습니다.",
+                                              },
+                                            )} 
+                                          />
+                                          {errors.confirmPassword && <span className="ml10 point01 bold">{errors?.confirmPassword?.message}</span>}
+                                      </div>
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <th scope="row"><em className="important">*</em>생년월일</th>
+                                  <td>
+                                      <span className="datepickerBox">
+                                        <input type="text" placeholder="1997-09-02"
+                                          name='usrBirth' id='usrBirth'
+                                          {...register("usrBirth",
+                                            {
+                                              required: { value: true, message: "생년월일을 작성해 주세요."},
+                                            }
+                                          )}
+                                        />
+                                      </span>
+                                      {errors.usrBirth && <span className="ml10 point01 bold">{errors?.usrBirth?.message}</span>}
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <th scope="row"><em className="important">*</em>휴대폰번호</th>
+                                  <td>
+                                      <select className="w70">
+                                          <option>010</option>
+                                          <option>011</option>
+                                          <option>012</option>
+                                      </select> 
+                                      <span className="wave">-</span> 
+                                      <input type="text" placeholder="" className="w70"
+                                        name='usrTelNum1' id='usrTelNum1'
+                                        {...register("usrTelNum1",
+                                          {
+                                            required: { value: true, message: "가운데 자리를 작성해 주세요."},
+                                          }
+                                        )} 
+                                      />
+                                      <span className="wave">-</span> 
+                                      <input type="text" placeholder="" className="w70"
+                                        name='usrTelNum2' id='usrTelNum2'
+                                        {...register("usrTelNum2",
+                                          {
+                                            required: { value: true, message: "마지막 자리를 작성해 주세요."},
+                                          }
+                                        )} 
+                                      />
+                                      {/* <span>
+                                        {usrTelNum1 === '' ? (
+                                          usrTelNum2 === '' ? (
+                                            <span className="ml10 point01 bold">휴대폰번호를 모두 입력해 주세요</span>
+                                          ) : (
+                                            <span className="ml10 point01 bold">{errors?.usrTelNum1?.message}</span>
+                                          )
+                                        ) : (
+                                          <span className="ml10 point01 bold">{errors?.usrTelNum2?.message}</span>
+                                        )}
+                                      </span> */}
+                                      {errors.usrTelNum1 && errors.usrTelNum2 && <span className="ml10 point01 bold">휴대폰번호를 입력해주세요.</span>}
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <th scope="row">이메일</th>
+                                  <td>
+                                      <input type="text" placeholder="" className="w110"/>
+                                      <span className="wave">@</span> 
+                                      <input type="text" placeholder="" className="w110"/>
+                                      <select className="w130">
+                                          <option>직접입력</option>
+                                          <option>u2w.co.kr</option>
+                                          <option>naver.com</option>
+                                          <option>daum.com</option>
+                                          <option>google.com</option>
+                                          <option>hanmail.com</option>
+                                      </select> 
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <th scope="row"><em className="important">*</em>직위</th>
+                                  <td>
+                                      <select className="w110">
+                                          <option>부장</option>
+                                          <option>차장</option>
+                                          <option>과장</option>
+                                          <option>대리</option>
+                                          <option>사원</option>
+                                          <option>대표</option>
+                                          <option>부사장</option>
+                                          <option>상무</option>
+                                          <option>이사</option>
+                                      </select>
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <th scope="row"><em className="important">*</em>직책</th>
+                                  <td>
+                                      <ApoSelectBox/>
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <th scope="row"><em className="important">*</em>팀명</th>
+                                  <td>
+                                      <input type="text" placeholder="" className="w110"/>
+                                      <button type="button" className="btn btn03s ml5"><i className="ic_search_gray"></i><span className="hidden">찾기</span></button>
+                                  </td>
+                              </tr>               
+                          </tbody>
+                      </table>
+                  </div>
+                  <div className="btnArea mt30">
+                      <button type="submit" className="btn01 w150"><span>회원가입</span></button>
+                  </div> 
 
-        <div>
-          <input name="loginId" type="text" id='loginId'  
-          {...register("loginId",
-            {
-              required: { value: true, message: "아이디를 입력하세요." },
-              minLength: { value: 3, message: "아이디는 3자리 이상" }
-            }
-          )}
-          placeholder="로그인 ID" className="loginregister__input"/>
-        </div>
-        {errors.loginId && <p className="valid">{errors?.loginId?.message}</p>} 
-        
-        <div>
-          <input name="password" type="password" id='password'
-          {...register("password",
-            {
-              required: { value: true, message: "비밀번호를 입력하세요." },
-              minLength: {
-                value: 8,
-                message: "8자 이상의 비밀번호를 입력해주세요.",
-              },
-              maxLength: {
-                value:16,
-                message: "16자 이하만 사용가능합니다.",
-              },
-              pattern: {
-                value: /^(?=.*\d)(?=.*[a-zA-ZS]).{8,}/,
-                message: "영문, 숫자를 혼용하여 입력해주세요.",
-              }
-            }
-          )}
-          placeholder="비밀번호" className="loginregister__input"/>
-        </div>
-        {errors.password && <p className="valid">{errors?.password?.message}</p>}
+              </div>
+            </form>
+        </section>
 
-        <div>
-          <input name="confirmPassword" type="password" id='confirmPassword'  
-          {...register("confirmPassword",
-            {
-              message:"비밀번호가 일치하지 않습니다.",
-            },
-          )}
-          placeholder="비밀번호 확인" className="loginregister__input"/>
-        </div>
-        {errors.confirmPassword && <p className="valid">{errors?.confirmPassword?.message}</p>}
-        
-        <div>
-          <input name="name" type="text" id='name' 
-          {...register("name",
-            {
-              required: { value: true, message: "이름을 작성해 주세요."},
-            }
-          )} 
-          placeholder="이름" className="loginregister__input"/>
-        </div>
-        {errors.name && <p className="valid">{errors?.name?.message}</p>}
-
-        <div>
-          <input name="usrBirth" type="text" id='usrBirth'   
-          {...register("usrBirth",
-            {
-              required: { value: true, message: "생년월일을 작성해 주세요."},
-            }
-          )} 
-          placeholder="생년월일" className="loginregister__input"/>
-        </div>
-        {errors.usrBirth && <p className="valid">{errors?.usrBirth?.message}</p>}
-
-        <div>
-          <input name="usrEmail" type="email" id='usrEmail'  
-          {...register("usrEmail",
-            {
-              required: { value: true, pattern: /^\S+@\S+$/i, message: "이메일 형식을 지켜주세요."},
-            }
-          )} 
-          placeholder="이메일" className="loginregister__input"/>
-        </div>
-        {errors.usrEmail && <p className="valid">{errors?.usrEmail?.message}</p>}
-
-        <div>
-          <input name="usrTelNum" type="text" id='usrTelNum'   
-          {...register("usrTelNum",
-            {
-              required: { value: true, pattern: /^[0-9]+/g, message: "숫자만 입력할 수 있습니다."},
-              required: { value: true, message: "전화번호를 작성해 주세요."},
-            }
-          )} 
-          placeholder="전화번호" className="loginregister__input"/>
-        </div>
-        {errors.usrTelNum && <p className="valid">{errors?.usrTelNum?.message}</p>}
-
-        <div>
-          <input name="usrAdr" type="text" id='usrAdr'   
-          {...register("usrAdr",
-            {
-              required: { value: true, message: "주소를 작성해 주세요."},
-            }
-          )} 
-          placeholder="주소" className="loginregister__input"/>
-        </div>
-        {errors.usrAdr && <p className="valid">{errors?.usrAdr?.message}</p>}
-
-        <div>
-          <input name="incCd" type="text" id='incCd'   
-          placeholder="직위" className="loginregister__input"/>
-        </div>
-
-        <div>
-          {/* <select onChange={} name="apoCd" type="text" id='apoCd'   
-             placeholder="직책" className="loginregister__input">
-            <option value="001">조건검색1</option>
-            <option value="002">조건검색2</option>
-          </select> */}
-        </div>
-
-        <div>
-          <input name="timName" type="text" id='timName'   
-          placeholder="팀명" className="loginregister__input"/>
-        </div>
-
-        <div><button className="loginregister__button">회원가입</button></div>
-
-      </form>
+      </div>
     </div>
   );
 
