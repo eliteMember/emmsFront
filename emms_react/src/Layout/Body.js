@@ -28,33 +28,36 @@ function Body(props) {
 
   return (
     <>
+    {/* 메인 일 경우에만 mainFrame 
+        그 외 페이지의 경우 subFrame 안에 컴포넌트페이지 작성
+        TODO : 처리방법을 고안하지 못해 subFrame 하드코딩. 유기적으로 처리되도록 수정 필요*/}
     <Switch>
       {/* 메인 */}
       <Route path="/MAIN"><div className='mainFrame'><MN500 /></div></Route>      
       {/* 팀관리 */}
-      <Route path="/TIMMNG">{/* TODO */}<div>팀관리</div></Route>
+      <Route path="/TIMMNG">{/* TODO */}<div className='subFrame'>팀관리</div></Route>
       {/* 프로젝트제안 */}
-      <Route path="/PRJINFO"><PO100 /></Route>
+      <Route path="/PRJINFO"><div className='subFrame'><PO100 /></div></Route>
       {/* 제안공수산정 */}
-      <Route path="/PRJMHR">{/* TODO */}<div>제안공수산정</div></Route>
+      <Route path="/PRJMHR">{/* TODO */}<div className='subFrame'>제안공수산정</div></Route>
       {/* 프로젝트견적 */}
-      <Route path="/PRJOFR">{/* TODO */}<div>프로젝트견적</div></Route>
+      <Route path="/PRJOFR">{/* TODO */}<div className='subFrame'>프로젝트견적</div></Route>
       {/* 투입공수산정 */}
-      <Route path="/DEPMHR">{/* TODO */}<div>투입공수산정</div></Route>
+      <Route path="/DEPMHR">{/* TODO */}<div className='subFrame'>투입공수산정</div></Route>
       {/* 사전원가산정 */}
-      <Route path="/BFRFCST">{/* TODO */}<div>사전원가산정</div></Route>
+      <Route path="/BFRFCST">{/* TODO */}<div className='subFrame'>사전원가산정</div></Route>
       {/* 사전비용계산 */}
-      <Route path="/BFRCST">{/* TODO */}<div>사전비용계산</div></Route>
+      <Route path="/BFRCST">{/* TODO */}<div className='subFrame'>사전비용계산</div></Route>
       {/* 프로젝트관리 */}
-      <Route path="/RDEPMHR">{/* TODO */}<div>실투입공수관리</div></Route>
+      <Route path="/RDEPMHR">{/* TODO */}<div className='subFrame'>실투입공수관리</div></Route>
       {/* 비용처리 */}
-      <Route path="/CSTTRT">{/* TODO */}<div>비용처리</div></Route>
+      <Route path="/CSTTRT">{/* TODO */}<div className='subFrame'>비용처리</div></Route>
       {/* 인력관리 */}
-      <Route path="/MEMMNG"><ME101 /></Route>
+      <Route path="/MEMMNG"><div className='subFrame'></div><ME101 /></Route>
       {/* 문서관리 */}
-      <Route path="/DOCMNG">{/* TODO */}<div>문서관리</div></Route>
+      <Route path="/DOCMNG">{/* TODO */}<div className='subFrame'>문서관리</div></Route>
       {/* 예외상황 */}
-      <Route path="/:id">{/* TODO */}<div>error</div></Route>
+      <Route path="/:id">{/* TODO */}<div className='subFrame'>error</div></Route>
     </Switch>
     </>
   )
