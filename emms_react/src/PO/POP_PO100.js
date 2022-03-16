@@ -10,7 +10,7 @@ function POP_PO100(props){
   const history = useHistory();
 
   return (
-        <div className='POP_PO100_DIV'>
+        <Modal className='POP_PO100_DIV'>
           <h1>팀 조회</h1>
           <form id="popTeamFrm" name="popTeamFrm">
             
@@ -18,7 +18,7 @@ function POP_PO100(props){
 
             <button type="button">조회</button>
           </form>
-        </div>
+        </Modal>
     )
 }
 

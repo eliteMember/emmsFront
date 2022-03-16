@@ -20,28 +20,28 @@ function PO100(props){
   }
 
   //submit 처리
-  const submituserRegistrationForm = (e) => {
+  const onSubmitHandle = (e) => {
     e.preventDefault();
-      if (validateForm()) {
-          alert("Form submitted");
+      if (validatehtmlForm()) {
+          alert("htmlForm submitted");
       }
   }
 
 
   //유효성 검사
-  const validateForm = () => {
+  const validatehtmlForm = () => {
 
     let v_fields = fields;
     let errors = {};
-    let formIsValid = true;
+    let htmlFormIsValid = true;
 
     if (!v_fields["prjNm"]) {
-      formIsValid = false;
-      errors["prjNm"] = "*Please enter your 프로젝트명.";
+      htmlFormIsValid = false;
+      errors["prjNm"] = "*프로젝트명을 입력하세요.";
     }
 
     setErrors(errors);
-    return formIsValid;
+    return htmlFormIsValid;
   }
 
   //프로젝트 초기화, 신규 프로젝트 입력
@@ -57,113 +57,278 @@ function PO100(props){
   }
 
 
-  // const handleSubmit = () => {
-  //   e.preventDefault()
-
-  // }
-
-  // // 이름
-  // const onChangePrjNm = ((e) => {
-  //   setPrjNm(e.target.value)
-  //   if( e.target.value.length == 0 ){
-  //     setPrjNmMessage('프로젝트명을 입력해주세요.')
-  //     setIsPrjNm(false)
-  //   }else{
-  //     setPrjNmMessage('')
-  //     setIsPrjNm(true)
-  //   }
-    
-  // }, [])
-  
   return (
-        <div className='PO100_DIV' onSubmit= {submituserRegistrationForm}>
-          <h1>프로젝트 기본정보</h1>
-          <form id="loginFrm" name="loginFrm">
-            
-            <div>
-              <label className='PO100_label'>프로젝트명</label>
-              <span className='PO100_span_1'>
-                <input
-                  type="text" 
-                  id="prjNm"
-                  name="prjNm"
-                  value={fields.prjNm}
-                  onChange={handleChange}
-                />
-              </span>
-              {errors && <p className="valid">{errors?.prjNm}</p>}
 
-              <span>
-                <button type='button' onClick={resetPrj}>신규</button>
-                <button type='button'>조회</button>
-              </span>
+    <div className="subWrap">
+        <div className="inner">
+
+            <div className="dTable mt10">
+               
+                {/* <div className="colR" style="width:1000px"> */}
+                <div className="colR">
+                    <div className="ml10">
+
+                        <div className="tbTabWrap mt10">
+
+                            <ul className="tbTab01">
+                                <li className="current"><a href="#tab01">기본정보</a></li>
+                            </ul>
+
+                            {/* <div className="tabCont mt20" id="tab01" style="display: block;"> */}
+                            <div className="tabCont mt20" id="tab01">
+
+                              <form id="prjInfoForm" name="prjInfoForm" onSubmit={onSubmitHandle}>
+
+                                <div className="abTR">
+                                    <button type="button" className="btn05 borderC2"><i className="ic_reset"></i><span>초기화</span></button>
+                                </div>
+                                <div className="tb03">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row"><span className="tit">프로젝트명</span></th>
+                                                <td className="txtL">
+                                                    <input
+                                                      type="text" 
+                                                      className="w250"
+                                                      id="prjNm"
+                                                      name="prjNm"
+                                                      value={fields.prjNm}
+                                                      onChange={handleChange}
+                                                    />
+                                                    {errors && <p className="valid">{errors?.prjNm}</p>}
+                                                </td>
+                                                <th scope="row"><span className="tit">프로젝트팀</span></th>
+                                                <td className="txtL">
+                                                    <select className="w250">
+                                                        <option>개발2팀</option>
+                                                        <option>개발1팀</option>
+                                                        <option>디자인1팀</option>
+                                                    </select>
+                                                    <button type="button" className="btn01"><span>우리팀진행</span></button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div className="tb03 mt5 lineTopGray">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row"><span className="tit">프로젝트 구분</span></th>
+                                                <td className="txtL">
+                                                    <select className="w110">
+                                                        <option>하도급</option>
+                                                        <option>내부프로젝트</option>
+                                                        <option>수의계약</option>
+                                                        <option>용역계약</option>
+                                                    </select>
+                                                </td>
+                                                <th scope="row"><span className="tit">프로젝트 상태</span></th>
+                                                <td className="txtL" colSpan="">
+                                                    <select className="w110">
+                                                        <option>예정</option>
+                                                        <option>제안</option>
+                                                        <option>분석</option>
+                                                        <option>설계</option>
+                                                        <option>개발</option>
+                                                        <option>테스트</option>
+                                                        <option>유지보수</option>
+                                                        <option>종료</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row"><span className="tit">프로젝트 기간</span></th>
+                                                <td className="txtL" colSpan="3">
+                                                    <span className="datepickerBox"><input type="text" placeholder="2022-03-20"/></span>
+                                                    ~
+                                                    <span className="datepickerBox"><input type="text" placeholder="2022-10-31"/></span>
+                                                    <input type="text" className="w50 ml30 mr5"/>년
+                                                    <input type="text" className="w50 ml10 mr5"/>개월
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row"><span className="tit">프로젝트 장소</span></th>
+                                                <td className="txtL" colSpan="3">
+                                                    <input type="text" />
+                                                    <button type="button" className="btn02s"><i className="ic_search_blue"></i></button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div className="tb03 mt10 lineTopGray">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row">고객사</th>
+                                                <td>
+                                                    <input type="text" className="w250"/>
+                                                </td>
+                                                <th scope="row">담당자</th>
+                                                <td>
+                                                    <input type="text" className="w100" placeholder="홍길동 부장"/>
+                                                </td>
+                                                <th scope="row">연락처</th>
+                                                <td>
+                                                    <input type="text" className="w60"/>
+                                                    -
+                                                    <input type="text" className="w60"/>
+                                                    -
+                                                    <input type="text" className="w60"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">수행사</th>
+                                                <td>
+                                                    <input type="text" className="w250"/>
+                                                </td>
+                                                <th scope="row">담당자</th>
+                                                <td>
+                                                    <input type="text" className="w100" placeholder="박민영 차장"/>
+                                                </td>
+                                                <th scope="row">연락처</th>
+                                                <td>
+                                                    <input type="text" className="w60"/>
+                                                    -
+                                                    <input type="text" className="w60"/>
+                                                    -
+                                                    <input type="text" className="w60"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">협력사</th>
+                                                <td>
+                                                    <input type="text" className="w250"/>
+                                                </td>
+                                                <th scope="row">담당자</th>
+                                                <td>
+                                                    <input type="text" className="w100" placeholder="김우빈 부장"/>
+                                                </td>
+                                                <th scope="row">연락처</th>
+                                                <td>
+                                                    <input type="text" className="w60"/>
+                                                    -
+                                                    <input type="text" className="w60"/>
+                                                    -
+                                                    <input type="text" className="w60"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">참조사항</th>
+                                                <td colSpan="6">
+                                                    <textarea className="h150">
+                                                    </textarea>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                <div className="tb03 mt5 lineTopGray">
+                                    <table>
+                                        <tbody>
+
+                                            <tr>
+                                                <th className="txtC">첨부파일</th>
+                                                <td className="txtL">
+                                                    <div className="mt10 mb10">
+                                                    
+                                                        <div className="dFlex">
+
+                                                            <div className="tb04 mr20">                            
+
+                                                                    <div className="txtL mb10">
+                                                                        <select className="w110">
+                                                                            <option>제안요청서</option>
+                                                                            <option>제안서</option>
+                                                                            <option>견적서</option>
+                                                                            <option>공수표</option>
+                                                                            <option>원가표</option>
+                                                                            <option>산출물</option>
+                                                                            <option>기타첨부</option>
+                                                                        </select>
+                                                                        <span className="filebox ml5"> 
+                                                                            <input type="file" id="file"/> 
+                                                                            <input className="uploadName"/>
+                                                                                <button type="button" className="btn01s"><span>파일찾기</span></button>
+                                                                                <button type="button" className="btn02s"><span>삭제</span></button>
+                                                                        </span>
+                                                                    </div>
+
+                                                                <table>
+                                                                    <caption>테이블</caption>
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th scope="col">선택</th>
+                                                                            <th scope="col">번호</th>
+                                                                            <th scope="col">파일명</th>
+                                                                            <th scope="col">크기</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        
+                                                                        <tr>
+                                                                            <td className="txtC"><span className="customhtmlForm"><input type="checkbox" name="check1" id="check11"/><label htmlFor="check11"><span></span></label></span></td>
+                                                                            <td className="txtC">1</td>
+                                                                            <td className="txtL">
+                                                                                <button type="button" className="attachedFile"><i className="ic_file"></i><span className="">정예맴버프로젝트관리시스템 사용자 매뉴얼_v1.0.pdf</span></button>
+                                                                            </td>
+                                                                            <td className="txtC">3Mb</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td className="txtC"><span className="customhtmlForm"><input type="checkbox" name="check1" id="check12"/><label htmlFor="check12"><span></span></label></span></td>
+                                                                            <td className="txtC">2</td>
+                                                                            <td className="txtL">
+                                                                                <button type="button" className="attachedFile"><i className="ic_file"></i><span className="">KB 푸르덴셜 비대면 구축 RFP_v2.0KB 푸르덴셜 비대면 구축 RFP_v2.0..pdf</span></button>
+                                                                            </td>
+                                                                            <td className="txtC">3Mb</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td className="txtC"><span className="customhtmlForm"><input type="checkbox" name="check1" id="check13"/><label htmlFor="check13"><span></span></label></span></td>
+                                                                            <td className="txtC">3</td>
+                                                                            <td className="txtL">
+                                                                                <button type="button" className="attachedFile"><i className="ic_file"></i><span className="">KB 푸르덴셜 비대면 구축 공수산정_v1.0.pdf</span></button>
+                                                                            </td>
+                                                                            <td className="txtC">3Mb</td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+
+
+
+                                                        </div>
+
+                                                    </div>
+                                                </td>
+                                            </tr> 
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div className="gridUtilBottom">
+                                    <div className="fr">
+                                        <button type="submit" className="btn01"><span>저장</span></button>
+                                        <button type="button" className="btn03"><span>취소</span></button>
+                                    </div>
+                                </div> 
+
+                              </form>
+
+                            </div>
+                            
+                        </div>
+
+                    </div>
+                </div>
             </div>
 
-            <div>
-              <label className='PO100_label'>프로젝트팀</label>
-              <span className='PO100_span_1'>
-              <input
-                type="text" 
-                id="timNm"
-                name="timNm"
-              />
-              <input
-                type="text"
-                id="timNum"
-                name="timNum"
-              />
-            </span>
-            <span className='PO100_span_2'>
-              <button type='button'>우리팀 진행</button>
-              <button type='button'>프로젝트 이관</button>
-            </span>
-            </div>
+          </div>
 
-            <div>
-              <label className='PO100_label'>프로젝트구분</label>
-              <select id="prjDivCd" name="prjDivCd">
-
-              </select>
-              <label className='PO100_label'>프로젝트상태</label>
-              <select id="prjStsCd" name="prjStsCd">
-
-              </select>
-            </div>
-
-            <div>
-              <label className='PO100_label'>프로젝트기간</label>
-              <input type="text" id="" name="" /> ~ <input type="text" id="" name="" />
-              <input type="text" id="prjNom" name="prjNom" /> 개월
-            </div>
-
-            <div>
-              <label className='PO100_label'>프로젝트장소</label>
-              <input type="text" id="prjPlcNm" name="prjPlcNm" />
-            </div>
-
-            <div>
-            <label className='PO100_label'>고객사</label>
-              <input type="text" id="copNm1" name="copNm1" />
-              <input type="text" id="copMgrName1" name="copMgrName1" />
-              <input type="text" id="copMgrCtt1" name="copMgrCtt1" />
-            </div>
-
-            <div>
-            <label className='PO100_label'>수행사</label>
-              <input type="text" id="copNm2" name="copNm2" />
-              <input type="text" id="copMgrName2" name="copMgrName2" />
-              <input type="text" id="copMgrCtt2" name="copMgrCtt2" />
-            </div>
-
-            <div>
-            <label className='PO100_label'>협력사</label>
-              <input type="text" id="copNm3" name="copNm3" />
-              <input type="text" id="copMgrName" name="copMgrName3" />
-              <input type="text" id="copMgrCtt3" name="copMgrCtt3" />
-            </div>
-
-            <button type="submit">저장</button>
-          </form>
         </div>
     )
 }
