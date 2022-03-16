@@ -18,7 +18,7 @@ function MN100(props) {
 
   const { register, watch, handleSubmit, formState: { errors } } = useForm();
   const onSubmit = (data) => {
-    axios.post('/api/login', data)
+    axios.post(process.env.REACT_APP_HOST +'/api/login', data)
       .then(function (res) {
         if (res.data.login === true) {
           console.log('로그인 성공');
