@@ -53,7 +53,7 @@ function Body(props) {
       {/* 비용처리 */}
       <Route path="/CSTTRT">{/* TODO */}<div className='subFrame'>비용처리</div></Route>
       {/* 인력관리 */}
-      <Route path="/MEMMNG"><div className='subFrame'></div><ME101 /></Route>
+      <Route path="/MEMMNG"><div className='subFrame'><ME101 /></div></Route>
       {/* 문서관리 */}
       <Route path="/DOCMNG">{/* TODO */}<div className='subFrame'>문서관리</div></Route>
       {/* 예외상황 */}
