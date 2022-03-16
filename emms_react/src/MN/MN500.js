@@ -1,11 +1,14 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import './MN500.css';
 import MN500_TAB1 from './MN500_TAB1.js';
 import MN500_TAB2 from './MN500_TAB2.js';
 import MN500_TAB3 from './MN500_TAB3.js';
 
 function MN500(props) {
+
+  const history = useHistory();
 
   const [contents, setContents] = useState('MN500_TAB1');
 
@@ -23,11 +26,11 @@ function MN500(props) {
           <div className="mainNewLink">
             <div className="inner">
               <ul>
-                <li><a href="#" className="btnMenuItem"><div className="cate">팀 관리</div><div className="icons"></div><div className="desc">팀원등록부터 팀구성까지<br />편리하게!</div><div className="btnGo">바로가기</div></a></li>
-                <li><a href="#" className="btnMenuItem"><div className="cate">프로젝트 제안</div><div className="icons"></div><div className="desc">프로젝트 제안과정을<br />간편하게!</div><div className="btnGo">바로가기</div></a></li>
-                <li><a href="#" className="btnMenuItem"><div className="cate">프로젝트 관리</div><div className="icons"></div><div className="desc">프로젝트 관리를<br />손쉽게!</div><div className="btnGo">바로가기</div></a></li>
-                <li><a href="#" className="btnMenuItem"><div className="cate">인력관리</div><div className="icons"></div><div className="desc">인력관리를<br />체계적으로!</div><div className="btnGo">바로가기</div></a></li>
-                <li><a href="#" className="btnMenuItem"><div className="cate">문서관리</div><div className="icons"></div><div className="desc">문서관리까지<br />자유롭게!</div><div className="btnGo">바로가기</div></a></li>
+                <li><a onClick={()=>history.push('/TIMMNG')}className="btnMenuItem"><div className="cate">팀 관리</div><div className="icons"></div><div className="desc">팀원등록부터 팀구성까지<br />편리하게!</div><div className="btnGo">바로가기</div></a></li>
+                <li><a onClick={()=>history.push('/PRJINFO')} className="btnMenuItem"><div className="cate">프로젝트 제안</div><div className="icons"></div><div className="desc">프로젝트 제안과정을<br />간편하게!</div><div className="btnGo">바로가기</div></a></li>
+                <li><a onClick={()=>history.push('/RDEPMHR')} className="btnMenuItem"><div className="cate">프로젝트 관리</div><div className="icons"></div><div className="desc">프로젝트 관리를<br />손쉽게!</div><div className="btnGo">바로가기</div></a></li>
+                <li><a onClick={()=>history.push('/MEMMNG')} className="btnMenuItem"><div className="cate">인력관리</div><div className="icons"></div><div className="desc">인력관리를<br />체계적으로!</div><div className="btnGo">바로가기</div></a></li>
+                <li><a onClick={()=>history.push('/DOCMNG')} className="btnMenuItem"><div className="cate">문서관리</div><div className="icons"></div><div className="desc">문서관리까지<br />자유롭게!</div><div className="btnGo">바로가기</div></a></li>
               </ul>
             </div>
           </div>
