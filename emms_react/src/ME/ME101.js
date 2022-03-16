@@ -1,19 +1,25 @@
 import React, { useEffect, useState } from "react";
+import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import './ME101.css';
 import '../css/daycare_user_layout.css';
 import '../css/jquery-ui.css';
-import {Table, Button} from 'react-bootstrap';
+import { useSelector } from "react-redux";
 
 function ME101(props) {
 
   let [listData, listDataModify] = useState([]);          // 목록
   let [searchName, searchNameModify] = useState('');      // 이름 검색
   let [searchRnkCd, searchRnkCdModify] = useState('all'); // 등급 검색
+  
+  const { cmmnCode } = useSelector(state => state.cmmnCode);  // 공통코드
+
+  const { register, handleSubmit } = useForm();
+  const [formData, formDataModify] = useState("");
 
   // INIT
   useEffect(()=>{
-    axios.post('/api/memList', {
+    axios.post(process.env.REACT_APP_HOST + '/api/memList', {
       memRnkCd: searchRnkCd
   }).then(function (res) {
         listDataModify(res.data.list);
@@ -22,7 +28,7 @@ function ME101(props) {
 
   // 조회
   function fn_search(){
-    axios.post('/api/memList', {
+    axios.post(process.env.REACT_APP_HOST + '/api/memList', {
       memName : searchName,
       memRnkCd: searchRnkCd
   }).then(function (res) {
@@ -30,9 +36,34 @@ function ME101(props) {
       })
   }
 
+  // Enter Key Event
+  const onKeyPress = (e) => {
+    if (e.key == 'Enter') {
+      fn_search();
+    }
+  }
+
+  // GET DATA
+  function fn_getMemTargetData(paramMemNum) {
+    axios.post(process.env.REACT_APP_HOST + '/api/memTargetData', {
+      memNum: paramMemNum
+    }).then(function (res) {
+      console.log(res.data.value);
+    })
+  }
+
+  // ADD DATA
+  const onSubmit = (data) => {
+    console.log(data);
+    axios.post(process.env.REACT_APP_HOST + '/api/memAddData', data).then(function (res) {
+      console.log('완료');
+      fn_search();
+    })
+  }
+
   // [Component] 목록
   function List() {
-    if  ( listData.length == 0 )  {
+    if  ( listData.length === 0 )  {
       return (
         <tr><td colSpan={11}>데이터가 없습니다.</td></tr>
       )
@@ -59,15 +90,6 @@ function ME101(props) {
     }
   }
 
-  // GET DATA
-  function fn_getMemTargetData(paramMemNum) {
-    axios.post('/api/memTargetData', {
-      memNum: paramMemNum
-    }).then(function (res) {
-      console.log(res.data.value);
-    })
-  }
-
   return(
     <>
       <div className="subWrap">
@@ -81,7 +103,7 @@ function ME101(props) {
                       <tr>
                           <th scope="row"><span className="tit">성명</span></th>
                           <td>
-                              <input type="text" className="w130" onChange={(e)=>{ searchNameModify(e.target.value); }} />
+                              <input type="text" className="w130" onChange={(e)=>{ searchNameModify(e.target.value); }} onKeyPress={onKeyPress} />
                           </td>
                           <th scope="row"><span className="tit ml30">등급</span></th>
                           <td>
@@ -145,6 +167,79 @@ function ME101(props) {
 
         </div>
       </div>
+
+
+      <form onSubmit={handleSubmit(onSubmit)}>
+      <div>
+        <table>
+          <tbody>
+            <tr>
+              <th>이름</th>
+              <td><input {...register("memName")} /></td>
+              <th>생년월일</th>
+              <td><input {...register("memBirMd")} /></td>
+              <th>직위</th>
+              <td>
+                <select {...register("incCd")} >
+                <option>선택</option>
+                  {
+                    cmmnCode.INC_CD.map((data, i)=>{
+                      return <option key={i} value={data.cdVal} >{data.cdNm}</option>
+                    })
+                  }
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <th>등급</th>
+              <td>
+                <select {...register("memRnkCd")} >
+                <option>선택</option>
+                {
+                  cmmnCode.RNK_CD.map((data, i)=>{
+                    return <option key={i} value={data.cdVal} >{data.cdNm}</option>
+                  })
+                }
+                </select>
+              </td>
+              <th>학력</th>
+              <td>
+                <select {...register("eduCd")} >
+                  <option>선택</option>
+                  {
+                    cmmnCode.EDU_CD.map((data, i)=>{
+                      return <option key={i} value={data.cdVal} >{data.cdNm}</option>
+                    })
+                  }
+                </select>
+              </td>
+              <th>자격증</th>
+              <td><input {...register("ctfNm")} /></td>
+            </tr>
+            <tr>
+              <th>인력단가</th>
+              <td><input {...register("memUnp")} /></td>
+              <th>인력원가</th>
+              <td><input {...register("memFcst")} /></td>
+              <th>연락처</th>
+              <td><input {...register("memCtt")} /></td>
+            </tr>
+            <tr>
+              <th>주소</th>
+              <td><input {...register("memAdr")} /></td>
+              <th>소속회사</th>
+              <td><input {...register("affCoName")} /></td>
+              <th>소속팀</th>
+              <td><input {...register("affTimName")} /></td>
+            </tr>
+          </tbody>
+        </table>
+        <div className="buttonSt">
+          <button type="sbmit" className="btn03" onClick={()=>{ console.log(formData) }} >저장(TEST)</button>
+        </div>
+      </div>
+      </form>
+
     </>
   )
 }
