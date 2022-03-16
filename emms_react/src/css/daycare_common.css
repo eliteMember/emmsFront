@@ -911,6 +911,16 @@ img.stampImg{width:58px;height:58px}
 .loginArea .userLink li .ic_bar{background: url(../imgs/ic_bar_gray.png);margin-left:20px;margin-right:20px;height:14px;margin-top:5px}
 .loginArea .userLink li a{font-size:14px;color:#666;font-weight: 500;}
 
+/*로그인쪽 좌측배너 관련 CSS 추가*/
+.loginBody .loginCharacter{position:absolute;width:440px;min-height:520px;}
+.loginBody .loginCharacter .character{position:absolute;right:1px;width:440px;height:520px;background:url(../imgs/login/loginCharacter.png);z-index: 1}
+
+/*로그인쪽 grid util 관련 CSS 추가*/
+
+.gridUtil22{overflow: hidden; margin-bottom:10px}
+.gridUtil22::after{ content: '';display: block;clear: both;}
+.gridUtil22 .fr select{height:25px}
+
 /*로그인공통*/
 .loginWrap .siteLink{margin-top:40px;display: flex;justify-content:space-between ;width:100%;align-items: center;}
 

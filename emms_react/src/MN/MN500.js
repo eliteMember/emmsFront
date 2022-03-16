@@ -44,9 +44,9 @@ function MN500(props) {
               <div className="bbsTabWrap">
 
                 <ul className="tabs">
-                  <li className="current"><a onClick={()=>setContents('MN500_TAB1')}>공지사항</a></li>
-                  <li><a onClick={()=>setContents('MN500_TAB2')}>FAQ</a></li>
-                  <li><a onClick={()=>setContents('MN500_TAB3')}>문서양식</a></li>
+                  <li className={contents === 'MN500_TAB1' ? "current" : ""}><a onClick={()=>setContents('MN500_TAB1')}>공지사항</a></li>
+                  <li className={contents === 'MN500_TAB2' ? "current" : ""}><a onClick={()=>setContents('MN500_TAB2')}>FAQ</a></li>
+                  <li className={contents === 'MN500_TAB3' ? "current" : ""}><a onClick={()=>setContents('MN500_TAB3')}>문서양식</a></li>
                 </ul>
                 {
                   contents === 'MN500_TAB1' ? <MN500_TAB1/>

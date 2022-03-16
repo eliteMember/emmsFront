@@ -24,6 +24,7 @@ function Body(props) {
       }).catch(() => {
         alert("코드 호출 에러");
       })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

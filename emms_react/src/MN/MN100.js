@@ -57,13 +57,17 @@ function MN100(props) {
         <section className="loginHeader">
           <h1><img src={require('../imgs/logo_01.png')} alt="정예맴버로고" /><span>정예맴버 프로젝트관리시스템</span></h1>
         </section>
-        <section className="loginBody">
-          <div className="loginVisual">
+        <section class="loginBody">
+          <div class="loginCharacter">
+            <div class="character">
+            </div>
+          </div>
+          <div class="loginVisual">
 
-            <div className="slogan">
-              <p className="txt1">안녕하세요</p>
-              <p className="txt2">정예맴버 프로젝트</p>
-              <p className="txt2">관리시스템입니다.</p>
+            <div class="slogan">
+              <p class="txt1">손쉬운 프로젝트관리</p>
+              <p class="txt2">정예맴버</p>
+              <p class="txt2"> 프로젝트관리시스템</p>
             </div>
 
           </div>
