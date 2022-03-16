@@ -6,12 +6,6 @@ import { useForm } from 'react-hook-form';
 import { ACT_USER_INFO_UPDATE } from "../reducers/userInfo";
 import { useDispatch } from 'react-redux';
 import Img from "../imgs/logo_01.png";
-// import "../js/jquery-ui.js";
-// import "../js/jquery-1.12.4.min.js";
-// import "../js/default.js";
-
-
-
 
 function MN100_1(props) {
 
@@ -22,15 +16,108 @@ function MN100_1(props) {
     dispatch(ACT_USER_INFO_UPDATE({ userInfo: userInfo }));
   };
 
+  // 아이디 중복확인
+  let [nameChk, setNameChk] = useState("");
+  useEffect(() => {
+    console.log("useEffect 아이디 중복 실행됨")
+    axios.get(process.env.REACT_APP_HOST + '/api/join/getIdList')
+    .then((rs) => {
+      console.log("111111111");
+      console.log(rs.data);
+      setNameChk(rs.data);
+    })
+    .catch(() => {
+      console.log('아이디 리스트 불러오기 실패')
+    })
+  },[])
   
+  // 비밀번호 확인
+  let [password, setPassword] = useState("");
+  let [confirmPassword, setConfirmPassword] = useState("");
+
+  const onPasswordHandler = (event)=> {
+    console.log("=====" + event.currentTarget.value + "=====" );
+    setPassword(event.currentTarget.value);
+  }
+
+  const onConfirmPasswordHandler = (event)=> {
+    console.log("==!==" + event.currentTarget.value + "==!==" );
+    setConfirmPassword(event.currentTarget.value);
+  }
+
+  // 직위 값
+  let [inc, setInc] = useState(null);
+
+  useEffect(() => {
+      console.log("useEffect inc 실행됨");
+      axios.get(process.env.REACT_APP_HOST + '/api/join/getIncList')
+      .then((rs) =>{
+          setInc(rs.data);
+          console.log(rs.data);
+      }).catch(() => {
+          alert("리스트 불러오기 실패");
+      })
+  },[])
+
+  // 직책 리스트
+  const IncSelectBox = () => {
+    return (
+      <select id='incSel' name='incSel' className="w110">
+        <option id='incOption' name='incOption'>선택</option>
+        {inc && inc.INC.map(
+          (incList, i) =>
+            <option key={i} value={incList.cdVal}>
+              {incList.cdNm}
+            </option>
+        )}
+        {/* {...register("apoOption",
+          {
+            required: { value: '선택', message: "직책을 선택해 주세요."},
+          }
+        )}  */}
+      </select>
+    )
+  }
+
+  // 직책 값
+  let [apo, setApo] = useState(null);
+
+  useEffect(() => {
+      console.log("useEffect apo 실행됨");
+      axios.get(process.env.REACT_APP_HOST + '/api/join/getApoList')
+      .then((rs) =>{
+          setApo(rs.data);
+          console.log(rs.data);
+      }).catch(() => {
+          alert("리스트 불러오기 실패");
+      })
+  },[])
+
+  // 직책 리스트
+  const ApoSelectBox = () => {
+    return (
+      <select id='apoSel' name='apoSel' className="w110">
+        <option id='apoOption' name='apoOption'>선택</option>
+        {apo && apo.APO.map(
+          (apoList, i) =>
+            <option key={i} value={apoList.cdNm}>
+              {apoList.cdNm}
+            </option>
+        )}
+        {/* {...register("apoOption",
+          {
+            required: { value: '선택', message: "직책을 선택해 주세요."},
+          }
+        )}  */}
+      </select>
+    )
+  }
+
+    // 회원가입
   const { register, watch, handleSubmit, formState: { errors } } = useForm();
   const onSubmit = (data) => {
-
-    console.log("========================================");
-    console.log(data);
-    console.log("========================================");
-
-    axios.post('/api/join/register', data)
+    
+    axios.post(process.env.REACT_APP_HOST + '/api/join/register', data)
     .then(function(res) {
       console.log(res);
       console.log("res.data.register : " + res.data)
@@ -54,34 +141,7 @@ function MN100_1(props) {
     console.log(error);
   }
   console.log(watch());
-
-
-  // 직책 값
-  let [apo, setApo] = useState(null);
-
-  useEffect(() => {
-      console.log("useEffect 실행됨");
-      axios.get('/api/join/getApoList')
-      .then((rs) =>{
-          setApo(rs.data);
-          console.log(rs.data);
-      }).catch(() => {
-          alert("리스트 불러오기 실패");
-      })
-  },[])
-
-  const ApoSelectBox = () => {
-    return (
-      <select>
-        {apo.apo.APO.map(
-          (apoList, i) =>
-            <option key={i} value={apoList.value}>
-              {apoList.value}
-            </option>
-        )}
-      </select>
-    )
-  }
+  
 
   const col1 = {width:'130'};
   const col2 = {width:'auto'};
@@ -136,12 +196,11 @@ function MN100_1(props) {
                                             required:  { value: true, message: "영문,숫자 조합 6~12자" },
                                             minLength: { value: 6, message: "영문,숫자 조합 6~12자" },
                                             maxLength: { value: 12, message: "영문,숫자 조합 6~12자" },
-                                            pattern:   { value: /^(?=.*\d)(?=.*[a-zA-ZS]).{8,}/,
-                                                        message: "영문,숫자 조합 6~12자" },
+                                            pattern:   { value: /^(?=.*\d)(?=.*[a-zA-ZS]).{8,}/, message: "영문,숫자 조합 6~12자" },
                                           }
                                         )}
                                       />
-                                      <button type="button" className="btn btn03s ml5"><span>중복확인</span></button>
+                                      <button type="button" className="btn btn03s ml5" onClick={nameChk}><span>중복확인</span></button>
                                       {errors.password && <span className="ml10 point01 bold">{errors?.password?.message}</span>}
                                   </td>
                               </tr>
@@ -150,7 +209,7 @@ function MN100_1(props) {
                                   <td>
                                       <div className="diFlex inputKeypad w110">
                                           <input type="password" placeholder="" className="w100p"
-                                            name='password' id='password'
+                                            name='password' id='password' value={password} onChange={onPasswordHandler}
                                             {...register("password",
                                               {
                                                 required: { value: true, message: "비밀번호를 입력하세요." },
@@ -178,11 +237,10 @@ function MN100_1(props) {
                                   <td>
                                       <div className="diFlex inputKeypad w110">
                                           <input type="password" placeholder="" className="w100p"
-                                            name="confirmPassword" id='confirmPassword'
+                                            name="confirmPassword" id='confirmPassword' onChange={onConfirmPasswordHandler}
                                             {...register("confirmPassword",
                                               { 
-                                                value: true,
-                                                message:"비밀번호가 일치하지 않습니다.",
+                                                required:{value: true, message:"비밀번호가 일치하지 않습니다.",}
                                               },
                                             )} 
                                           />
@@ -203,7 +261,7 @@ function MN100_1(props) {
                                           )}
                                         />
                                       </span>
-                                      {errors.usrBirth && <span className="ml10 point01 bold">{errors?.usrBirth?.message}</span>}
+                                     
                                   </td>
                               </tr>
                               <tr>
@@ -265,23 +323,15 @@ function MN100_1(props) {
                               <tr>
                                   <th scope="row"><em className="important">*</em>직위</th>
                                   <td>
-                                      <select className="w110">
-                                          <option>부장</option>
-                                          <option>차장</option>
-                                          <option>과장</option>
-                                          <option>대리</option>
-                                          <option>사원</option>
-                                          <option>대표</option>
-                                          <option>부사장</option>
-                                          <option>상무</option>
-                                          <option>이사</option>
-                                      </select>
+                                      <IncSelectBox />
+                                      {errors.incSel && <span className="ml10 point01 bold">{errors?.incSel?.message}</span>}
                                   </td>
                               </tr>
                               <tr>
                                   <th scope="row"><em className="important">*</em>직책</th>
                                   <td>
-                                      <ApoSelectBox/>
+                                      <ApoSelectBox />
+                                      {errors.apoSel && <span className="ml10 point01 bold">{errors?.apoSel?.message}</span>}
                                   </td>
                               </tr>
                               <tr>
