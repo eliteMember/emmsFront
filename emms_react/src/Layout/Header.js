@@ -6,14 +6,13 @@ import axios from 'axios'
 import { useDispatch, useSelector } from "react-redux";
 import { ACT_USER_INFO_EXPIRE } from "../reducers/userInfo";
 
-
 function Header(props) {
   const dispatch = useDispatch();
 
   const history = useHistory();
 
   const setLogout = () => {
-    axios.get('/api/logout')
+    axios.get(process.env.REACT_APP_HOST +'/api/logout')
       .then(() => {
         props.isLoginChange(false);
         dispatch(ACT_USER_INFO_EXPIRE());
@@ -30,7 +29,7 @@ function Header(props) {
   const { userInfo } = useSelector(state => state.userInfo);
 
   useEffect(() => {
-    axios.get('/api/menu/getList')
+    axios.get(process.env.REACT_APP_HOST +'/api/menu/getList')
       .then((rs) => {
         setMenuList(rs.data);
       }).catch(() => {
