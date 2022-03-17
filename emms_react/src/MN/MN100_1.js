@@ -1,13 +1,15 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import './MN100_1.css';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import { ACT_USER_INFO_UPDATE } from "../reducers/userInfo";
 import { useDispatch } from 'react-redux';
-import Img from "../imgs/logo_01.png";
+import Img from "../imgs/logo_01.png"; 
 
-function MN100_1(props) {
+function MN100_1() {
+
+  const { register, watch, handleSubmit, formState: { errors } } = useForm();
 
   //redux dispatch 사용준비
   const dispatch = useDispatch();
@@ -19,10 +21,9 @@ function MN100_1(props) {
   // 아이디 중복확인
   let [nameChk, setNameChk] = useState("");
   useEffect(() => {
-    console.log("useEffect 아이디 중복 실행됨")
-    axios.get(process.env.REACT_APP_HOST + '/api/join/getIdList')
+    axios.get('/api/join/getIdList')
+    // axios.get(process.env.REACT_APP_HOST + '/api/join/getIdList')
     .then((rs) => {
-      console.log("111111111");
       console.log(rs.data);
       setNameChk(rs.data);
     })
@@ -32,28 +33,17 @@ function MN100_1(props) {
   },[])
   
   // 비밀번호 확인
-  let [password, setPassword] = useState("");
-  let [confirmPassword, setConfirmPassword] = useState("");
-
-  const onPasswordHandler = (event)=> {
-    console.log("=====" + event.currentTarget.value + "=====" );
-    setPassword(event.currentTarget.value);
-  }
-
-  const onConfirmPasswordHandler = (event)=> {
-    console.log("==!==" + event.currentTarget.value + "==!==" );
-    setConfirmPassword(event.currentTarget.value);
-  }
+  let password = useRef();
+  password.current = watch("password");
 
   // 직위 값
   let [inc, setInc] = useState(null);
 
   useEffect(() => {
-      console.log("useEffect inc 실행됨");
-      axios.get(process.env.REACT_APP_HOST + '/api/join/getIncList')
+      axios.get('/api/join/getIncList')
+      // axios.get(process.env.REACT_APP_HOST + '/api/join/getIncList')
       .then((rs) =>{
           setInc(rs.data);
-          console.log(rs.data);
       }).catch(() => {
           alert("리스트 불러오기 실패");
       })
@@ -70,11 +60,6 @@ function MN100_1(props) {
               {incList.cdNm}
             </option>
         )}
-        {/* {...register("apoOption",
-          {
-            required: { value: '선택', message: "직책을 선택해 주세요."},
-          }
-        )}  */}
       </select>
     )
   }
@@ -83,11 +68,10 @@ function MN100_1(props) {
   let [apo, setApo] = useState(null);
 
   useEffect(() => {
-      console.log("useEffect apo 실행됨");
-      axios.get(process.env.REACT_APP_HOST + '/api/join/getApoList')
+      axios.get('/api/join/getApoList')
+      // axios.get(process.env.REACT_APP_HOST + '/api/join/getApoList')
       .then((rs) =>{
           setApo(rs.data);
-          console.log(rs.data);
       }).catch(() => {
           alert("리스트 불러오기 실패");
       })
@@ -113,14 +97,12 @@ function MN100_1(props) {
     )
   }
 
-    // 회원가입
-  const { register, watch, handleSubmit, formState: { errors } } = useForm();
+  // 회원가입
   const onSubmit = (data) => {
     
-    axios.post(process.env.REACT_APP_HOST + '/api/join/register', data)
+    axios.post('/api/join/register', data)
     .then(function(res) {
-      console.log(res);
-      console.log("res.data.register : " + res.data)
+      console.log("data", res.data)
       if (res.data === true) {
         console.log('회원가입 성공');
       }
@@ -130,10 +112,6 @@ function MN100_1(props) {
     })
     .catch(function(res) {
         console.log('회원가입 실패');
-        console.log('#####################')
-        console.log(res);
-        console.log('#####################')
-        console.log(data)
     }) 
   }
 
@@ -200,8 +178,8 @@ function MN100_1(props) {
                                           }
                                         )}
                                       />
-                                      <button type="button" className="btn btn03s ml5" onClick={nameChk}><span>중복확인</span></button>
-                                      {errors.password && <span className="ml10 point01 bold">{errors?.password?.message}</span>}
+                                      <button type="button" className="btn btn03s ml5"><span>중복확인</span></button>
+                                      {errors.loginId && <span className="ml10 point01 bold">{errors?.loginId?.message}</span>}
                                   </td>
                               </tr>
                               <tr>
@@ -209,7 +187,7 @@ function MN100_1(props) {
                                   <td>
                                       <div className="diFlex inputKeypad w110">
                                           <input type="password" placeholder="" className="w100p"
-                                            name='password' id='password' value={password} onChange={onPasswordHandler}
+                                            name='password' id='password'
                                             {...register("password",
                                               {
                                                 required: { value: true, message: "비밀번호를 입력하세요." },
@@ -237,14 +215,33 @@ function MN100_1(props) {
                                   <td>
                                       <div className="diFlex inputKeypad w110">
                                           <input type="password" placeholder="" className="w100p"
-                                            name="confirmPassword" id='confirmPassword' onChange={onConfirmPasswordHandler}
+                                            name="confirmPassword" id='confirmPassword' 
                                             {...register("confirmPassword",
-                                              { 
-                                                required:{value: true, message:"비밀번호가 일치하지 않습니다.",}
-                                              },
-                                            )} 
+                                              {
+                                                required: { value: true, message: "비밀번호를 입력하세요." },
+                                                minLength: {
+                                                  value: 8,
+                                                  message: "8자 이상의 비밀번호를 입력해주세요.",
+                                                },
+                                                maxLength: {
+                                                  value:16,
+                                                  message: "16자 이하만 사용가능합니다.",
+                                                },
+                                                pattern: {
+                                                  value: /^(?=.*\d)(?=.*[a-zA-ZS]).{8,}/,
+                                                  message: "영문, 숫자를 혼용하여 입력해주세요.",
+                                                },
+                                                validate: 
+                                                  (value) => value === password.current,
+                                                  message: "비밀번호가 일치하지 않습니다."
+                                                
+                                              }
+                                            )}
                                           />
-                                          {errors.confirmPassword && <span className="ml10 point01 bold">{errors?.confirmPassword?.message}</span>}
+                                          {errors.confirmPassword && errors.confirmPassword.type === "validate" &&
+                                           (<span className="ml10 point01 bold">{errors?.confirmPassword?.message}</span>)}
+                                           {errors.confirmPassword && errors.confirmPassword.type === "required" &&
+                                            (<span className="ml10 point01 bold">비밀번호를 확인해 주시기 바랍니다.</span>)}
                                       </div>
                                   </td>
                               </tr>

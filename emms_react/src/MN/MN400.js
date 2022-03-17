@@ -17,7 +17,7 @@ function MN400(){
 
     useEffect(() => {
         console.log("useEffect 실행됨");
-        axios.get(process.env.REACT_APP_HOST+'/MN400/api/getList')
+        axios.get('/api/MN400/getList')
         .then((rs) =>{
             setusr(rs.data.USR);
             console.log(rs.data.USR);
@@ -26,7 +26,7 @@ function MN400(){
         })
     },[])
 
-    const onChange = (e=>{
+    const onChange = ((e)=>{
         if(e.key === 'Enter'){
             setupdate({
             id : e.target.id,
@@ -34,13 +34,13 @@ function MN400(){
             value : e.target.value,
             defaultValue : e.target.defaultValue
             })
-            callAxios();
+            return callAxios();
         }
-        })
+    })
     
     const callAxios = (()=>{
         if(update.value !== update.defaultValue){
-            axios.post(process.env.REACT_APP_HOST+'/MN400/api/updateMember',update)
+            axios.post('/api/MN400/updateMember',update)
             .then((rs) =>{
                 setusr(rs.data.USR);
                 console.log(rs.data.USR);
@@ -61,7 +61,6 @@ function MN400(){
     const col4 = {width:'auto'};
 
     return(
-        <>
         <div className='subWrap'>
             <div className='inner'>
                 <div className="popCont">
@@ -79,6 +78,7 @@ function MN400(){
                                             <caption>표</caption>
                                             <colgroup>
                                                 <col style={col1}/>
+                                                <col style={col1}/>
                                                 <col style={col2}/>
                                                 <col style={col3}/>
                                                 <col style={col3}/>
@@ -92,6 +92,7 @@ function MN400(){
                                             <thead>
                                                 <tr>
                                                     <th scope="col">번호</th>
+                                                    <th scope="col" rowspan="1"><span class="customForm"><input type="checkbox" id="checkAll"/><label for="checkAll"></label></span></th>
                                                     <th scope="col">아이디</th>
                                                     <th scope="col">이름</th>
                                                     <th scope="col">생년월일</th>
@@ -111,6 +112,7 @@ function MN400(){
                                                         ?
                                                         <tr key={i}>
                                                             <td className="txtC">{i+1}</td>
+                                                            <td class="txtC"><span class="customForm"><input type="checkbox" id={"check0"+(i+1)}/><label for={"check0"+(i+1)}></label></span></td>
                                                             <td className="txtC">{usrList.loginId}</td>
                                                             <td className="txtC">{usrList.usrName}</td>
                                                             <td className="txtC">{usrList.usrBirMd}</td>
@@ -128,8 +130,9 @@ function MN400(){
                                                         :  
                                                         <tr key={i}>
                                                             <td className="txtC">{i+1}</td>
+                                                            <td class="txtC"><span class="customForm"><input type="checkbox" id={"check0"+(i+1)}/><label for={"check0"+(i+1)}></label></span></td>
                                                             <td className="txtC"><input id={usrList.usrNum} name="loginId" defaultValue={usrList.loginId} onKeyPress={onChange}></input></td>
-                                                            <td className="txtC"><input id={usrList.usrNum} name="usrName" defaultValue={usrList.usrName} onKeyPress={onChange}></input></td>
+                                                            <td className="txtC"><input id={usrList.usrNum} name="USR_NAME" defaultValue={usrList.usrName} onKeyPress={onChange}></input></td>
                                                             <td className="txtC"><input id={usrList.usrNum} name="usrBirMd" defaultValue={usrList.usrBirMd} onKeyPress={onChange}></input></td>
                                                             <td className="txtC"><input id={usrList.usrNum} name="incCd" defaultValue={usrList.incCd} onKeyPress={onChange}></input></td>
                                                             <td className="txtC"><input id={usrList.usrNum} name="apoCd" defaultValue={usrList.apoCd} onKeyPress={onChange}></input></td>
@@ -179,9 +182,6 @@ function MN400(){
                 </div>
             </div>
         </div>
-
-        
-    </>
    );
 }
 
