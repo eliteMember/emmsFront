@@ -1,7 +1,6 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react';
 import axios from 'axios';
-
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch,useHistory } from 'react-router-dom';
 import MN100_1 from './MN/MN100_1.js';
 
 let Header = lazy(() => { return import('./Layout/Header.js') });
@@ -11,7 +10,8 @@ let MN100 = lazy(() => { return import('./MN/MN100.js') });
 
 function App() {
 
-  const [isLogin, isLoginChange] = useState(false);
+  const [isLogin, isLoginChange] = useState(false); 
+  const history = useHistory();
 
   useEffect(() => {
     axios.get('/api/cmmn/getSession')
@@ -25,6 +25,10 @@ function App() {
         console.log('세션정보 불러오기 에러');
       })
   }, [])
+
+  useEffect(() => {
+    isLogin === true? history.push('/MAIN') : history.push('/LOGIN')
+  })
 
   return (
     <div className="App">
