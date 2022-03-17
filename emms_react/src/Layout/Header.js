@@ -5,6 +5,10 @@ import { useHistory } from 'react-router-dom';
 import axios from 'axios'
 import { useDispatch, useSelector } from "react-redux";
 import { ACT_USER_INFO_EXPIRE } from "../reducers/userInfo";
+import { ACT_SUB_MENU_LIST_UPDATE } from "../reducers/subMenuList";
+import { ACT_SUB_MENU_OVER_UPDATE } from "../reducers/subMenuOver";
+import { ACT_SUB_MENU_CLICK_UPDATE } from "../reducers/subMenuClick";
+import { ACT_SUB_MENU_CLICK_LIST_UPDATE } from "../reducers/subMenuClickList";
 
 function Header(props) {
   const dispatch = useDispatch();
@@ -22,11 +26,13 @@ function Header(props) {
   };
 
   const [menuList, setMenuList] = useState(null);
-  const [subMenuList, setSubMenuList] = useState(null);
-  const [subMenuOver, setSubMenuOver] = useState(null);
-  const [subMenuClick, setSubMenuClick] = useState(null);
-  const [subMenuClickList, setSubMenuClickList] = useState(null);
-  const { userInfo } = useSelector(state => state.userInfo);
+  const { userInfo, subMenuList, subMenuOver, subMenuClick, subMenuClickList } = useSelector(state => ({
+    userInfo: state.userInfo
+    , subMenuList: state.subMenuList
+    , subMenuOver: state.subMenuOver
+    , subMenuClick: state.subMenuClick
+    , subMenuClickList: state.subMenuClickList
+  }));
 
   useEffect(() => {
     axios.get('/api/menu/getList')
@@ -89,7 +95,7 @@ function Header(props) {
             </ul>
           </div>
           {(subMenuList && subMenuList.toggle === true) || (subMenuClick && subMenuClick.toggle === true)
-            ? <SubMenu menuList={menuList} subMenuList={subMenuList} subMenuOver={subMenuOver} subMenuClick={subMenuClick} subMenuClickList={subMenuClickList} />
+            ? <SubMenu />
             : null
           }
         </div>
@@ -98,34 +104,36 @@ function Header(props) {
   )
 
   function setInitialize() {
-    setSubMenuList(null);
-    setSubMenuOver(null);
-    setSubMenuClick(null);
-    setSubMenuClickList(null);
+    dispatch(ACT_SUB_MENU_LIST_UPDATE(null));
+    dispatch(ACT_SUB_MENU_OVER_UPDATE(null));
+    dispatch(ACT_SUB_MENU_CLICK_UPDATE(null));
+    dispatch(ACT_SUB_MENU_CLICK_LIST_UPDATE(null));
   }
   function setSubMenu(menu, toggle) {
-    setSubMenuList({ 'mnuNum': Object.keys(menuList).find(key => key === menu.mnuNum), 'toggle': toggle });
+    dispatch(ACT_SUB_MENU_LIST_UPDATE({ 'mnuNum': Object.keys(menuList).find(key => key === menu.mnuNum), 'toggle': toggle }));
+
   }
   function overSubMenu(menu, toggle) {
-    setSubMenuOver({ 'mnuNum': menu.mnuNum, 'toggle': toggle });
+    dispatch(ACT_SUB_MENU_OVER_UPDATE({ 'mnuNum': menu.mnuNum, 'toggle': toggle }));
   }
   function clickSubMenu(menu, toggle) {
-    setSubMenuClick({ 'mnuNum': menu.mnuNum, 'toggle': toggle });
-    setSubMenuClickList({ 'mnuNum': menu.prtMnuNum });
+    dispatch(ACT_SUB_MENU_CLICK_UPDATE({ 'mnuNum': menu.mnuNum, 'toggle': toggle }));
+    dispatch(ACT_SUB_MENU_CLICK_LIST_UPDATE({ 'mnuNum': menu.prtMnuNum, 'toggle': toggle}));
     history.push('/' + menu.mnuUrl);
   }
 
-  function SubMenu(props) {
+
+  function SubMenu() {
     return (
       <div className="tabsArea">
         <div className='tabs'>
           <ul>
-            {props.menuList && props.subMenuList &&
-              props.menuList[props.subMenuList.mnuNum].map(
+            {menuList && subMenuList && subMenuList.mnuNum &&
+              menuList[subMenuList.mnuNum].map(
                 (menu) =>
                   <li key={menu.mnuNum}
-                    className={(props.subMenuOver && menu.mnuNum === props.subMenuOver['mnuNum'] && props.subMenuOver['toggle'])
-                      || (props.subMenuClick && menu.mnuNum === props.subMenuClick['mnuNum'] && props.subMenuClick['toggle'])
+                    className={(subMenuOver && menu.mnuNum === subMenuOver.mnuNum && subMenuOver.toggle)
+                      || (subMenuClick && menu.mnuNum === subMenuClick.mnuNum && subMenuClick.toggle)
                       ? "on"
                       : ""}>
                     <a onClick={() => { clickSubMenu(menu, true) }}
@@ -136,9 +144,9 @@ function Header(props) {
             }
           </ul>
           {
-            (props.subMenuClick === null || props.subMenuClick.toggle === false)
-              ? <div onMouseEnter={() => { setSubMenuList({ menu: null, toggle: false }); overSubMenu({ menu: null, toggle: false }) }} className='headerOut'></div>
-              : props.subMenuClickList && props.subMenuClick.toggle === true
+            (subMenuClick === null || subMenuClick.toggle === false)
+              ? <div onMouseEnter={() => { dispatch(ACT_SUB_MENU_LIST_UPDATE({ menu: null, toggle: false })); overSubMenu({ menu: null, toggle: false }) }} className='headerOut'></div>
+              : subMenuClickList && subMenuClick.toggle === true
                 ? <div onMouseEnter={() => { subMenuClickList && setSubMenu(subMenuClickList, true) }} className='headerOut'></div>
                 : null
           }
