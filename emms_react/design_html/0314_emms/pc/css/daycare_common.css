@@ -420,19 +420,21 @@ div[class^=ic_depth]{padding-left:25px;display: block;background-position: left 
 /*버튼 - 보통사이즈*/
 button[class*="btn0"]{font-size:14px;margin-left:5px; display: inline-flex;align-items: center;word-break: keep-all;font-weight:500;}
 button[class*="btn0"] span{font-size:inherit}
-.btn01{background:#4157DC;color:#fff;border:1px solid #4157DC;border-radius: 4px;padding:0px 14px;height:32px;}/*다크파랑 | 조회,목록,등록*/
+.btn01{background:#286ed8;color:#fff;border:1px solid #286ed8;border-radius: 4px;padding:0px 14px;height:32px;}/*다크파랑 | 조회,목록,등록*/
 
-.btn02{background:#ededed;color:#333;border:1px solid #ededed;border-radius: 4px;padding:0px 14px;height:32px;}/*연한회색배경 | 인쇄하기*/
-.btn03{background:#5f636f;color:#fff;border:1px solid #5f636f;border-radius: 4px;padding:0px 14px;height:32px;}/*회색배경 | 삭제,취소*/
-.btn04{background:#5E52F5;color:#fff;border:1px solid #5E52F5;border-radius: 4px;padding:0px 14px;height:32px;}/*밝은파랑 | 발송,답장,수정,저장*/
+.btn02{background:#ededed;color:#333;border:1px solid #5f636f;border-radius: 4px;padding:0px 14px;height:32px;}/*연한회색배경 | 취소, 인쇄하기*/
+.btn03{background:#5f636f;color:#fff;border:1px solid #5f636f;border-radius: 4px;padding:0px 14px;height:32px;}/*회색배경 | 삭제*/
+
+.btn04{background:#0cb8e1;color:#fff;border:1px solid #0cb8e1;border-radius: 4px;padding:0px 14px;height:32px;}/*밝은파랑 | 발송,답장,수정,저장*/
 .btn05{background:#fafafa;color:#333;border:1px solid #999;border-radius: 4px;padding:0px 14px;height:32px;}/*흰색배경 | 인쇄하기*/
 .btn06{background:#f62a33;color:#fff;border:1px solid #f62a33;border-radius: 4px;padding:0px 14px;height:32px;}/*레드 | 회계보고*/
-.btn07{background:#286ed8;color:#fff;border:1px solid #2090ef;border-radius: 4px;padding:0px 14px;height:40px;}/*파랑 | 로그인,인증번호확인*/
-.btn08{background:#fff;color:#2b6ed8;border:1px solid #2b6ed8;border-radius: 4px;padding:0px 14px;height:40px;}/*파랑 | 인증번호요청*/
+.btn07{background:#286ed8;color:#fff;border:1px solid #4157DC;border-radius: 4px;padding:0px 14px;height:32px;}/*파랑 | 로그인,인증번호확인*/
+.btn08{background:#fff;color:#286ed8;border:1px solid #286ed8;border-radius: 4px;padding:0px 14px;height:32px;}/*파랑 | 인증번호요청*/
 
 .btn09{background:#2090ef;border-radius: 4px;padding:0px 14px;height:50px;width:50px;}/*파랑 | 아동반 변경시 좌우이동버튼 정현추가*/ 
 
 .btn11{background:#21339b;color:#fff;border:1px solid #21339b;border-radius: 4px;padding:0px 14px;height:32px;}/*다크파랑 | 조회,목록,등록*/
+
 
 
 

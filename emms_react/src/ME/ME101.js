@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, lazy, useState } from "react";
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import './ME101.css';
 import '../css/daycare_user_layout.css';
 import '../css/jquery-ui.css';
-import { useSelector } from "react-redux";
+let CodeSelectOption = lazy( ()=> import('../Component/CodeSelectOption.js') );
 
 function ME101(props) {
 
@@ -12,10 +12,8 @@ function ME101(props) {
   let [searchName, searchNameModify] = useState('');      // 이름 검색
   let [searchRnkCd, searchRnkCdModify] = useState('all'); // 등급 검색
   
-  const { cmmnCode } = useSelector(state => state.cmmnCode);  // 공통코드
-
-  const { register, handleSubmit } = useForm();
-  const [formData, formDataModify] = useState("");
+  const { register, handleSubmit } = useForm();     // form
+  const [formData, formDataModify] = useState("");  // form data
 
   // INIT
   useEffect(()=>{
@@ -31,9 +29,9 @@ function ME101(props) {
     axios.post('/api/memList', {
       memName : searchName,
       memRnkCd: searchRnkCd
-  }).then(function (res) {
-        listDataModify(res.data.list);
-      })
+    }).then(function (res) {
+      listDataModify(res.data.list);
+    });
   }
 
   // Enter Key Event
@@ -49,20 +47,54 @@ function ME101(props) {
       memNum: paramMemNum
     }).then(function (res) {
       console.log(res.data.value);
-    })
+    });
   }
 
   // ADD DATA
   const onSubmit = (data) => {
-    console.log(process.env.REACT_APP_HOST);
-    console.log(data);
-    axios.post('/api/memAddData', data).then(function (res) {
-      console.log('완료');
-      fn_search();
-    })
+
+    var checkValidation = true;
+    const notNull = ["memName", "memBirMd", "incCd", "memRnkCd", "eduCd", "memUnp", "memFcst", "memCtt", "memAdr"];
+    const numberType = ["memBirMd", "memUnp", "memFcst"];
+    const numberCheckStyle = /^[0-9]*$/;
+
+    let keyData = Object.keys(data);
+    for  ( let val of keyData )  {
+      
+      /* 필수항목 체크 */
+      if  ( notNull.includes(val) && (data[val].trim() == "" || data[val] == "선택") )  {
+        alert('필수 입력학목이 누락되었습니다.');
+        checkValidation = false;
+        document.getElementById(val).focus();
+        break;
+      }
+
+      /* 숫자항목 체크 */
+      if  ( numberType.includes(val) && data[val].trim() != "" && !numberCheckStyle.test(data[val]) )  {
+        let targetNm = '';
+        if  ( val == 'memBirMd' )  targetNm = "생년월일";
+        else if  ( val == 'memUnp' )  targetNm = "인력단가";
+        else if  ( val == 'memFcst' )  targetNm = "인력원가";
+
+        alert(targetNm+'항목은 숫자만 입력 가능합니다.');
+        checkValidation = false;
+        document.getElementById(val).focus();
+        break;
+      }
+
+    }
+
+    /* 저장 */
+    if  ( checkValidation )  {
+      axios.post('/api/memAddData', data).then(function (res) {
+        console.log('저장 완료');
+        fn_search();
+      });
+    }
+
   }
 
-  // [Component] 목록
+  /* [Component] 목록 */
   function List() {
     if  ( listData.length === 0 )  {
       return (
@@ -109,10 +141,8 @@ function ME101(props) {
                           <th scope="row"><span className="tit ml30">등급</span></th>
                           <td>
                               <select className="w130  mr30" onChange={(e)=>{ searchRnkCdModify(e.target.value); }} >
-                                  <option value={'all'} >전체</option>
-                                  <option value={'3'}>고급</option>
-                                  <option value={'2'}>중급</option>
-                                  <option value={'1'}>초급</option>
+                                <option value={'all'} >전체</option>
+                                <CodeSelectOption codeGroup={'RNK_CD'} />
                               </select>
                           </td>
                       </tr>
@@ -176,67 +206,58 @@ function ME101(props) {
           <tbody>
             <tr>
               <th>이름</th>
-              <td><input {...register("memName")} /></td>
+              <td><input className="objWidthSt" id="memName" {...register("memName")} /></td>
               <th>생년월일</th>
-              <td><input {...register("memBirMd")} /></td>
+              <td><input className="objWidthSt" id="memBirMd" {...register("memBirMd")} /></td>
               <th>직위</th>
               <td>
-                <select {...register("incCd")} >
-                <option>선택</option>
-                  {
-                    cmmnCode.INC_CD.map((data, i)=>{
-                      return <option key={i} value={data.cdVal} >{data.cdNm}</option>
-                    })
-                  }
+                <select className="objWidthSt" id="incCd" {...register("incCd")} >
+                  <option>선택</option>
+                  <CodeSelectOption codeGroup={'INC_CD'} />
                 </select>
               </td>
             </tr>
             <tr>
               <th>등급</th>
               <td>
-                <select {...register("memRnkCd")} >
-                <option>선택</option>
-                {
-                  cmmnCode.RNK_CD.map((data, i)=>{
-                    return <option key={i} value={data.cdVal} >{data.cdNm}</option>
-                  })
-                }
+                <select className="objWidthSt" id="memRnkCd" {...register("memRnkCd")} >
+                  <option>선택</option>
+                  <CodeSelectOption codeGroup={'RNK_CD'} />
                 </select>
               </td>
               <th>학력</th>
               <td>
-                <select {...register("eduCd")} >
+                <select className="objWidthSt" id="eduCd" {...register("eduCd")} >
                   <option>선택</option>
-                  {
-                    cmmnCode.EDU_CD.map((data, i)=>{
-                      return <option key={i} value={data.cdVal} >{data.cdNm}</option>
-                    })
-                  }
+                  <CodeSelectOption codeGroup={'EDU_CD'} />
                 </select>
               </td>
               <th>자격증</th>
-              <td><input {...register("ctfNm")} /></td>
+              <td><input className="objWidthSt" id="ctfNm" {...register("ctfNm")} /></td>
             </tr>
             <tr>
               <th>인력단가</th>
-              <td><input {...register("memUnp")} /></td>
+              <td>
+                <div><input className="objWidthSt" id="memUnp" {...register("memUnp")} /></div>
+                {/* <div><label className="errorLabel" >숫자만 입력하세요.</label></div> */}
+              </td>
               <th>인력원가</th>
-              <td><input {...register("memFcst")} /></td>
+              <td><input className="objWidthSt" id="memFcst" {...register("memFcst")} /></td>
               <th>연락처</th>
-              <td><input {...register("memCtt")} /></td>
+              <td><input className="objWidthSt" id="memCtt" {...register("memCtt")} /></td>
             </tr>
             <tr>
               <th>주소</th>
-              <td><input {...register("memAdr")} /></td>
+              <td><input className="objWidthSt" id="memAdr" {...register("memAdr")} /></td>
               <th>소속회사</th>
-              <td><input {...register("affCoName")} /></td>
+              <td><input className="objWidthSt" id="affCoName" {...register("affCoName")} /></td>
               <th>소속팀</th>
-              <td><input {...register("affTimName")} /></td>
+              <td><input className="objWidthSt" id="affTimName" {...register("affTimName")} /></td>
             </tr>
           </tbody>
         </table>
         <div className="buttonSt">
-          <button type="sbmit" className="btn03" onClick={()=>{ console.log(formData) }} >저장(TEST)</button>
+          <button type="sbmit" className="btn03" >저장(TEST)</button>
         </div>
       </div>
       </form>
