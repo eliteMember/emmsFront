@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import { ACT_USER_INFO_UPDATE } from "../reducers/userInfo";
 import { useDispatch } from 'react-redux';
-import Img from "../imgs/logo_01.png";
+import Img from "../imgs/logo_01.png"; 
 
 function MN100_1() {
 
