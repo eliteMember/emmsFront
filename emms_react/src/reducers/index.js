@@ -17,7 +17,7 @@ const persistConfig = {
 
     //whitelist 배열에 정의된 reducer만 스토리지에 저장.
     //해당 리스트에 없는 경우 새로고침 시 reducer state가 초기화됩니다.
-    whitelist: ["userInfo"]
+    whitelist: ["userInfo","cmmnCode"]
   };
 
 // 여러 reducer를 사용하는 경우 reducer를 하나로 묶어주는 메소드

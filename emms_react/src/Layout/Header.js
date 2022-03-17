@@ -12,7 +12,7 @@ function Header(props) {
   const history = useHistory();
 
   const setLogout = () => {
-    axios.get(process.env.REACT_APP_HOST +'/api/logout')
+    axios.get('/api/logout')
       .then(() => {
         props.isLoginChange(false);
         dispatch(ACT_USER_INFO_EXPIRE());
@@ -29,7 +29,7 @@ function Header(props) {
   const { userInfo } = useSelector(state => state.userInfo);
 
   useEffect(() => {
-    axios.get(process.env.REACT_APP_HOST +'/api/menu/getList')
+    axios.get('/api/menu/getList')
       .then((rs) => {
         setMenuList(rs.data);
       }).catch(() => {

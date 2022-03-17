@@ -18,7 +18,7 @@ function MN100(props) {
 
   const { register, watch, handleSubmit, formState: { errors } } = useForm();
   const onSubmit = (data) => {
-    axios.post(process.env.REACT_APP_HOST +'/api/login', data)
+    axios.post('/api/login', data)
       .then(function (res) {
         if (res.data.login === true) {
           console.log('로그인 성공');
@@ -57,17 +57,17 @@ function MN100(props) {
         <section className="loginHeader">
           <h1><img src={require('../imgs/logo_01.png')} alt="정예맴버로고" /><span>정예맴버 프로젝트관리시스템</span></h1>
         </section>
-        <section class="loginBody">
-          <div class="loginCharacter">
-            <div class="character">
+        <section className="loginBody">
+          <div className="loginCharacter">
+            <div className="character">
             </div>
           </div>
-          <div class="loginVisual">
+          <div className="loginVisual">
 
-            <div class="slogan">
-              <p class="txt1">손쉬운 프로젝트관리</p>
-              <p class="txt2">정예맴버</p>
-              <p class="txt2"> 프로젝트관리시스템</p>
+            <div className="slogan">
+              <p className="txt1">손쉬운 프로젝트관리</p>
+              <p className="txt2">정예맴버</p>
+              <p className="txt2"> 프로젝트관리시스템</p>
             </div>
 
           </div>
