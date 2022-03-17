@@ -14,7 +14,7 @@ function App() {
   const [isLogin, isLoginChange] = useState(false);
 
   useEffect(() => {
-    axios.get(process.env.REACT_APP_HOST  + '/api/cmmn/getSession')
+    axios.get('/api/cmmn/getSession')
       .then(res => {
         if (res.data.login === true) {
           isLoginChange(true);
