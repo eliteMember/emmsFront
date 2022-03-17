@@ -3,12 +3,26 @@ import { Link, Router, useHistory } from 'react-router-dom';
 import axios from 'axios';
 import './PO100.css';
 
-
+import './POP_PO200';
+import POP_PO200 from './POP_PO200';
 
 function PO100(props){
   
   const history = useHistory();
 
+  // useState를 사용하여 open상태를 변경한다. (open일때 true로 만들어 열리는 방식)
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const openModal = () => {
+    console.log('모달 열기');
+    setModalOpen(true);
+  };
+  const closeModal = () => {
+    console.log('모달 닫기');
+    setModalOpen(false);
+  };
+
+  //필드값
   const [fields, setFields] = useState({prjNm:''});
   const [errors, setErrors] = useState({prjNm:''});
 
@@ -56,6 +70,24 @@ function PO100(props){
     setFields(v_fields);
   }
 
+  //팀명 조회
+  const [teamList, setTeamList] = useState([]);
+
+  useEffect(() => {
+    
+    //프로젝트 팀 조회 ( DB )
+    axios.get('/api/cmmn/listTeam', {})
+        .then(function (res) {
+            console.log(res);
+            console.log(res.data);
+            setTeamList(res.data.list)
+        })
+        .catch(function (res) {
+          console.log('팀조회 실패');
+        })
+  
+  }, []);
+  
 
   return (
 
@@ -96,14 +128,18 @@ function PO100(props){
                                                       value={fields.prjNm}
                                                       onChange={handleChange}
                                                     />
+                                                    <button type="button" className="btn01" onClick={openModal}><span>프로젝트 조회</span></button>
+                                                    <POP_PO200 open={ modalOpen } close={ closeModal } header="팀 조회"></POP_PO200>
                                                     {errors && <p className="valid">{errors?.prjNm}</p>}
                                                 </td>
                                                 <th scope="row"><span className="tit">프로젝트팀</span></th>
                                                 <td className="txtL">
                                                     <select className="w250">
-                                                        <option>개발2팀</option>
-                                                        <option>개발1팀</option>
-                                                        <option>디자인1팀</option>
+                                                    {
+                                                        teamList.map((data, i)=>{
+                                                            return <option key={i} value={data.timNum} >{data.timNm}</option>
+                                                        })
+                                                    }
                                                     </select>
                                                     <button type="button" className="btn01"><span>우리팀진행</span></button>
                                                 </td>
@@ -332,6 +368,8 @@ function PO100(props){
         </div>
     )
 }
+
+
 
 
 export default PO100;
