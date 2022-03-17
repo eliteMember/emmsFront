@@ -1,8 +1,17 @@
 .buttonSt {
-    margin: 5px;
+    margin-top: 5px;
+    margin-right: 40px;
     text-align: right;
 }
 
 .trSt {
     cursor: pointer;
+}
+
+.errorLabel {
+    color: Red;
+}
+
+.objWidthSt {
+    width: 80%;
 }
