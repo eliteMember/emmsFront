@@ -19,7 +19,7 @@ function ME101(props) {
 
   // INIT
   useEffect(()=>{
-    axios.post(process.env.REACT_APP_HOST + '/api/memList', {
+    axios.post('/api/memList', {
       memRnkCd: searchRnkCd
   }).then(function (res) {
         listDataModify(res.data.list);
@@ -28,7 +28,7 @@ function ME101(props) {
 
   // 조회
   function fn_search(){
-    axios.post(process.env.REACT_APP_HOST + '/api/memList', {
+    axios.post('/api/memList', {
       memName : searchName,
       memRnkCd: searchRnkCd
   }).then(function (res) {
@@ -45,7 +45,7 @@ function ME101(props) {
 
   // GET DATA
   function fn_getMemTargetData(paramMemNum) {
-    axios.post(process.env.REACT_APP_HOST + '/api/memTargetData', {
+    axios.post('/api/memTargetData', {
       memNum: paramMemNum
     }).then(function (res) {
       console.log(res.data.value);
@@ -54,8 +54,9 @@ function ME101(props) {
 
   // ADD DATA
   const onSubmit = (data) => {
+    console.log(process.env.REACT_APP_HOST);
     console.log(data);
-    axios.post(process.env.REACT_APP_HOST + '/api/memAddData', data).then(function (res) {
+    axios.post('/api/memAddData', data).then(function (res) {
       console.log('완료');
       fn_search();
     })
