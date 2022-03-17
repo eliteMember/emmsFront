@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, lazy, useState } from "react";
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import './ME101.css';
 import '../css/daycare_user_layout.css';
 import '../css/jquery-ui.css';
-import { useSelector } from "react-redux";
+let CodeSelectOption = lazy(()=> import('../Component/CodeSelectOption.js') );
 
 function ME101(props) {
 
@@ -12,8 +12,6 @@ function ME101(props) {
   let [searchName, searchNameModify] = useState('');      // 이름 검색
   let [searchRnkCd, searchRnkCdModify] = useState('all'); // 등급 검색
   
-  const { cmmnCode } = useSelector(state => state.cmmnCode);  // 공통코드
-
   const { register, handleSubmit } = useForm();
   const [formData, formDataModify] = useState("");
 
@@ -109,10 +107,8 @@ function ME101(props) {
                           <th scope="row"><span className="tit ml30">등급</span></th>
                           <td>
                               <select className="w130  mr30" onChange={(e)=>{ searchRnkCdModify(e.target.value); }} >
-                                  <option value={'all'} >전체</option>
-                                  <option value={'3'}>고급</option>
-                                  <option value={'2'}>중급</option>
-                                  <option value={'1'}>초급</option>
+                                <option value={'all'} >전체</option>
+                                <CodeSelectOption codeGroup={'RNK_CD'} />
                               </select>
                           </td>
                       </tr>
@@ -182,12 +178,8 @@ function ME101(props) {
               <th>직위</th>
               <td>
                 <select {...register("incCd")} >
-                <option>선택</option>
-                  {
-                    cmmnCode.INC_CD.map((data, i)=>{
-                      return <option key={i} value={data.cdVal} >{data.cdNm}</option>
-                    })
-                  }
+                  <option>선택</option>
+                  <CodeSelectOption codeGroup={'INC_CD'} />
                 </select>
               </td>
             </tr>
@@ -195,23 +187,15 @@ function ME101(props) {
               <th>등급</th>
               <td>
                 <select {...register("memRnkCd")} >
-                <option>선택</option>
-                {
-                  cmmnCode.RNK_CD.map((data, i)=>{
-                    return <option key={i} value={data.cdVal} >{data.cdNm}</option>
-                  })
-                }
+                  <option>선택</option>
+                  <CodeSelectOption codeGroup={'RNK_CD'} />
                 </select>
               </td>
               <th>학력</th>
               <td>
                 <select {...register("eduCd")} >
                   <option>선택</option>
-                  {
-                    cmmnCode.EDU_CD.map((data, i)=>{
-                      return <option key={i} value={data.cdVal} >{data.cdNm}</option>
-                    })
-                  }
+                  <CodeSelectOption codeGroup={'EDU_CD'} />
                 </select>
               </td>
               <th>자격증</th>
