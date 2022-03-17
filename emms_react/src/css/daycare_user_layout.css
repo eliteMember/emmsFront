@@ -19,14 +19,14 @@
 /*레이아웃*/
 .subPage{overflow: hidden;}
 .wrapper{position: relative;overflow:hidden}
-.header{width:100%;min-width:1280px;z-index: 1;background-color:#fff;position: fixed;display: block;}
+.header{width:100%;min-width:1280px;z-index: 10;background-color:#fff;position: fixed;display: block;}
 /*.footer{width:100%;display: block;position: absolute;bottom:10px;left:50%;width:1200px;transform: translateX(-50%);}*/
 .footer{border-top:1px solid #dfdfdf;padding-top:20px;padding-bottom:20px;/*padding-bottom:165px;*/}
 .footer .inner{width:1200px;margin:0 auto;height:""}
 .footer .inner dl{display: inline-flex;}
 .footer .inner dl dt{padding-right:20px;font-weight: 500;}
 
-.mainFrame{width:100%;background:#fff;display: block;overflow:hidden;padding-top:60px;/*height:calc(100vh - (60px))*/}
+.mainFrame{width:100%;background:#fff;display: block;overflow:hidden;padding-top:80px;/*height:calc(100vh - (60px))*/}
 .subFrame{width:100%;background:#fff;display: block;overflow:hidden;padding-top:120px;/*height:calc(100vh - (60px))*/;}
 
 body.mainPage nav{display:none}

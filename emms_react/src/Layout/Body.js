@@ -18,7 +18,7 @@ function Body(props) {
     dispatch(ACT_CMMN_CODE_GETLIST({cmmnCode:cmmnCode}));
   };
   useEffect(() => {
-    axios.get('/api/code/getCode')
+    axios.get(process.env.REACT_APP_HOST + '/api/code/getCode')
       .then((rs) => {
         setCode(rs.data);
       }).catch(() => {
