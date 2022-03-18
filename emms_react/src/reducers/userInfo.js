@@ -28,12 +28,8 @@ const initialState = {
     , crtUsrNum: null
     , mdfDtm: null
     , mdfUsrNum: null
-<<<<<<< HEAD
     , timNm: null
   }
-=======
->>>>>>> 3be0b2a71697b781791ce027150d63830c9f84d6
-};
 
 const USER_INFO = (state = initialState, action) => {
   var copyUserInfo = { ...state }
