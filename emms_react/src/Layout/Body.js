@@ -4,6 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 import axios from 'axios';
 import PO100 from '../PO/PO100';
 import MN500 from '../MN/MN500';
+import MN400 from '../MN/MN400';
 import ME101 from '../ME/ME101';
 import PM101 from '../PM/PM101';
 import { useDispatch } from 'react-redux';
@@ -58,6 +59,8 @@ function Body(props) {
       <Route path="/MEMMNG"><div className='subFrame'><ME101 /></div></Route>
       {/* 문서관리 */}
       <Route path="/DOCMNG">{/* TODO */}<div className='subFrame'>문서관리</div></Route>
+      {/* 사용자관리 */}
+      <Route path="/MN400">{/* TODO */}<div className='subFrame'><MN400/></div></Route>
       {/* 예외상황 */}
       <Route path="/:id">{/* TODO */}<div className='subFrame'>error</div></Route>
     </Switch>
