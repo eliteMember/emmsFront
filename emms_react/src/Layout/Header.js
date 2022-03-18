@@ -20,6 +20,7 @@ function Header(props) {
       .then(() => {
         props.isLoginChange(false);
         dispatch(ACT_USER_INFO_EXPIRE());
+        history.push('/LOGIN');
       }).catch(() => {
         alert("로그아웃 시도 중 오류가 발생하였습니다.");
       })

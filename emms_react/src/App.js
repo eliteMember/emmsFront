@@ -1,6 +1,6 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react';
 import axios from 'axios';
-import { Route, Switch,useHistory } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import MN200 from './MN/MN200.js';
 
 let Header = lazy(() => { return import('./Layout/Header.js') });
@@ -40,10 +40,8 @@ function App() {
 }
 
 function LoginOrMainControl(props) {
-  const history = useHistory();
   //로그인 후
   if (props.isLogin === true) {
-    history.push('/MAIN')
     return (
         <Suspense fallback={<div>로딩중</div>}>
           <div className="subPage">
@@ -57,7 +55,6 @@ function LoginOrMainControl(props) {
     )
     //로그인 페이지
   } else if (props.isLogin === false) {
-    history.push('/LOGIN')
     return (
       <>
         <Suspense fallback={<div>로딩중</div>}>

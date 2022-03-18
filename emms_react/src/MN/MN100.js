@@ -5,7 +5,7 @@ import './MN100.css';
 
 import { ACT_USER_INFO_UPDATE } from "../reducers/userInfo";
 import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link,useHistory } from 'react-router-dom';
 
 function MN100(props) {
 
@@ -16,6 +16,8 @@ function MN100(props) {
     dispatch(ACT_USER_INFO_UPDATE({userInfo}));
   };
 
+  const history = useHistory();
+
   const { register, watch, handleSubmit, formState: { errors } } = useForm();
   const onSubmit = (data) => {
     axios.post('/api/login', data)
@@ -24,7 +26,7 @@ function MN100(props) {
           console.log('로그인 성공');
           setUser(res.data.loginVO);
           props.isLoginChange(true);
-
+          history.push('/MAIN');
           //alert('로그인 성공');
           //history.push('/');
 
