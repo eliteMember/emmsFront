@@ -9,7 +9,6 @@ export const ACT_USER_INFO_EXPIRE = userInfo => ({ type: EXPIRE, payload: userIn
 
 //선언된 사용자정보의 초기값
 const initialState = {
-  userInfo: {
     usrNum: null
     , usrName: null
     , usrBirMd: null
@@ -29,14 +28,15 @@ const initialState = {
     , crtUsrNum: null
     , mdfDtm: null
     , mdfUsrNum: null
+    , timNm: null
   }
-};
 
 const USER_INFO = (state = initialState, action) => {
   var copyUserInfo = { ...state }
   switch (action.type) {
     case UPDATE:
-      copyUserInfo = action.payload;
+      console.log(action.payload.userInfo);
+      copyUserInfo = action.payload.userInfo;
       return copyUserInfo;
 
     case EXPIRE:

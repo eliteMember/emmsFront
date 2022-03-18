@@ -34,7 +34,7 @@ function MN400(){
             value : e.target.value,
             defaultValue : e.target.defaultValue
             })
-            return callAxios();
+            return setupdate();
         }
     })
     
@@ -44,6 +44,7 @@ function MN400(){
             .then((rs) =>{
                 setusr(rs.data.USR);
                 console.log(rs.data.USR);
+                alert('변경 성공');
             }).catch(() => {
                 alert("업데이트 실패");
             })
@@ -61,17 +62,56 @@ function MN400(){
     const col4 = {width:'auto'};
 
     return(
-        <div className='subWrap'>
-            <div className='inner'>
-                <div className="popCont">
-                    <div className="inner oh">
-                        <div className="tbTabWrap">
-                            <div className="tabCont mt20" id="tab01" style={tabCont}>
-                                <div className="gridUtil">
-                                    <div className="fl">
-                                        <h3 className="title">사용자관리</h3>
-                                    </div>
-                                </div> 
+        <div class="subWrap">
+        <div class="inner mt10">
+
+            <section>
+                <div class="gridUtil">
+                    <div class="fl">
+                        <div class="tb01">
+                            <table>
+                                <colgroup>
+                                    <col style={col4}/>
+                                    <col style={col4}/>
+                                    <col style={col4}/>
+                                    <col style={col4}/>
+                                    <col style={col4}/>
+                                    <col style={col4}/>
+                                </colgroup>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row"><span class="tit">성명</span></th>
+                                        <td>
+                                            <input type="text" value="" class="w130"/>
+                                        </td>
+                                        <th scope="row"><span class="tit ml30">등급</span></th>
+                                        <td>
+                                            <select class="w130  mr30">
+                                                <option>전체</option>
+                                                <option>특급</option>
+                                                <option>고급</option>
+                                                <option>중급</option>
+                                                <option>초급</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                    <div class="fr">
+                        <button type="button" class="btn01"><i class="ic_search"></i><span>조회</span></button>
+                    </div>
+                </div>
+
+                <div class="hr20"></div>
+
+                <div class="gridUtil">
+                    <div class="fl">
+                        <p class="txtGuide">신규사용자를 등록하거나 비밀번호 초기화 및 사용자 상세정보를 수정할 수 있습니다. </p>
+                    </div>
+                </div>
                                 <div className="gridWrap">
                                     <div className="tb02">
                                         <table style={table}>
@@ -92,7 +132,6 @@ function MN400(){
                                             <thead>
                                                 <tr>
                                                     <th scope="col">번호</th>
-                                                    <th scope="col" rowspan="1"><span class="customForm"><input type="checkbox" id="checkAll"/><label for="checkAll"></label></span></th>
                                                     <th scope="col">아이디</th>
                                                     <th scope="col">이름</th>
                                                     <th scope="col">생년월일</th>
@@ -112,7 +151,6 @@ function MN400(){
                                                         ?
                                                         <tr key={i}>
                                                             <td className="txtC">{i+1}</td>
-                                                            <td class="txtC"><span class="customForm"><input type="checkbox" id={"check0"+(i+1)}/><label for={"check0"+(i+1)}></label></span></td>
                                                             <td className="txtC">{usrList.loginId}</td>
                                                             <td className="txtC">{usrList.usrName}</td>
                                                             <td className="txtC">{usrList.usrBirMd}</td>
@@ -130,15 +168,14 @@ function MN400(){
                                                         :  
                                                         <tr key={i}>
                                                             <td className="txtC">{i+1}</td>
-                                                            <td class="txtC"><span class="customForm"><input type="checkbox" id={"check0"+(i+1)}/><label for={"check0"+(i+1)}></label></span></td>
-                                                            <td className="txtC"><input id={usrList.usrNum} name="loginId" defaultValue={usrList.loginId} onKeyPress={onChange}></input></td>
-                                                            <td className="txtC"><input id={usrList.usrNum} name="USR_NAME" defaultValue={usrList.usrName} onKeyPress={onChange}></input></td>
-                                                            <td className="txtC"><input id={usrList.usrNum} name="usrBirMd" defaultValue={usrList.usrBirMd} onKeyPress={onChange}></input></td>
-                                                            <td className="txtC"><input id={usrList.usrNum} name="incCd" defaultValue={usrList.incCd} onKeyPress={onChange}></input></td>
-                                                            <td className="txtC"><input id={usrList.usrNum} name="apoCd" defaultValue={usrList.apoCd} onKeyPress={onChange}></input></td>
-                                                            <td className="txtC"><input id={usrList.usrNum} name="usrEmail"  defaultValue={usrList.usrEmail} onKeyPress={onChange}></input></td>
-                                                            <td className="txtC"><input id={usrList.usrNum} name="usrTelNum" defaultValue={usrList.usrTelNum} onKeyPress={onChange}></input></td>
-                                                            <td className="txtC"><input id={usrList.usrNum} name="timNum" defaultValue={usrList.timNum} onKeyPress={onChange}></input></td>
+                                                            <td className="txtC"><input id={usrList.usrNum} name="LOGIN_ID" defaultValue={usrList.loginId} onChange={onChange} onKeyPress={callAxios}></input></td>
+                                                            <td className="txtC"><input id={usrList.usrNum} name="USR_NAME" defaultValue={usrList.usrName} onChange={onChange} onKeyPress={callAxios}></input></td>
+                                                            <td className="txtC"><input id={usrList.usrNum} name="USR_BIR_MD" defaultValue={usrList.usrBirMd} onChange={onChange} onKeyPress={callAxios}></input></td>
+                                                            <td className="txtC"><input id={usrList.usrNum} name="INC_CD" defaultValue={usrList.incCd} onChange={onChange} onKeyPress={callAxios}></input></td>
+                                                            <td className="txtC"><input id={usrList.usrNum} name="APO_CD" defaultValue={usrList.apoCd} onChange={onChange} onKeyPress={callAxios}></input></td>
+                                                            <td className="txtC"><input id={usrList.usrNum} name="USR_EMAIL"  defaultValue={usrList.usrEmail} onChange={onChange} onKeyPress={callAxios}></input></td>
+                                                            <td className="txtC"><input id={usrList.usrNum} name="USR_TEL_NUM" defaultValue={usrList.usrTelNum} onChange={onChange} onKeyPress={callAxios}></input></td>
+                                                            <td className="txtC"><input id={usrList.usrNum} name="TIM_NUM" defaultValue={usrList.timNum} onChange={onChange} onKeyPress={callAxios}></input></td>
                                                             {
                                                             usrList.joinYn === 'Y'
                                                             ?<td>가입완료</td>
@@ -175,13 +212,19 @@ function MN400(){
                                         </div>
                                     : null
                                 }
-                                
+                             </section>
+                             <div class="gridUtilBottom">
+                                <div class="fr">
+                                    <button type="button" class="btn04"><span>신규등록</span></button>
+                                    <button type="button" class="btn08"><span>수정</span></button>
+                                    <button type="button" class="btn01"><span>저장</span></button>
+                                    <button type="button" class="btn02"><span>취소</span></button>
+                                    <button type="button" class="btn03"><span>삭제</span></button>
+                                </div>
                             </div>
-                        </div>
                     </div>
-                </div>
-            </div>
-        </div>
+                    </div>
+        
    );
 }
 

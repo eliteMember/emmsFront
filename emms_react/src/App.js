@@ -27,7 +27,7 @@ function App() {
   }, [])
 
   useEffect(() => {
-    isLogin === true? history.push('/MAIN') : history.push('/LOGIN')
+    if(isLogin === false) history.push('/LOGIN')
   })
 
   return (

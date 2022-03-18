@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from 'react';
+import { React, useState, useEffect, lazy } from 'react';
 import { Link, Router, useHistory } from 'react-router-dom';
 import axios from 'axios';
 import './PO100.css';
@@ -6,11 +6,19 @@ import './PO100.css';
 import './POP_PO200';
 import POP_PO200 from './POP_PO200';
 
+import DatePicker, { registerLocale } from "react-datepicker";
+import {ko} from 'date-fns/esm/locale';
+import "react-datepicker/dist/react-datepicker.css";
+registerLocale('ko',ko);
+
+let CodeSelectOption = lazy(()=> import('../Component/CodeSelectOption.js') );
+
 function PO100(props){
   
   const history = useHistory();
 
-  // useState를 사용하여 open상태를 변경한다. (open일때 true로 만들어 열리는 방식)
+  //////////////////////////////////////////////////////////////////////////////////
+  // 모달 useState를 사용하여 open상태를 변경한다. (open일때 true로 만들어 열리는 방식)
   const [modalOpen, setModalOpen] = useState(false);
 
   const openModal = () => {
@@ -22,9 +30,52 @@ function PO100(props){
     setModalOpen(false);
   };
 
+  //////////////////////////////////////////////////////////////////////////////////
   //필드값
-  const [fields, setFields] = useState({prjNm:''});
-  const [errors, setErrors] = useState({prjNm:''});
+  const [fields, setFields] = useState({
+      prjNewOrOld : 'new'
+    , prjNum	  : ''  //프로젝트번호
+	, prjNm       : ''  //프로젝트명
+	, prjDivCd    : ''  //프로젝트구분코드
+	, prjStsCd    : ''  //프로젝트상태코드
+    , prjStartYm  : ''  //프로젝트시작년월
+	, prjEndYm    : ''  //프로젝트종료년월
+	, prjNom      : ''  //프로젝트개월수
+	, prjPlcNm    : ''  //프로젝트장소명
+	, prjRefCmt   : ''  //프로젝트참조내용
+	, timNum      : ''  //팀번호
+	//, dscPer      : ''  //할인율
+	//, estAmt      : ''  //견적금액
+	//, pmtMtdCd    : ''  //결제방식코드
+	//, delYn       : ''  //삭제여부
+	//, crtDtm      : ''  //등록일시
+	//, crtUsrNum   : ''  //등록사용자번호
+	//, mdfDtm      : ''  //수정일시
+	//, mdfUsrNum   : ''  //수정사용자번호
+    });
+  const [errors, setErrors] = useState({
+      prjNewOrOld : 'new'
+    , prjNum	  : ''  //프로젝트번호
+	, prjNm       : ''  //프로젝트명
+	, prjDivCd    : ''  //프로젝트구분코드
+	, prjStsCd    : ''  //프로젝트상태코드
+    , prjStartYm  : ''  //프로젝트시작년월
+	, prjEndYm    : ''  //프로젝트종료년월
+	, prjNom      : ''  //프로젝트개월수
+	, prjPlcNm    : ''  //프로젝트장소명
+	, prjRefCmt   : ''  //프로젝트참조내용
+	, timNum      : ''  //팀번호
+	//, dscPer      : ''  //할인율
+	//, estAmt      : ''  //견적금액
+	//, pmtMtdCd    : ''  //결제방식코드
+	//, delYn       : ''  //삭제여부
+	//, crtDtm      : ''  //등록일시
+	//, crtUsrNum   : ''  //등록사용자번호
+	//, mdfDtm      : ''  //수정일시
+	//, mdfUsrNum   : ''  //수정사용자번호
+  });
+
+
 
   const handleChange = event => {
     const { name, value } = event.target;
@@ -32,7 +83,6 @@ function PO100(props){
     v_fields[name] = value;
     setFields(v_fields);
   }
-
   //submit 처리
   const onSubmitHandle = (e) => {
     e.preventDefault();
@@ -40,8 +90,6 @@ function PO100(props){
           alert("htmlForm submitted");
       }
   }
-
-
   //유효성 검사
   const validatehtmlForm = () => {
 
@@ -53,11 +101,36 @@ function PO100(props){
       htmlFormIsValid = false;
       errors["prjNm"] = "*프로젝트명을 입력하세요.";
     }
+    if (!v_fields["timNum"]) {
+        htmlFormIsValid = false;
+        errors["timNum"] = "*팀을 선택해주세요.";
+    }
+    if (!v_fields["prjDivCd"]) {
+        htmlFormIsValid = false;
+        errors["prjDivCd"] = "*프로젝트구분을 선택해주세요.";
+    }
+    if (!v_fields["prjStsCd"]) {
+        htmlFormIsValid = false;
+        errors["prjStsCd"] = "*프로젝트상태을 선택해주세요.";
+    }
+    if (!v_fields["prjStartYm"]) {
+        htmlFormIsValid = false;
+        errors["prjStartYm"] = "*프로젝트기간 시작년월을 입력하세요.";
+    }
+    if (!v_fields["prjEndYm"]) {
+        htmlFormIsValid = false;
+        errors["prjEndYm"] = "*프로젝트기간 종료년월을 입력하세요.";
+    }
+    if (!v_fields["prjPlcNm"]) {
+        htmlFormIsValid = false;
+        errors["prjPlcNm"] = "*프로젝트장소를 입력하세요.";
+    }
 
     setErrors(errors);
     return htmlFormIsValid;
   }
 
+  //////////////////////////////////////////////////////////////////////////////////
   //프로젝트 초기화, 신규 프로젝트 입력
   const resetPrj = () =>{
      let v_fields = {...fields};
@@ -70,9 +143,12 @@ function PO100(props){
     setFields(v_fields);
   }
 
+  //////////////////////////////////////////////////////////////////////////////////
   //팀명 조회
   const [teamList, setTeamList] = useState([]);
 
+  //////////////////////////////////////////////////////////////////////////////////
+  // useEffect
   useEffect(() => {
     
     //프로젝트 팀 조회 ( DB )
@@ -88,6 +164,17 @@ function PO100(props){
   
   }, []);
   
+
+  //////////////////////////////////////////////////////////////////////////////////
+  //datepicker, 프로젝트기간
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  useEffect(() => {
+    let v_fields = {...fields};
+    v_fields['prjStartYm'] = startDate;
+    v_fields['prjEndYm'] = endDate;
+    setFields(v_fields);
+  }, [startDate, endDate]);
 
   return (
 
@@ -112,7 +199,9 @@ function PO100(props){
                               <form id="prjInfoForm" name="prjInfoForm" onSubmit={onSubmitHandle}>
 
                                 <div className="abTR">
-                                    <button type="button" className="btn05 borderC2"><i className="ic_reset"></i><span>초기화</span></button>
+                                    <button type="button" className="btn05 borderC2" onClick={openModal}><i className="ic_search_gray"></i><span>프로젝트 조회</span></button>
+                                    <POP_PO200 open={ modalOpen } close={ closeModal } header="프로젝트 조회"></POP_PO200>
+                                    <button type="button" className="btn05 borderC2"><i className="ic_new"></i><span>신규</span></button>
                                 </div>
                                 <div className="tb03">
                                     <table>
@@ -128,13 +217,12 @@ function PO100(props){
                                                       value={fields.prjNm}
                                                       onChange={handleChange}
                                                     />
-                                                    <button type="button" className="btn01" onClick={openModal}><span>프로젝트 조회</span></button>
-                                                    <POP_PO200 open={ modalOpen } close={ closeModal } header="팀 조회"></POP_PO200>
                                                     {errors && <p className="valid">{errors?.prjNm}</p>}
                                                 </td>
                                                 <th scope="row"><span className="tit">프로젝트팀</span></th>
                                                 <td className="txtL">
-                                                    <select className="w250">
+                                                    <select className="w250" id="timNum" name="timNum" onChange={handleChange}>
+                                                    <option>선택</option>
                                                     {
                                                         teamList.map((data, i)=>{
                                                             return <option key={i} value={data.timNum} >{data.timNm}</option>
@@ -142,6 +230,8 @@ function PO100(props){
                                                     }
                                                     </select>
                                                     <button type="button" className="btn01"><span>우리팀진행</span></button>
+                                                    <button type="button" className="btn01"><span>프로젝트 이관</span></button>
+                                                    {errors && <p className="valid">{errors?.timNum}</p>}
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -154,42 +244,55 @@ function PO100(props){
                                             <tr>
                                                 <th scope="row"><span className="tit">프로젝트 구분</span></th>
                                                 <td className="txtL">
-                                                    <select className="w110">
-                                                        <option>하도급</option>
-                                                        <option>내부프로젝트</option>
-                                                        <option>수의계약</option>
-                                                        <option>용역계약</option>
+                                                    <select className="w110" id="prjDivCd" name="prjDivCd" onChange={handleChange}>
+                                                        <option>선택</option>
+                                                        <CodeSelectOption codeGroup={'PRJ_DIV_CD'} />
                                                     </select>
+                                                    {errors && <p className="valid">{errors?.prjDivCd}</p>}
                                                 </td>
                                                 <th scope="row"><span className="tit">프로젝트 상태</span></th>
                                                 <td className="txtL" colSpan="">
-                                                    <select className="w110">
-                                                        <option>예정</option>
-                                                        <option>제안</option>
-                                                        <option>분석</option>
-                                                        <option>설계</option>
-                                                        <option>개발</option>
-                                                        <option>테스트</option>
-                                                        <option>유지보수</option>
-                                                        <option>종료</option>
+                                                    <select className="w110" id="prjStsCd" name="prjStsCd" onChange={handleChange}>
+                                                    <option>선택</option>
+                                                        <CodeSelectOption codeGroup={'PRJ_STS_CD'} />
                                                     </select>
+                                                    {errors && <p className="valid">{errors?.prjStsCd}</p>}
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <th scope="row"><span className="tit">프로젝트 기간</span></th>
                                                 <td className="txtL" colSpan="3">
-                                                    <span className="datepickerBox"><input type="text" placeholder="2022-03-20"/></span>
+                                                    <span className="datepickerBox">
+                                                        {/* <input type="text" id="prjStartYm" name="prjStartYm" placeholder="2022-03" value={fields.prjStartYm} onChange={handleChange}/> */}
+                                                        <DatePicker
+                                                            dateFormat="yyyy-MM"
+                                                            selected={startDate}
+                                                            onChange={date=>setStartDate(date)}
+                                                            locale={ko}
+                                                        />
+                                                    </span>
                                                     ~
-                                                    <span className="datepickerBox"><input type="text" placeholder="2022-10-31"/></span>
-                                                    <input type="text" className="w50 ml30 mr5"/>년
-                                                    <input type="text" className="w50 ml10 mr5"/>개월
+                                                    <span className="datepickerBox">
+                                                        {/* <input type="text" id="prjEndYm" name="prjEndYm" placeholder="2022-12" value={fields.prjEndYm} onChange={handleChange}/> */}
+                                                        <DatePicker
+                                                            dateFormat="yyyy-MM"
+                                                            selected={endDate}
+                                                            onChange={date=>setEndDate(date)}
+                                                            locale={ko}
+                                                        />
+                                                    </span>
+
+                                                    <input type="text" className="w50 ml30 mr5" id="prjNomYear"  name="prjNomYear"  readOnly/>년
+                                                    <input type="text" className="w50 ml10 mr5" id="prjNomMonth" name="prjNomMonth" readOnly/>개월
+                                                    {errors && <p className="valid">{errors?.prjYm}</p>}
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <th scope="row"><span className="tit">프로젝트 장소</span></th>
                                                 <td className="txtL" colSpan="3">
-                                                    <input type="text" />
-                                                    <button type="button" className="btn02s"><i className="ic_search_blue"></i></button>
+                                                    <input type="text" className='w250' value={fields.prjPlcNm} onChange={handleChange}/>
+                                                    {/* <button type="button" className="btn02s"><i className="ic_search_blue"></i></button> */}
+                                                    {errors && <p className="valid">{errors?.prjPlcNm}</p>}
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -279,13 +382,8 @@ function PO100(props){
 
                                                                     <div className="txtL mb10">
                                                                         <select className="w110">
-                                                                            <option>제안요청서</option>
-                                                                            <option>제안서</option>
-                                                                            <option>견적서</option>
-                                                                            <option>공수표</option>
-                                                                            <option>원가표</option>
-                                                                            <option>산출물</option>
-                                                                            <option>기타첨부</option>
+                                                                            <option>선택</option>
+                                                                            <CodeSelectOption codeGroup={'DOC_CLS_CD'} />
                                                                         </select>
                                                                         <span className="filebox ml5"> 
                                                                             <input type="file" id="file"/> 
