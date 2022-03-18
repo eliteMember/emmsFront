@@ -13,7 +13,7 @@ function MN100(props) {
   const dispatch = useDispatch();
 
   const setUser = (userInfo) => {
-    dispatch(ACT_USER_INFO_UPDATE({ userInfo: userInfo }));
+    dispatch(ACT_USER_INFO_UPDATE({userInfo}));
   };
 
   const { register, watch, handleSubmit, formState: { errors } } = useForm();
@@ -22,7 +22,7 @@ function MN100(props) {
       .then(function (res) {
         if (res.data.login === true) {
           console.log('로그인 성공');
-          setUser(res.data.tbUsrMstVo);
+          setUser(res.data.loginVO);
           props.isLoginChange(true);
 
           //alert('로그인 성공');
@@ -99,7 +99,7 @@ function MN100(props) {
                 </div>
 
                 <div className="slogan">
-                  <p className="mt15 bold"><Link to="/MN100_1" className="btnMore2"><span>회원가입</span></Link></p>
+                  <p className="mt15 bold"><Link to="/MN200" className="btnMore2"><span>회원가입</span></Link></p>
                 </div>
                 <div className="mt20 txtC">
                   <button type="submit" className="btnBig"><span className="ic_login_key">로그인</span></button>

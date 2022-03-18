@@ -1,7 +1,7 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react';
 import axios from 'axios';
 import { Route, Switch,useHistory } from 'react-router-dom';
-import MN100_1 from './MN/MN100_1.js';
+import MN200 from './MN/MN200.js';
 
 let Header = lazy(() => { return import('./Layout/Header.js') });
 let Body = lazy(() => { return import('./Layout/Body.js') });
@@ -10,8 +10,7 @@ let MN100 = lazy(() => { return import('./MN/MN100.js') });
 
 function App() {
 
-  const [isLogin, isLoginChange] = useState(false); 
-  const history = useHistory();
+  const [isLogin, isLoginChange] = useState(false);
 
   useEffect(() => {
     axios.get('/api/cmmn/getSession')
@@ -26,15 +25,11 @@ function App() {
       })
   }, [])
 
-  useEffect(() => {
-    isLogin === true? history.push('/MAIN') : history.push('/LOGIN')
-  })
-
   return (
     <div className="App">
       <Switch>
-        <Route path="/MN100_1" >
-          <MN100_1/>
+      <Route path="/MN200" >
+          <MN200/>
         </Route>
         <Route path="/">
           <LoginOrMainControl isLogin={isLogin} isLoginChange={isLoginChange} />
@@ -45,8 +40,10 @@ function App() {
 }
 
 function LoginOrMainControl(props) {
+  const history = useHistory();
   //로그인 후
   if (props.isLogin === true) {
+    history.push('/MAIN')
     return (
         <Suspense fallback={<div>로딩중</div>}>
           <div className="subPage">
@@ -60,6 +57,7 @@ function LoginOrMainControl(props) {
     )
     //로그인 페이지
   } else if (props.isLogin === false) {
+    history.push('/LOGIN')
     return (
       <>
         <Suspense fallback={<div>로딩중</div>}>
