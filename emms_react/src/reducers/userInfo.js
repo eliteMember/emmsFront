@@ -29,6 +29,7 @@ const initialState = {
     , crtUsrNum: null
     , mdfDtm: null
     , mdfUsrNum: null
+    , timNm: null
   }
 };
 

@@ -22,7 +22,7 @@ function MN100(props) {
       .then(function (res) {
         if (res.data.login === true) {
           console.log('로그인 성공');
-          setUser(res.data.tbUsrMstVo);
+          setUser(res.data.loginVO);
           props.isLoginChange(true);
 
           //alert('로그인 성공');
