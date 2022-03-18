@@ -1,16 +1,27 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import './MN500.css';
 import MN500_TAB1 from './MN500_TAB1.js';
 import MN500_TAB2 from './MN500_TAB2.js';
 import MN500_TAB3 from './MN500_TAB3.js';
+import { ACT_SUB_MENU_LIST_UPDATE } from "../reducers/subMenuList";
+import { ACT_SUB_MENU_OVER_UPDATE } from "../reducers/subMenuOver";
+import { ACT_SUB_MENU_CLICK_UPDATE } from "../reducers/subMenuClick";
+import { ACT_SUB_MENU_CLICK_LIST_UPDATE } from "../reducers/subMenuClickList";
 
 function MN500(props) {
-
+  const dispatch = useDispatch();
   const history = useHistory();
 
   const [contents, setContents] = useState('MN500_TAB1');
+  useEffect(() => {
+    dispatch(ACT_SUB_MENU_LIST_UPDATE(null));
+    dispatch(ACT_SUB_MENU_OVER_UPDATE(null));
+    dispatch(ACT_SUB_MENU_CLICK_UPDATE(null));
+    dispatch(ACT_SUB_MENU_CLICK_LIST_UPDATE(null));
+  }, [dispatch])
 
   return (
     <div className="mainPage">
