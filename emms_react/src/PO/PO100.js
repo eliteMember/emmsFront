@@ -1,8 +1,9 @@
 import { React, useState, useEffect, lazy } from 'react';
 import { Link, Router, useHistory } from 'react-router-dom';
 import axios from 'axios';
-import './PO100.css';
+import { useDispatch, useSelector } from "react-redux";
 
+import './PO100.css';
 import './POP_PO200';
 import POP_PO200 from './POP_PO200';
 
@@ -30,6 +31,9 @@ function PO100(props){
     setModalOpen(false);
   };
 
+
+  const userInfo = useSelector(state => state.userInfo);
+
   //////////////////////////////////////////////////////////////////////////////////
   //필드값
   const [fields, setFields] = useState({
@@ -41,6 +45,8 @@ function PO100(props){
     , prjStartYm  : ''  //프로젝트시작년월
 	, prjEndYm    : ''  //프로젝트종료년월
 	, prjNom      : ''  //프로젝트개월수
+    , prjNomYear  : ''  //프로젝트개월수, 년
+    , prjNomMonth : ''  //프로젝트개월수, 월
 	, prjPlcNm    : ''  //프로젝트장소명
 	, prjRefCmt   : ''  //프로젝트참조내용
 	, timNum      : ''  //팀번호
@@ -52,6 +58,9 @@ function PO100(props){
 	//, crtUsrNum   : ''  //등록사용자번호
 	//, mdfDtm      : ''  //수정일시
 	//, mdfUsrNum   : ''  //수정사용자번호
+    , copInfo1     : [{copSeqNum: null, copDivCd:'1', copNm:'', copMgrName:'', copMgrCtt:''}]   //고객사 담당자 정보
+    , copInfo2     : [{copSeqNum: null, copDivCd:'2', copNm:'', copMgrName:'', copMgrCtt:''}]
+    , copInfo3     : [{copSeqNum: null, copDivCd:'3', copNm:'', copMgrName:'', copMgrCtt:''}]
     });
   const [errors, setErrors] = useState({
       prjNewOrOld : 'new'
@@ -59,8 +68,7 @@ function PO100(props){
 	, prjNm       : ''  //프로젝트명
 	, prjDivCd    : ''  //프로젝트구분코드
 	, prjStsCd    : ''  //프로젝트상태코드
-    , prjStartYm  : ''  //프로젝트시작년월
-	, prjEndYm    : ''  //프로젝트종료년월
+    , prjYm       : ''  //프로젝트기간
 	, prjNom      : ''  //프로젝트개월수
 	, prjPlcNm    : ''  //프로젝트장소명
 	, prjRefCmt   : ''  //프로젝트참조내용
@@ -74,8 +82,6 @@ function PO100(props){
 	//, mdfDtm      : ''  //수정일시
 	//, mdfUsrNum   : ''  //수정사용자번호
   });
-
-
 
   const handleChange = event => {
     const { name, value } = event.target;
@@ -113,13 +119,12 @@ function PO100(props){
         htmlFormIsValid = false;
         errors["prjStsCd"] = "*프로젝트상태을 선택해주세요.";
     }
-    if (!v_fields["prjStartYm"]) {
+    if (!v_fields["prjStartYm"] || !v_fields["prjEndYm"]) {
         htmlFormIsValid = false;
-        errors["prjStartYm"] = "*프로젝트기간 시작년월을 입력하세요.";
-    }
-    if (!v_fields["prjEndYm"]) {
+        errors["prjYm"] = "*프로젝트기간을 입력하세요.";
+    }else if (v_fields["prjStartYm"] > v_fields["prjEndYm"]) {
         htmlFormIsValid = false;
-        errors["prjEndYm"] = "*프로젝트기간 종료년월을 입력하세요.";
+        errors["prjYm"] = "*프로젝트 시작년월이 종료년월보다 클 수 없습니다.";
     }
     if (!v_fields["prjPlcNm"]) {
         htmlFormIsValid = false;
@@ -146,11 +151,9 @@ function PO100(props){
   //////////////////////////////////////////////////////////////////////////////////
   //팀명 조회
   const [teamList, setTeamList] = useState([]);
-
   //////////////////////////////////////////////////////////////////////////////////
   // useEffect
   useEffect(() => {
-    
     //프로젝트 팀 조회 ( DB )
     axios.get('/api/cmmn/listTeam', {})
         .then(function (res) {
@@ -161,8 +164,13 @@ function PO100(props){
         .catch(function (res) {
           console.log('팀조회 실패');
         })
-  
   }, []);
+  //우리팀진행 선택
+  function setMyteamSelect(){
+    let v_fields = {...fields};
+    v_fields['timNum']  = userInfo.timNum == null ? '':userInfo.timNum  //팀번호
+    setFields(v_fields);
+  }
   
 
   //////////////////////////////////////////////////////////////////////////////////
@@ -171,10 +179,95 @@ function PO100(props){
   const [endDate, setEndDate] = useState(null);
   useEffect(() => {
     let v_fields = {...fields};
-    v_fields['prjStartYm'] = startDate;
-    v_fields['prjEndYm'] = endDate;
+    
+    if( startDate != null ){
+        v_fields['prjStartYm']  = toStringByFormattingMonth(startDate);
+    }
+    if( endDate != null ){
+        v_fields['prjEndYm']  = toStringByFormattingMonth(endDate);
+    }
+
+    if( startDate != null && endDate != null ){
+        
+        let returnMonthDiff = monthDiff(startDate, endDate);
+        v_fields['prjNom'] = returnMonthDiff; //프로젝트 개월수 등록
+        
+        let prjNomYear = parseInt(returnMonthDiff/12);
+        let prjNomMonth = parseInt(returnMonthDiff-(prjNomYear*12));
+
+        v_fields['prjNomYear'] = prjNomYear;
+        v_fields['prjNomMonth'] = prjNomMonth;
+    }
+
     setFields(v_fields);
   }, [startDate, endDate]);
+
+
+  //월차이 계산
+  function monthDiff(d1, d2) {
+    var months;
+    months = (d2.getFullYear() - d1.getFullYear()) * 12;
+    months -= d1.getMonth();
+    months += d2.getMonth();
+    return months <= 0 ? 0 : months;
+  }
+
+  //월이 1자리 일 경우 앞에 0
+  function leftPad(value) { 
+      if (value >= 10) { 
+          return value; 
+      } 
+      return `0${value}`; 
+  } 
+  //dateFormat - 년,월
+  function toStringByFormattingMonth(source, delimiter = '-') { 
+    const year = source.getFullYear(); const month = leftPad(source.getMonth() + 1);
+    return [year, month].join(delimiter); 
+  }
+  //dateFormat - 년,월,일
+  function toStringByFormattingDay(source, delimiter = '-') { 
+      const year = source.getFullYear(); const month = leftPad(source.getMonth() + 1); const day = leftPad(source.getDate()); 
+      return [year, month, day].join(delimiter); 
+  }
+
+
+  //////////////////////////////////////////////
+  // 고객사 추가
+  const [corp1ChkList, setCorp1ChkList] = useState([]);
+  const corp1ChangeHanle = (e) => {
+    if (e.target.checked) {
+        setCorp1ChkList([...corp1ChkList, e.target.value]);
+     } else {
+        setCorp1ChkList(corp1ChkList.filter((checkedId) => checkedId !== e.target.value));
+     }
+  }
+
+  const addCopTR = () => {
+    let v_fields = {...fields};
+    let v_copInfo1 = v_fields['copInfo1']
+    v_copInfo1.push({copSeqNum: null, copDivCd:'1', copNm:'', copMgrName:'', copMgrCtt:''});
+    v_fields['copInfo1'] = v_copInfo1;
+
+    setFields(v_fields);
+  }
+  // 고객사 삭제
+  const delCopTR = (e) => {
+    let v_fields = {...fields};
+    let v_copInfo1 = v_fields['copInfo1']
+    
+    //v_copInfo1 for(){
+    //    v_copInfo1.delete(index == index)
+   //}
+
+    // fields.copInfo1.map((element, index) => (
+    //     console.log(index)
+    //     //v_copInfo1.slice
+
+    //     v_copInfo1.del
+
+    // ));
+    
+  }
 
   return (
 
@@ -201,7 +294,7 @@ function PO100(props){
                                 <div className="abTR">
                                     <button type="button" className="btn05 borderC2" onClick={openModal}><i className="ic_search_gray"></i><span>프로젝트 조회</span></button>
                                     <POP_PO200 open={ modalOpen } close={ closeModal } header="프로젝트 조회"></POP_PO200>
-                                    <button type="button" className="btn05 borderC2"><i className="ic_new"></i><span>신규</span></button>
+                                    <button type="button" className="btn05 borderC2" onClick={resetPrj}><i className="ic_new"></i><span>신규</span></button>
                                 </div>
                                 <div className="tb03">
                                     <table>
@@ -221,7 +314,7 @@ function PO100(props){
                                                 </td>
                                                 <th scope="row"><span className="tit">프로젝트팀</span></th>
                                                 <td className="txtL">
-                                                    <select className="w250" id="timNum" name="timNum" onChange={handleChange}>
+                                                    <select className="w250" id="timNum" name="timNum" onChange={handleChange} value={fields.timNum} >
                                                     <option>선택</option>
                                                     {
                                                         teamList.map((data, i)=>{
@@ -229,7 +322,7 @@ function PO100(props){
                                                         })
                                                     }
                                                     </select>
-                                                    <button type="button" className="btn01"><span>우리팀진행</span></button>
+                                                    <button type="button" className="btn01" onClick={setMyteamSelect}><span>우리팀진행</span></button>
                                                     <button type="button" className="btn01"><span>프로젝트 이관</span></button>
                                                     {errors && <p className="valid">{errors?.timNum}</p>}
                                                 </td>
@@ -269,6 +362,7 @@ function PO100(props){
                                                             selected={startDate}
                                                             onChange={date=>setStartDate(date)}
                                                             locale={ko}
+                                                            value={fields.prjStartYm}
                                                         />
                                                     </span>
                                                     ~
@@ -279,11 +373,12 @@ function PO100(props){
                                                             selected={endDate}
                                                             onChange={date=>setEndDate(date)}
                                                             locale={ko}
+                                                            value={fields.prjEndYm}
                                                         />
                                                     </span>
 
-                                                    <input type="text" className="w50 ml30 mr5" id="prjNomYear"  name="prjNomYear"  readOnly/>년
-                                                    <input type="text" className="w50 ml10 mr5" id="prjNomMonth" name="prjNomMonth" readOnly/>개월
+                                                    <input type="text" className="w50 ml30 mr5" id="prjNomYear"  name="prjNomYear"  value={fields.prjNomYear} readOnly/>년
+                                                    <input type="text" className="w50 ml10 mr5" id="prjNomMonth" name="prjNomMonth" value={fields.prjNomMonth} readOnly/>개월
                                                     {errors && <p className="valid">{errors?.prjYm}</p>}
                                                 </td>
                                             </tr>
@@ -300,26 +395,33 @@ function PO100(props){
                                 </div>
 
                                 <div className="tb03 mt10 lineTopGray">
+                                    
+                                <div className="txtL mb10">
+                                        <span className="filebox ml5"> 
+                                            <button type="button" className="btn01s" onClick={addCopTR}><span>고객사 추가</span></button>
+                                            <button type="button" className="btn02s" onClick={delCopTR}><span>고객사 삭제</span></button>
+                                        </span>
+                                    </div>
+
                                     <table>
                                         <tbody>
-                                            <tr>
-                                                <th scope="row">고객사</th>
-                                                <td>
-                                                    <input type="text" className="w250"/>
-                                                </td>
-                                                <th scope="row">담당자</th>
-                                                <td>
-                                                    <input type="text" className="w100" placeholder="홍길동 부장"/>
-                                                </td>
-                                                <th scope="row">연락처</th>
-                                                <td>
-                                                    <input type="text" className="w60"/>
-                                                    -
-                                                    <input type="text" className="w60"/>
-                                                    -
-                                                    <input type="text" className="w60"/>
-                                                </td>
-                                            </tr>
+                                            {fields.copInfo1.map((element, index) => (
+                                                 <tr key={index}>
+                                                    <th scope="row"><label><input type="checkbox" name="copChk1" value={index} onChange={(e) => corp1ChangeHanle}/>고객사</label></th>
+                                                    <td>
+                                                        <input type="text" className="w250"/>
+                                                    </td>
+                                                    <th scope="row">담당자</th>
+                                                    <td>
+                                                        <input type="text" className="w100" placeholder="홍길동 부장"/>
+                                                    </td>
+                                                    <th scope="row">연락처</th>
+                                                    <td>
+                                                        <input type="text" className="w250"/>
+                                                    </td>
+                                                </tr>
+                                            ))}
+
                                             <tr>
                                                 <th scope="row">수행사</th>
                                                 <td>
