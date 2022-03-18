@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import '../css/daycare_user_layout.css';
-import '../css/jquery-ui.css';
 import { useSelector } from "react-redux";
 
 function CodeSelectOption(props) {
