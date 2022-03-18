@@ -13,7 +13,7 @@ function MN100(props) {
   const dispatch = useDispatch();
 
   const setUser = (userInfo) => {
-    dispatch(ACT_USER_INFO_UPDATE({ userInfo: userInfo }));
+    dispatch(ACT_USER_INFO_UPDATE({userInfo}));
   };
 
   const { register, watch, handleSubmit, formState: { errors } } = useForm();
@@ -21,7 +21,6 @@ function MN100(props) {
     axios.post('/api/login', data)
       .then(function (res) {
         if (res.data.login === true) {
-          console.log('로그인 성공');
           setUser(res.data.tbUsrMstVo);
           props.isLoginChange(true);
 
