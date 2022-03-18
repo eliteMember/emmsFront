@@ -10,8 +10,7 @@ let MN100 = lazy(() => { return import('./MN/MN100.js') });
 
 function App() {
 
-  const [isLogin, isLoginChange] = useState(false); 
-  const history = useHistory();
+  const [isLogin, isLoginChange] = useState(false);
 
   useEffect(() => {
     axios.get('/api/cmmn/getSession')
@@ -26,14 +25,10 @@ function App() {
       })
   }, [])
 
-  useEffect(() => {
-    if(isLogin === false) history.push('/LOGIN')
-  })
-
   return (
     <div className="App">
       <Switch>
-        <Route path="/MN200" >
+      <Route path="/MN200" >
           <MN200/>
         </Route>
         <Route path="/">
@@ -45,8 +40,10 @@ function App() {
 }
 
 function LoginOrMainControl(props) {
+  const history = useHistory();
   //로그인 후
   if (props.isLogin === true) {
+    history.push('/MAIN')
     return (
         <Suspense fallback={<div>로딩중</div>}>
           <div className="subPage">
@@ -60,6 +57,7 @@ function LoginOrMainControl(props) {
     )
     //로그인 페이지
   } else if (props.isLogin === false) {
+    history.push('/LOGIN')
     return (
       <>
         <Suspense fallback={<div>로딩중</div>}>
