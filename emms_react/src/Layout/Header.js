@@ -70,13 +70,12 @@ function Header(props) {
 
             <ul className="gnbUtil">
               <li className="userInfo">
-                <a href="#none" className="ic_position">한국유투더블유</a>
+                <a onClick={()=>history.push('/MN400')} className="ic_position">한국유투더블유</a>
                 <div className="utilSub">
                   <div className="utilSubMenu">
                     <div className="utilSubTitle">사용자관리</div>
                     <ul>
-                      <li><a href="#">- 사용자관리</a></li>
-                      <li><a href="#">- 회사정보</a></li>
+                      <li><a>- 사용자관리</a></li>
                     </ul>
                   </div>
                 </div>

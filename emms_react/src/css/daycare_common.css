@@ -589,6 +589,7 @@ ul.tb01Box>li{margin-right:20px}
 .tb02>table>tbody tr.active td,
 .tb02>table>tbody tr:active td,
 .tb02>table>tbody tr:hover td.bg01{background:#d9e7f2 !important}
+.tb02>table>tbody td:hover {background:#bbd9f0 !important}
 .tb02.tfoot:after{border-top:1px solid #ccc} 
 table .tfoot th,
 table .tfoot td{background:#f9ecd7;border:1px solid #ccc;}
