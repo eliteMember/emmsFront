@@ -1,7 +1,7 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react';
 import axios from 'axios';
 import { Route, Switch,useHistory } from 'react-router-dom';
-import MN100_1 from './MN/MN100_1.js';
+import MN200 from './MN/MN200.js';
 
 let Header = lazy(() => { return import('./Layout/Header.js') });
 let Body = lazy(() => { return import('./Layout/Body.js') });
@@ -33,8 +33,8 @@ function App() {
   return (
     <div className="App">
       <Switch>
-        <Route path="/MN100_1" >
-          <MN100_1/>
+        <Route path="/MN200" >
+          <MN200/>
         </Route>
         <Route path="/">
           <LoginOrMainControl isLogin={isLogin} isLoginChange={isLoginChange} />
