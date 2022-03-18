@@ -5,6 +5,7 @@ import axios from 'axios';
 import PO100 from '../PO/PO100';
 import MN500 from '../MN/MN500';
 import ME101 from '../ME/ME101';
+import PM101 from '../PM/PM101';
 import { useDispatch } from 'react-redux';
 import { ACT_CMMN_CODE_GETLIST } from '../reducers/cmmnCode'
 
@@ -50,7 +51,7 @@ function Body(props) {
       {/* 사전비용계산 */}
       <Route path="/BFRCST">{/* TODO */}<div className='subFrame'>사전비용계산</div></Route>
       {/* 프로젝트관리 */}
-      <Route path="/RDEPMHR">{/* TODO */}<div className='subFrame'>실투입공수관리</div></Route>
+      <Route path="/RDEPMHR">{/* TODO */}<div className='subFrame'><PM101 /></div></Route>
       {/* 비용처리 */}
       <Route path="/CSTTRT">{/* TODO */}<div className='subFrame'>비용처리</div></Route>
       {/* 인력관리 */}

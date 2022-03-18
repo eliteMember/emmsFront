@@ -2,6 +2,7 @@ import React, { useState, useEffect, lazy, Suspense } from 'react';
 import axios from 'axios';
 import { Route, Switch } from 'react-router-dom';
 import MN200 from './MN/MN200.js';
+import Loading from './Component/Loading.js';
 
 let Header = lazy(() => { return import('./Layout/Header.js') });
 let Body = lazy(() => { return import('./Layout/Body.js') });
@@ -43,7 +44,7 @@ function LoginOrMainControl(props) {
   //로그인 후
   if (props.isLogin === true) {
     return (
-        <Suspense fallback={<div>로딩중</div>}>
+        <Suspense fallback={<Loading/>}>
           <div className="subPage">
             <div className="wrapper">
               <Header isLogin={props.isLogin} isLoginChange={props.isLoginChange} />
@@ -57,7 +58,7 @@ function LoginOrMainControl(props) {
   } else if (props.isLogin === false) {
     return (
       <>
-        <Suspense fallback={<div>로딩중</div>}>
+        <Suspense fallback={<Loading/>}>
           <MN100 isLoginChange={props.isLoginChange} />
         </Suspense>
       </>
