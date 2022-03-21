@@ -13,7 +13,7 @@ function BottomSlidePop(props) {
   function  fnBottomSlideToggle(data){
     dispatch(ACT_BOTTOM_SLIDE_POP(data))
   }
-  console.log(bottomUpToggle);
+
   return (
     // <div className={"BSPContainer " + slideToggle}>
     //   <button type="button" className="BSP_button"
