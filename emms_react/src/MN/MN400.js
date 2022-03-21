@@ -1,10 +1,17 @@
 import './MN400.css'
 import {React, useState, useEffect} from "react";
-import axios, { Axios } from 'axios';
+import axios from 'axios';
+import Pagination from '../Component/pagination';
 
 function MN400(){
 
-    let [usr, setusr] = useState(null);
+    let [usr, setusr] = useState([]);
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const [postsPerPage, setPostsPerPage] = useState(5);
+    console.log(currentPage);
+    const [showList, setShowList] = useState();
+
     const [reset, setReset] = useState({
         id: '',
         bir: ''
@@ -29,16 +36,15 @@ function MN400(){
             alert("사용자 불러오기 실패");
         })
     },[])
-
-    function resetPW(reset){
-        axios.post('/api/MN400/resetPW',(reset))
+    console.log(showList);
+    function resetPW(usrNum,usrBirMd){
+        axios.post('/api/MN400/resetPW',{usrNum : usrNum, usrBirMd: usrBirMd})
         .then(() =>{
             alert('초기화 성공');
         }).catch(()=>{
             alert('초기화 실패');
         })
     };
-
 
     const onChange = ((e)=>{
         if(e.key === 'Enter'){
@@ -51,7 +57,6 @@ function MN400(){
             return setupdate();
         }
     })
-    
     const callAxios = (()=>{
         if(update.value !== update.defaultValue){
             axios.post('/api/MN400/updateMember',update)
@@ -148,7 +153,7 @@ function MN400(){
                                             </thead>
                                             <tbody>
                                                 
-                                                {usr && usr.map(
+                                                {showList && showList.map(
                                                     (usrList, i ) =>
                                                         <tr key={i}>
                                                             <td className="txtC">{i+1}</td>
@@ -175,7 +180,7 @@ function MN400(){
                                                             }
                                                             {
                                                                 usrList.loginId !== null
-                                                                ? <td><button type="button" className="btn05 borderC2" onClick={() =>{resetPW(reset(setReset({usrNum: usrList.usrNum,usrBirMd: usrList.usrBirMd})))}}>초기화</button></td>
+                                                                ? <td><button type="button" className="btn05 borderC2" onClick={() =>{resetPW(usrList.usrNum,usrList.usrBirMd)}}>초기화</button></td>
                                                                 : <td><button type="button" className="btn05 borderC2" onClick={()=>{alert('비밀번호가 없는 사용자입니다.')}}>초기화</button></td>
                                                             }
                                                         </tr>
@@ -185,30 +190,9 @@ function MN400(){
                                         </table>
                                     </div>
                                 </div>
-                                {
-                                    usr > 5
-                                    ?   <div className="gridUtilBottom">
-                                            <div className="paging">
-                                                <a href="#none" className="prev btn_paging_first">맨앞으로</a>
-                                                <a href="#none" className="prev btn_paging_prev">이전</a>
-                                                <a href="#none" className="num current">1</a>
-                                                <a href="#none" className="num">2</a>
-                                                <a href="#none" className="num">3</a>
-                                                <a href="#none" className="num">4</a>
-                                                <a href="#none" className="num">5</a>
-                                                <a href="#none" className="num">6</a>
-                                                <a href="#none" className="num">7</a>
-                                                <a href="#none" className="num">8</a>
-                                                <a href="#none" className="num">9</a>
-                                                <a href="#none" className="num">10</a>
-                                                <a href="#none" className="next btn_paging_next">다음</a>
-                                                <a href="#none" className="next btn_paging_last">맨끝으로</a>
-                                            </div>
-                                            <div className="fr">
-                                            </div>
-                                        </div>
-                                    : null
-                                }
+                                  <Pagination list={usr} ShowList={fnSetShowList} currentPage={currentPage} postsPerPage={postsPerPage} totalPosts={usr.length} paginate={setCurrentPage}>
+
+                                  </Pagination>
                              </section>
                              <div className="gridUtilBottom">
                                 <div className="fr">
@@ -223,6 +207,11 @@ function MN400(){
                     </div>
         
    );
+
+   function fnSetShowList(list){
+    setShowList(list);
+
+   }
 }
 
 
