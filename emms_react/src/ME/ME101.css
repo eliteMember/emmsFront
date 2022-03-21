@@ -10,6 +10,8 @@
 
 .errorLabel {
     color: Red;
+    font-size: 1.5ch;
+    font-style: italic;
 }
 
 .objWidthSt {
