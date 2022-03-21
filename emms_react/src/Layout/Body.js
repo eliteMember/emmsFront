@@ -6,7 +6,7 @@ import PO100 from '../PO/PO100';
 import MN500 from '../MN/MN500';
 import MN400 from '../MN/MN400';
 import ME101 from '../ME/ME101';
-import PM101 from '../PM/PM101';
+import PM101 from '../PM/PM101/PM101';
 import { useDispatch } from 'react-redux';
 import { ACT_CMMN_CODE_GETLIST } from '../reducers/cmmnCode'
 

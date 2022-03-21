@@ -12,6 +12,7 @@ import subMenuList from './subMenuList';
 import subMenuOver from './subMenuOver';
 import subMenuClick from './subMenuClick';
 import subMenuClickList from './subMenuClickList';
+import bottomSlidePop from './bottomSlidePop';
 
 const persistConfig = {
     key: "root",
@@ -26,7 +27,7 @@ const persistConfig = {
 
 // 여러 reducer를 사용하는 경우 reducer를 하나로 묶어주는 메소드
 const rootReducer = combineReducers({
-  userInfo, cmmnCode, subMenuList, subMenuOver, subMenuClick, subMenuClickList
+  userInfo, cmmnCode, subMenuList, subMenuOver, subMenuClick, subMenuClickList, bottomSlidePop
 });
 
 export default persistReducer(persistConfig, rootReducer);
