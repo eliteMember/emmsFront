@@ -1,7 +1,21 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 
 function PM101GridHeader(props) {
+    const [prjList, setPrjList] = useState(null);
+    useEffect(() => {
+        axios.get('/api/menu/getList')
+          .then((rs) => {
+            updatePrjList(rs.data);
+          }).catch(() => {
+            updatePrjList("메뉴 호출 오류");
+          })
+      }, [])
+    
+    function updatePrjList(data){
+        setPrjList(data);
+    }
     return (
         <>
             <div className="gridUtil">
