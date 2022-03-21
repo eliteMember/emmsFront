@@ -7,6 +7,7 @@ import MN500 from '../MN/MN500';
 import MN400 from '../MN/MN400';
 import ME101 from '../ME/ME101';
 import PM101 from '../PM/PM101/PM101';
+import PM201 from '../PM/PM201/PM201';
 import { useDispatch } from 'react-redux';
 import { ACT_CMMN_CODE_GETLIST } from '../reducers/cmmnCode'
 
@@ -54,7 +55,7 @@ function Body(props) {
       {/* 프로젝트관리 */}
       <Route path="/RDEPMHR">{/* TODO */}<div className='subFrame'><PM101 /></div></Route>
       {/* 비용처리 */}
-      <Route path="/CSTTRT">{/* TODO */}<div className='subFrame'>비용처리</div></Route>
+      <Route path="/CSTTRT">{/* TODO */}<div className='subFrame'><PM201 /></div></Route>
       {/* 인력관리 */}
       <Route path="/MEMMNG"><div className='subFrame'><ME101 /></div></Route>
       {/* 문서관리 */}

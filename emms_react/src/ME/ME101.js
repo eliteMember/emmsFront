@@ -1,8 +1,7 @@
 import React, { useEffect, lazy, useState } from "react";
 import axios from 'axios';
 import './ME101.css';
-import '../css/daycare_user_layout.css';
-import '../css/jquery-ui.css';
+import BottomSlidePop from '../Component/BottomSlidePop';
 
 let CodeSelectOption = lazy( ()=> import('../Component/CodeSelectOption.js') );
 
@@ -263,9 +262,12 @@ function ME101(props) {
       </div>
 
 
+      <BottomSlidePop contents={bottomSlidePop()} toggleBtn={true} />
+    </>
+  )
 
-
-
+  function bottomSlidePop() {
+    return (
       <form id="addForm">
         <input type={"hidden"} value={memNum} />
         <div>
@@ -328,9 +330,8 @@ function ME101(props) {
           </div>
         </div>
       </form>
-
-    </>
-  )
+    )
+  }
 }
 
 
