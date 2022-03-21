@@ -51,7 +51,6 @@ function MN100(props) {
   const onError = (error) => {
     console.log(error);
   }
-  console.log(watch());
 
   return (
     <div className="loginPage">
