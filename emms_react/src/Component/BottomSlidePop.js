@@ -30,7 +30,7 @@ function BottomSlidePop(props) {
       <div className={"dimmed " + bottomUpToggle}></div>
       <div className={"bottomup " + bottomUpToggle}>
         <div className="bottomupTitle">
-          <h2>사용자 신규등록</h2>
+          <h2>{props.title}</h2>
         </div>
         <div className="bottomupCont">
           <div className="inner">
