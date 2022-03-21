@@ -18,7 +18,7 @@ function MN100(props) {
 
   const history = useHistory();
 
-  const { register, watch, handleSubmit, formState: { errors } } = useForm();
+  const { register, handleSubmit, formState: { errors } } = useForm();
   const onSubmit = (data) => {
     axios.post('/api/login', data)
       .then(function (res) {
