@@ -48,7 +48,12 @@ function Header(props) {
     <div className="subPage">
       <div className="wrapper">
 
-        <div className="header blue">
+        <div className="header blue"  onMouseLeave={(subMenuClick === null || subMenuClick.toggle === false)
+              ? () => { dispatch(ACT_SUB_MENU_LIST_UPDATE({ menu: null, toggle: false })); overSubMenu({ menu: null, toggle: false }) }
+              : subMenuClickList && subMenuClick.toggle === true
+                ? () => { subMenuClickList && setSubMenu(subMenuClickList, true) }
+                : null}>
+
           <div className="inner">
 
             <h1 className="logo"><a onClick={() => { setInitialize(); history.push('/MAIN') }}><img src={require('../imgs/logo_02.png')} alt="회사로고" /><span>정예맴버 프로젝트관리시스템</span></a></h1>
@@ -143,13 +148,6 @@ function Header(props) {
               )
             }
           </ul>
-          {
-            (subMenuClick === null || subMenuClick.toggle === false)
-              ? <div onMouseEnter={() => { dispatch(ACT_SUB_MENU_LIST_UPDATE({ menu: null, toggle: false })); overSubMenu({ menu: null, toggle: false }) }} className='headerOut'></div>
-              : subMenuClickList && subMenuClick.toggle === true
-                ? <div onMouseEnter={() => { subMenuClickList && setSubMenu(subMenuClickList, true) }} className='headerOut'></div>
-                : null
-          }
         </div>
       </div>
     )

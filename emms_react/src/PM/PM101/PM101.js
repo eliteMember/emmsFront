@@ -11,6 +11,9 @@ function PM101(props) {
                     <div className="subWrap">
                         <div className="inner mt10">
                             <PM101Grid />
+                            <PM101Grid />
+                            <PM101Grid />
+                            <PM101Grid />
                         </div>
                     </div>
                 </div>
