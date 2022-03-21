@@ -1,16 +1,15 @@
-import { React, useState, useEffect } from 'react';
-import { Link, Router, useHistory } from 'react-router-dom';
-import axios from 'axios';
+import { React, useEffect } from 'react';
+//import { React, useState, useEffect } from 'react';
+//import { Link, Router, useHistory } from 'react-router-dom';
+//import axios from 'axios';
+//import Modal from 'react-modal';
 import './POP_PO200.css';
-
-import Modal from 'react-modal';
-
 
 function POP_PO200(props){
   
-  console.log( props );
+  //console.log( props );
   const { open, close, header } = props;
-  console.log( open );
+  //console.log( open );
 
   useEffect(() => {
     
