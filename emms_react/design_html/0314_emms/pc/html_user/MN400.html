@@ -1,27 +1,125 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ko" xml:lang="ko">
-
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>사용자관리 | 정예맴버 프로젝트관리시스템</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>사용자관리 | 정예맴버 프로젝트관리시스템</title>
 
-    <link rel="stylesheet" href="../css/daycare_user_layout.css">
-    <link rel="stylesheet" href="../css/jquery-ui.css">
+<link rel="stylesheet" href="../css/daycare_user_layout.css">
+<link rel="stylesheet" href="../css/jquery-ui.css">
 
-    <script src="../js/jquery-1.12.4.min.js"></script>
-    <script src="../js/jquery-ui.js"></script>
-    <script src="../js/jquery.ui.monthpicker.js"></script>
-    <script src="../js/jquery.slimscroll.js"></script>
-    <script src="../js/default.js"></script>
+<script src="../js/jquery-1.12.4.min.js"></script>
+<script src="../js/jquery-ui.js"></script>
+<script src="../js/jquery.ui.monthpicker.js"></script>
+<script src="../js/jquery.slimscroll.js"></script>
+<script src="../js/default.js"></script>
 
 </head>
-
 <body class="subPage">
 
     <!--subWrap-->
     <div class="subWrap">
         <div class="inner mt10">
+
+            <!--bottomup-->
+            <div class="dimmed"></div>
+            <div class="bottomup" style="width:1100px">
+                <div class="bottomupTitle">
+                    <h2>사용자 신규등록</h2>
+                </div>
+                <div class="bottomupCont">
+                    <div class="inner">
+
+                        <!--개인정보관리-->
+                
+                        <div class="gridUtil">
+                            <div class="fl">
+                                <div class="tb02">
+                                    <table style="">
+                                        <caption>표</caption>
+                                        
+                                        <colgroup>
+                                            <col style="width:130px">
+                                            <col style="width:130px">
+                                            <col style="width:130px">
+                                            <col style="width:130px">
+                                            <col style="width:auto">
+                                        </colgroup>
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">이름</th>
+                                                <th scope="col">생년월일</th>
+                                                <th scope="col">직위</th>
+                                                <th scope="col">직책</th>
+                                                <th scope="col">소속팀</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="txtC">
+                                                    <input type="password" placeholder="홍길동" value="" class="w110">
+                                                </td>
+                                                <td class="txtC">
+                                                    <span class="datepickerBox"><input type="text" placeholder="2022-10-31"></span>
+                                                </td>
+                                                <td class="txtC">
+                                                    <select class="w110">
+                                                        <option>부장</option>
+                                                        <option>차장</option>
+                                                        <option>과장</option>
+                                                        <option>대리</option>
+                                                        <option>사원</option>
+                                                        <option>대표</option>
+                                                        <option>부사장</option>
+                                                        <option>상무</option>
+                                                        <option>이사</option>
+                                                    </select>
+                                                </td>
+                                                <td class="txtC">
+                                                    <select class="w110">
+                                                        <option>팀장</option>
+                                                        <option>관리</option>
+                                                        <option>영업</option>
+                                                        <option>사업지원</option>
+                                                        <option>팀원</option>
+                                                    </select>
+                                                </td>
+                                                <td class="txtL">
+                                                    <select class="w110">
+                                                        <option>개발1팀</option>
+                                                        <option>개발1팀</option>
+                                                        <option>정예맴버</option>
+                                                        <option>직접입력</option>
+                                                    </select>
+                                                    <input type="text" placeholder="" value="" style="width:280px">
+                                                </td>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        
+
+                            
+
+                        
+
+                        
+
+                        <div class="gridUtilBottom">
+
+                            <div class="fr">
+                                <button type="button" class="btn01"><span>등록</span></button>
+                            </div>
+                        </div>
+                        <!--//개인정보관리-->
+
+
+                    </div><!--//inner-->
+                </div><!--//bottomupCont-->
+                <a href="#none" class="bottomupClose">창닫기</a>
+            </div>
+            <!--//bottomup-->
 
             <!--사용자관리-->
             <section>
@@ -58,13 +156,13 @@
                                 </tbody>
                             </table>
                         </div>
-
+                    
                     </div>
                     <div class="fr">
                         <button type="button" class="btn01"><i class="ic_search"></i><span>조회</span></button>
                     </div>
                 </div>
-                <!--e : 조회-->
+                <!--e : 조회--> 
 
                 <div class="hr20"></div>
 
@@ -79,9 +177,8 @@
                     <div class="tb02">
                         <table style="">
                             <caption>표</caption>
-
+                            
                             <colgroup>
-                                <col style="width:40px">
                                 <col style="width:40px">
                                 <col style="width:120px">
                                 <col style="width:100px">
@@ -91,14 +188,12 @@
                                 <col style="width:auto">
                                 <col style="width:auto">
                                 <col style="width:auto">
-                                <col style="width:auto">
+                                <col style="width:100px"> 
                                 <col style="width:100px">
                             </colgroup>
                             <thead>
                                 <tr>
                                     <th scope="col">번호</th>
-                                    <th scope="col"><span class="customForm"><input type="checkbox" id="checkAll"><label
-                                                for="checkAll"></label></span></th>
                                     <th scope="col">아이디</th>
                                     <th scope="col">이름</th>
                                     <th scope="col">생년월일</th>
@@ -114,8 +209,6 @@
                             <tbody>
                                 <tr>
                                     <td class="txtC">1</td>
-                                    <td class="txtC"><span class="customForm"><input type="checkbox" id="check01"><label
-                                                for="check01"></label></span></td>
                                     <td class="txtL">project1234</td>
                                     <td class="txtC">홍길동</td>
                                     <td class="txtC">1983-12-12</td>
@@ -125,13 +218,10 @@
                                     <td class="txtC">010-1234-5678</td>
                                     <td class="txtL">정예맴버프로젝트</td>
                                     <td class="txtC">가입완료</td>
-                                    <td><button type="button" class="btn05 borderC2"><i
-                                                class="ic_reset"></i><span>초기화</span></button></td>
+                                    <td><button type="button" class="btn05 borderC2"><i class="ic_reset"></i><span>초기화</span></button></td>
                                 </tr>
                                 <tr>
                                     <td class="txtC">2</td>
-                                    <td class="txtC"><span class="customForm"><input type="checkbox" id="check01"><label
-                                                for="check01"></label></span></td>
                                     <td class="txtL">project1234</td>
                                     <td class="txtC">장근석</td>
                                     <td class="txtC">1972-02-21</td>
@@ -141,13 +231,10 @@
                                     <td class="txtC">010-1234-5678</td>
                                     <td class="txtL">정예맴버프로젝트</td>
                                     <td class="txtC">미가입</td>
-                                    <td><button type="button" class="btn05 borderC2"><i
-                                                class="ic_reset"></i><span>초기화</span></button></td>
+                                    <td><button type="button" class="btn05 borderC2"><i class="ic_reset"></i><span>초기화</span></button></td>
                                 </tr>
                                 <tr>
                                     <td class="txtC">3</td>
-                                    <td class="txtC"><span class="customForm"><input type="checkbox" id="check01"><label
-                                                for="check01"></label></span></td>
                                     <td class="txtL">project1234</td>
                                     <td class="txtC">서성한</td>
                                     <td class="txtC">1983-01-21</td>
@@ -157,13 +244,10 @@
                                     <td class="txtC">010-1234-5678</td>
                                     <td class="txtL">정예맴버프로젝트</td>
                                     <td class="txtC">가입완료</td>
-                                    <td><button type="button" class="btn05 borderC2"><i
-                                                class="ic_reset"></i><span>초기화</span></button></td>
+                                    <td><button type="button" class="btn05 borderC2"><i class="ic_reset"></i><span>초기화</span></button></td>
                                 </tr>
                                 <tr>
                                     <td class="txtC">4</td>
-                                    <td class="txtC"><span class="customForm"><input type="checkbox" id="check01"><label
-                                                for="check01"></label></span></td>
                                     <td class="txtL">project1234</td>
                                     <td class="txtC">이순재</td>
                                     <td class="txtC">1988-01-21</td>
@@ -173,13 +257,10 @@
                                     <td class="txtC">010-1234-5678</td>
                                     <td class="txtL">정예맴버프로젝트</td>
                                     <td class="txtC">미가입</td>
-                                    <td><button type="button" class="btn05 borderC2"><i
-                                                class="ic_reset"></i><span>초기화</span></button></td>
+                                    <td><button type="button" class="btn05 borderC2"><i class="ic_reset"></i><span>초기화</span></button></td>
                                 </tr>
                                 <tr>
                                     <td class="txtC">5</td>
-                                    <td class="txtC"><span class="customForm"><input type="checkbox" id="check01"><label
-                                                for="check01"></label></span></td>
                                     <td class="txtL">project1234</td>
                                     <td class="txtC">박영희</td>
                                     <td class="txtC">1992-01-21</td>
@@ -189,15 +270,13 @@
                                     <td class="txtC">010-1234-5678</td>
                                     <td class="txtL">정예맴버프로젝트</td>
                                     <td class="txtC">미가입</td>
-                                    <td><button type="button" class="btn05 borderC2"><i
-                                                class="ic_reset"></i><span>초기화</span></button></td>
+                                    <td><button type="button" class="btn05 borderC2"><i class="ic_reset"></i><span>초기화</span></button></td>
                                 </tr>
                             </tbody>
-
+                            
                         </table>
                     </div>
-                </div>
-                <!--//gridWrap-->
+                </div><!--//gridWrap-->
                 <!--e : 조회결과-->
 
             </section>
@@ -212,15 +291,11 @@
                     <button type="button" class="btn03"><span>삭제</span></button>
                 </div>
             </div>
-
-        </div>
-        <!--//inner-->
+                    
+        </div><!--//inner-->
     </div>
     <!--//subWrap-->
 
 
-
-
 </body>
-
 </html>
