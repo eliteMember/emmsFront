@@ -1,16 +1,20 @@
 import React, { useEffect, lazy, useState } from "react";
+import { useDispatch } from "react-redux";
 import axios from 'axios';
 import './ME101.css';
 import BottomSlidePop from '../Component/BottomSlidePop';
+import {ACT_BOTTOM_SLIDE_POP} from '../reducers/bottomSlidePop';
 
 let CodeSelectOption = lazy( ()=> import('../Component/CodeSelectOption.js') );
 
 
 function ME101(props) {
-
-  let [listData, listDataModify] = useState([]);          // 목록
-  let [searchName, searchNameModify] = useState('');      // 이름 검색
-  let [searchRnkCd, searchRnkCdModify] = useState('all'); // 등급 검색
+  const dispatch = useDispatch();
+ 
+  let [bottomPopTitle, bottomPopTitleModify] = useState('');  // 등록,수정 팝업 타이틀
+  let [listData, listDataModify] = useState([]);              // 목록
+  let [searchName, searchNameModify] = useState('');          // 이름 검색
+  let [searchRnkCd, searchRnkCdModify] = useState('all');     // 등급 검색
   
   /* From Data */
   let [memNum, memNumModify] = useState('');         // 번호
@@ -79,6 +83,7 @@ function ME101(props) {
         if  ( data === "eduCd" )  eduCdModify(res.data.value[data]);          // 학력
       }
     });
+    dispatch(ACT_BOTTOM_SLIDE_POP('UP'));
   }
 
   // ADD DATA
@@ -122,17 +127,15 @@ function ME101(props) {
 
     /* 저장 */
     if  ( checkValidation && window.confirm("저장 하시겠습니까?") )  {
-      let test = {"memNum":memNum , "memName":memName , "memBirMd":memBirMd , "ctfNm":ctfNm , "memUnp":memUnp , "memFcst":memFcst , "memCtt":memCtt
+      let regDataList = {"memNum":memNum , "memName":memName , "memBirMd":memBirMd , "ctfNm":ctfNm , "memUnp":memUnp , "memFcst":memFcst , "memCtt":memCtt
                   , "memAdr":memAdr , "affTimName":affTimName , "affCoName":affCoName , "incCd":incCd , "memRnkCd":memRnkCd, "eduCd":eduCd};
       
-      axios.post('/api/memAddData', test).then(function (res) {
-
-        console.log(res.data.result);
-
+      axios.post('/api/memAddData', regDataList).then(function (res) {
         if  ( res.data.result > 0 )  {
           alert("정상처리 되었습니다.")
           fn_search();
           fn_resetEvent();
+          dispatch(ACT_BOTTOM_SLIDE_POP('DOWN'));
         }  else  {
           alert("[오류] 잠시 후 다시 이용해주세요.")
         }
@@ -145,6 +148,8 @@ function ME101(props) {
   // 신규등록 버튼 이벤트 [초기화]
   function fn_addBtn()  {
     fn_resetEvent();
+    bottomPopTitleModify('인력 신규 등록');
+    dispatch(ACT_BOTTOM_SLIDE_POP('UP'));
   }
 
 
@@ -166,7 +171,7 @@ function ME101(props) {
       return (
         listData.map((data, i)=>{ 
           return (
-            <tr key={i} id={data.memNum} onClick={()=>{ fn_getMemTargetData(data.memNum) }} className="trSt" >
+            <tr key={i} id={data.memNum} onClick={()=>{ bottomPopTitleModify('인력 정보 수정'); fn_getMemTargetData(data.memNum); }} className="trSt" >
               <td>{i+1}</td>
               <td>{data.memName}</td>
               <td>{data.memBirMd.substring(0,4)}.{data.memBirMd.substring(4,6)}.{data.memBirMd.substring(6,8)}</td>
@@ -261,77 +266,84 @@ function ME101(props) {
         </div>
       </div>
 
-
-      <BottomSlidePop contents={bottomSlidePop()} toggleBtn={true} />
+      <BottomSlidePop title={bottomPopTitle} contents={bottomSlidePop()} toggleBtn={false} />
     </>
   )
 
+  // 등록, 수정
   function bottomSlidePop() {
     return (
       <form id="addForm">
         <input type={"hidden"} value={memNum} />
-        <div>
-          <table>
-            <tbody>
-              <tr>
-                <th>이름</th>
-                <td><input className="objWidthSt inp" id="memName" value={memName} onChange={(e)=>{ memNameModify(e.target.value); }} /></td>
-                <th>생년월일</th>
-                <td><input className="objWidthSt inp" id="memBirMd" value={memBirMd} onChange={(e)=>{ memBirMdModify(e.target.value); }} /></td>
-                <th>직위</th>
-                <td>
-                  <select className="objWidthSt slt" id="incCd" onChange={(e)=>{ incCdModify(e.target.value); }} value={incCd} >
-                    <option>선택</option>
-                    <CodeSelectOption codeGroup={'INC_CD'} />
-                  </select>
-                </td>
-              </tr>
-              <tr>
-                <th>등급</th>
-                <td>
-                  <select className="objWidthSt slt" id="memRnkCd" onChange={(e)=>{ memRnkCdModify(e.target.value); }} value={memRnkCd} >
-                    <option>선택</option>
-                    <CodeSelectOption codeGroup={'RNK_CD'} />
-                  </select>
-                </td>
-                <th>학력</th>
-                <td>
-                  <select className="objWidthSt slt" id="eduCd" onChange={(e)=>{ eduCdModify(e.target.value); }} value={eduCd} >
-                    <option>선택</option>
-                    <CodeSelectOption codeGroup={'EDU_CD'} />
-                  </select>
-                </td>
-                <th>자격증</th>
-                <td><input className="objWidthSt inp" id="ctfNm" value={ctfNm} onChange={(e)=>{ ctfNmModify(e.target.value); }} /></td>
-              </tr>
-              <tr>
-                <th>인력단가</th>
-                <td>
-                  <div><input className="objWidthSt inp" id="memUnp" value={memUnp} onChange={(e)=>{ memUnpModify(e.target.value); }} /></div>
-                  {/* <div><label className="errorLabel" >숫자만 입력하세요.</label></div> */}
-                </td>
-                <th>인력원가</th>
-                <td><input className="objWidthSt inp" id="memFcst" value={memFcst} onChange={(e)=>{ memFcstModify(e.target.value); }} /></td>
-                <th>연락처</th>
-                <td><input className="objWidthSt inp" id="memCtt" value={memCtt} onChange={(e)=>{ memCttModify(e.target.value); }} /></td>
-              </tr>
-              <tr>
-                <th>주소</th>
-                <td><input className="objWidthSt inp" id="memAdr" value={memAdr} onChange={(e)=>{ memAdrModify(e.target.value); }} /></td>
-                <th>소속회사</th>
-                <td><input className="objWidthSt inp" id="affCoName" value={affCoName} onChange={(e)=>{ affCoNameModify(e.target.value); }} /></td>
-                <th>소속팀</th>
-                <td><input className="objWidthSt inp" id="affTimName" value={affTimName} onChange={(e)=>{ affTimNameModify(e.target.value); }} /></td>
-              </tr>
-            </tbody>
-          </table>
-          <div className="buttonSt">
-            <button type="button" className="btn03" onClick={()=>{ fn_addEvent(); }} >저장(TEST)</button>
+        <div className="gridUtil">
+          <div className="fl w100p">
+            <div className="tb02">
+              <table>
+                <tbody>
+                  <tr>
+                    <th className="w10p">이름</th>
+                    <td className="txtC"><input type={'text'} className="w100p" id="memName" value={memName} onChange={(e) => { memNameModify(e.target.value); }} /></td>
+                    <th className="w10p w23p">생년월일</th>
+                    <td className="txtC"><input type={'text'} className="w100p" id="memBirMd" value={memBirMd} onChange={(e) => { memBirMdModify(e.target.value); }} /></td>
+                    <th className="w10p w23p">직위</th>
+                    <td className="txtC">
+                      <select className="w100p" id="incCd" onChange={(e) => { incCdModify(e.target.value); }} value={incCd} >
+                        <option>선택</option>
+                        <CodeSelectOption codeGroup={'INC_CD'} />
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th >등급</th>
+                    <td className="txtC">
+                      <select className="w100p" id="memRnkCd" onChange={(e) => { memRnkCdModify(e.target.value); }} value={memRnkCd} >
+                        <option>선택</option>
+                        <CodeSelectOption codeGroup={'RNK_CD'} />
+                      </select>
+                    </td>
+                    <th className="w10p">학력</th>
+                    <td className="txtC">
+                      <select className="w100p" id="eduCd" onChange={(e) => { eduCdModify(e.target.value); }} value={eduCd} >
+                        <option>선택</option>
+                        <CodeSelectOption codeGroup={'EDU_CD'} />
+                      </select>
+                    </td>
+                    <th className="w10p">자격증</th>
+                    <td className="txtC"><input type={'text'} className="w100p" id="ctfNm" value={ctfNm} onChange={(e) => { ctfNmModify(e.target.value); }} /></td>
+                  </tr>
+                  <tr>
+                    <th className="w10p">인력단가</th>
+                    <td className="txtC">
+                      <div><input type={'text'} className="w100p" id="memUnp" value={memUnp} onChange={(e) => { memUnpModify(e.target.value); }} /></div>
+                      {/* <div><label className="errorLabel" >숫자만 입력하세요.</label></div> */}
+                    </td>
+                    <th className="w10p">인력원가</th>
+                    <td className="txtC"><input type={'text'} className="w100p" id="memFcst" value={memFcst} onChange={(e) => { memFcstModify(e.target.value); }} /></td>
+                    <th className="w10p">연락처</th>
+                    <td className="txtC"><input type={'text'} className="w100p" id="memCtt" value={memCtt} onChange={(e) => { memCttModify(e.target.value); }} /></td>
+                  </tr>
+                  <tr>
+                    <th className="w10p">주소</th>
+                    <td className="txtC"><input type={'text'} className="w100p" id="memAdr" value={memAdr} onChange={(e) => { memAdrModify(e.target.value); }} /></td>
+                    <th className="w10p">소속회사</th>
+                    <td className="txtC"><input type={'text'} className="w100p" id="affCoName" value={affCoName} onChange={(e) => { affCoNameModify(e.target.value); }} /></td>
+                    <th className="w10p">소속팀</th>
+                    <td className="txtC"><input type={'text'} className="w100p" id="affTimName" value={affTimName} onChange={(e) => { affTimNameModify(e.target.value); }} /></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div className="gridUtilBottom">
+          <div className="fr">
+            <button type="button" className="btn01" onClick={() => { fn_addEvent(); }} ><span>등록</span></button>
           </div>
         </div>
       </form>
     )
   }
+
 }
 
 
