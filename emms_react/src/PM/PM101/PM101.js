@@ -2,7 +2,7 @@
 import React from 'react';
 import PM101Grid from './PM101_grid';
 import BottomSlidePop from '../../Component/BottomSlidePop';
-import ACT_BOTTOM_SLIDE_POP from '../../reducers/bottomSlidePop';
+import {ACT_BOTTOM_SLIDE_POP} from '../../reducers/bottomSlidePop';
 function PM101(props) {
     return (
         <>
