@@ -8,9 +8,11 @@ let CodeSelectOption = lazy( ()=> import('../../Component/CodeSelectOption.js') 
 
 function PM201(props) {
 
-  let [startDate, startDateModify] = useState(new Date());
+  const [startDate, startDateModify] = useState(new Date());
   const [endDate, endDateModify] = useState(new Date());
   const [searchErrorMsg, searchErrorMsgModify] = useState('');
+
+  const timeSe = setTimeout(()=>{ searchErrorMsgModify(''); }, 1000);
 
   // INIT
   useEffect(() => {
@@ -26,6 +28,7 @@ function PM201(props) {
         searchErrorMsgModify('');
       }  else  {
         searchErrorMsgModify('검색 시작일이 종료일보다 클 수 없습니다.');
+        clearTimeout(timeSe);
       }
     }  else  {
       if  ( fn_setDateFormatting(date) >= fn_setDateFormatting(startDate) ) {
@@ -33,6 +36,7 @@ function PM201(props) {
         searchErrorMsgModify('');
       }  else  {
         searchErrorMsgModify('검색 종료일이 시작일보다 작을 수 없습니다.');
+        clearTimeout(timeSe);
       }
     }
   }
