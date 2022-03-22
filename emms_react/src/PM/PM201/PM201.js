@@ -1,16 +1,50 @@
 import React, { useEffect, lazy, useState } from "react";
 import axios from 'axios';
-// import './PM201.css';
+import './PM201.css';
+import DatePicker from "react-datepicker";
 
 let CodeSelectOption = lazy( ()=> import('../../Component/CodeSelectOption.js') );
 
 
 function PM201(props) {
 
+  let [startDate, startDateModify] = useState(new Date());
+  const [endDate, endDateModify] = useState(new Date());
+  const [searchErrorMsg, searchErrorMsgModify] = useState('');
+
   // INIT
   useEffect(() => {
+
   }, []);
 
+
+  // 검색날짜 유효성 체크
+  function fn_changeSearchDate(se,date)  {
+    if  ( se === 'S' )  {
+      if  ( fn_setDateFormatting(date) <= fn_setDateFormatting(endDate) ) {
+        startDateModify(date);
+        searchErrorMsgModify('');
+      }  else  {
+        searchErrorMsgModify('검색 시작일이 종료일보다 클 수 없습니다.');
+      }
+    }  else  {
+      if  ( fn_setDateFormatting(date) >= fn_setDateFormatting(startDate) ) {
+        endDateModify(date);
+        searchErrorMsgModify('');
+      }  else  {
+        searchErrorMsgModify('검색 종료일이 시작일보다 작을 수 없습니다.');
+      }
+    }
+  }
+
+
+  function fn_setDateFormatting(date)  {
+    var month = (date.getMonth()+1) < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1;
+    var day = date.getDate() < 10 ? '0'+date.getDate() : date.getDate();
+
+    return date.getFullYear()+''+month+''+day;
+  }
+  
 
   return (
     <>
@@ -25,22 +59,26 @@ function PM201(props) {
                     <col />
                     <col />
                     <col />
+                    <col />
                   </colgroup>
                   <tbody>
                     <tr>
                       <th scope="row"><span className="tit">프로젝트</span></th>
                       <td className="txtL">
                         <select className="mr20">
-                          <option>미래에셋생명 비대면업무확대</option>
-                          <option>NH차세대지방재정 구축</option>
+                          <option>프로젝트 1</option>
+                          <option>프로젝트 2</option>
                         </select>
                       </td>
                       <th scope="row"><span className="tit">프로젝트 기간</span></th>
-                      <td className="txtL" colSpan={3}>
-                        <span className="datepickerBox"><input type="text" placeholder="2021-08-15" /></span>
-                        ~
-                        <span className="datepickerBox"><input type="text" placeholder="2022-11-15" /></span>
+                      <td className="txtL">
+                        <DatePicker locale="ko" onChange={date => fn_changeSearchDate('S',date)} selected={startDate} dateFormat="yyyy-MM-dd" />
                       </td>
+                      <td>&nbsp;~&nbsp;</td>
+                      <td>
+                        <DatePicker locale="ko" onChange={date => fn_changeSearchDate('E',date)} selected={endDate} dateFormat="yyyy-MM-dd" />
+                      </td>
+                      <td>&nbsp;<label className="errorMsgSt" >{searchErrorMsg}</label></td>
                     </tr>
                   </tbody>
                 </table>
@@ -61,9 +99,6 @@ function PM201(props) {
               <button type="button" className="btn btn02 rad50 borderC2"><i className="ic_rowMinusRed"></i><span>행삭제</span></button>
               <button type="button" className="btn btn02 rad50 borderC2"><i className="ic_rowUp"></i><span>위로</span></button>
               <button type="button" className="btn btn02 rad50 borderC2"><i className="ic_rowDown"></i><span>아래로</span></button>
-              <button type="button" className="btn btn02 rad50 borderC2"><span>복사</span></button>
-              <button type="button" className="btn btn02 rad50 borderC2"><span>붙여넣기</span></button>
-              <button type="button" className="btn05"><i className="ic_excel"></i><span>다운로드</span></button>
             </div>
           </div>
 
@@ -73,12 +108,12 @@ function PM201(props) {
               <table>
                 <caption>비용처리</caption>
                 <colgroup>
-                  <col />
-                  <col />
-                  <col />
-                  <col />
-                  <col />
-                  <col />
+                  <col className="w16p"/>
+                  <col className="w16p"/>
+                  <col className="w16p"/>
+                  <col className="w16p"/>
+                  <col className="w16p"/>
+                  <col className="w20p"/>
                 </colgroup>
                 <thead>
                   <tr>
@@ -113,7 +148,6 @@ function PM201(props) {
                     <td className="txtR">0</td>
                     <td className="txtL"></td>
                   </tr>
-
                   <tr>
                     <td className="txtC" rowSpan={4}>경비</td>
                     <td className="txtC">영업비</td>
@@ -143,10 +177,6 @@ function PM201(props) {
                     <td className="txtR">0</td>
                     <td className="txtL"></td>
                   </tr>
-
-
-
-
                 </tbody>
               </table>
             </div>
@@ -154,17 +184,15 @@ function PM201(props) {
           <div className="tb02 mt10">
             <table>
               <colgroup>
-                <col />
-                <col />
-                <col />
-                <col />
-                <col />
-                <col />
+                <col className="w32p"/>
+                <col className="w16p"/>
+                <col className="w16p"/>
+                <col className="w16p"/>
+                <col className="w20p"/>
               </colgroup>
               <tbody>
                 <tr className="tfoot">
-                  <td className="txtR">합계</td>
-                  <td className="txtR"></td>
+                  <td className="txtC">합계</td>
                   <td className="txtR"></td>
                   <td className="txtR"></td>
                   <td className="txtR"></td>
