@@ -60,9 +60,22 @@ function PO100(props){
 	//, crtUsrNum   : ''  //등록사용자번호
 	//, mdfDtm      : ''  //수정일시
 	//, mdfUsrNum   : ''  //수정사용자번호
-    , copInfo1     : [{id:0, copSeqNum: null, copDivCd:'1', copNm:'', copMgrName:'', copMgrCtt:''}]   //고객사 담당자 정보
-    , copInfo2     : [{id:0, copSeqNum: null, copDivCd:'2', copNm:'', copMgrName:'', copMgrCtt:''}]
-    , copInfo3     : [{id:0, copSeqNum: null, copDivCd:'3', copNm:'', copMgrName:'', copMgrCtt:''}]
+    , copInfo1     : [{id:0, copSeqNum: null, copDivCd:'1', copNm:'', copMgrName:'', copMgrCtt:'' }]   //고객사 담당자 정보
+    , copInfo2     : [{id:0, copSeqNum: null, copDivCd:'2', copNm:'', copMgrName:'', copMgrCtt:'' }]
+    , copInfo3     : [{id:0, copSeqNum: null, copDivCd:'3', copNm:'', copMgrName:'', copMgrCtt:'' }]
+    , files        : [{id:0
+                    , relDocNum:null 
+                    , docClsCd : ''
+                    , filNm : ''
+                    , filPth : ''
+                    , orgFilNm : ''
+                    , filSiz : null
+                    , filExt : ''
+                    , crtDtm : ''
+                    , crtUsrNum : ''
+                    , mdfDtm : ''
+                    , mdfUsrNum : ''
+                    , fileObj:null }]
     });
 
   const [errors, setErrors] = useState({
@@ -87,6 +100,15 @@ function PO100(props){
     , copInfo1     : [{id:0, copNm:'', copMgrName:'', copMgrCtt:''}]   //고객사 담당자 정보
     , copInfo2     : [{id:0, copNm:'', copMgrName:'', copMgrCtt:''}]   //수행사 담당자 정보
     , copInfo3     : [{id:0, copNm:'', copMgrName:'', copMgrCtt:''}]   //협력사 담당자 정보
+    , files        : [{id:0
+        , relDocNum:null 
+        , docClsCd : ''
+        , filNm : ''
+        , filPth : ''
+        , orgFilNm : ''
+        , filSiz : null
+        , filExt : ''
+        , fileObj:null }]
   });
   const handleChange = (event, arrId, arrName) => {
     const { name, value } = event.target;
@@ -108,6 +130,15 @@ function PO100(props){
         v_copInfo3[arrId][name] = value;
         v_fields['copInfo3'] = v_copInfo3;
     }
+    if( arrName == 'files' ){
+        let v_files = v_fields.files;
+        v_files[arrId][name] = value;
+        if( event.target.files != null && event.target.files != undefined ){
+            v_files[arrId].fileObj = event.target.files[0];
+        }
+        v_fields['files'] = v_files;
+    }
+
 
     setFields(v_fields);
     
@@ -117,6 +148,9 @@ function PO100(props){
     e.preventDefault();
       if (validatehtmlForm()) {
           alert("htmlForm submitted");
+
+          
+
       }
   }
   //유효성 검사
@@ -126,6 +160,7 @@ function PO100(props){
     let v_copInfo1 = v_fields.copInfo1;
     let v_copInfo2 = v_fields.copInfo2;
     let v_copInfo3 = v_fields.copInfo3;
+    let v_files = v_fields.files;
     let errors = {};
     let htmlFormIsValid = true;
 
@@ -208,6 +243,30 @@ function PO100(props){
         if (!v_copInfo2[index]["copMgrCtt"]) {
             htmlFormIsValid = false;
             errors.copInfo3[index].copMgrCtt = "*연락처 입력하세요.";
+        }
+    });
+
+    // 첨부파일
+    errors.files = [];
+    v_files.map((element, index) => {
+        errors.files.push(
+            {id:0
+                , relDocNum:null 
+                , docClsCd : ''
+                , filNm : ''
+                , filPth : ''
+                , orgFilNm : ''
+                , filSiz : null
+                , filExt : ''
+                , fileObj:null }
+        );
+        if (!v_files[index]["docClsCd"]) {
+            htmlFormIsValid = false;
+            errors.files[index].docClsCd = "*파일구분을 선택하세요.";
+        }
+        if (!v_files[index]["fileObj"]) {
+            htmlFormIsValid = false;
+            errors.files[index].fileObj = "*첨부파일을 입력하세요.";
         }
     });
 
@@ -470,6 +529,59 @@ function PO100(props){
   }
 
 
+  //////////////////////////////////////////////
+  // 파일 관리
+  // 파일 선택
+  const [filesChkList, setFilesChkList] = useState([]);
+  const filesChangeHanle = (e) => {
+    if (e.target.checked) {
+        setFilesChkList([...filesChkList, e.target.value]);
+     } else {
+        setFilesChkList(filesChkList.filter((checkedId) => checkedId !== e.target.value));
+     }
+  }
+  //파일 추가
+  const [filesSeq, setFilesSeq] = useState(0);
+  useEffect(() => {
+    let v_fields = {...fields};
+    let v_files = v_fields['files']
+    if( filesSeq > 0 ){
+        v_files.push({id:filesSeq, relDocNum:null, docClsCd : '', filNm : '', filPth : '', orgFilNm : '', filSiz : null, filExt : '', crtDtm : '', crtUsrNum : '', mdfDtm : '', mdfUsrNum : '', fileObj : null });
+        v_fields['files'] = v_files;
+        setFields(v_fields);
+    }
+    // else{
+    //     v_copInfo1 = {id:1, copSeqNum: null, copDivCd:'1', copNm:'', copMgrName:'', copMgrCtt:''};
+    //     v_fields['copInfo1'] = v_copInfo1;
+    //     setFields(v_fields);
+    // }
+  },[filesSeq]);
+  const addFilesTR = () => {
+    setFilesSeq(filesSeq + 1)
+  }
+  //파일 삭제
+  const delFilesTR = () => {
+    let v_fields = {...fields};
+    let v_files = v_fields['files']
+    if( v_files.length == filesChkList.length ){
+        alert('첨부파일은 최소 1개 이상');
+    }else{
+        filesChkList.map((element, index) => (
+            v_files = v_files.filter((arr_info) => arr_info.id != element)
+            //v_copInfo1.filter((arr_info) => { console.log(arr_info.id); console.log(element); console.log(arr_info.id == element) })
+        ));
+        setFilesChkList([]);
+        v_fields['files'] = v_files;
+        setFields(v_fields);
+    }
+    // let timer = setTimeout(()=>{ 
+    //     console.log('--------------------------')
+    //     console.log(fields.copInfo1)
+    //     console.log('--------------------------')
+    //  }, 1000);
+  }
+
+
 
   return (
 
@@ -694,6 +806,8 @@ function PO100(props){
                                     </table>
                                 </div>
                                 
+
+
                                 <div className="tb03 mt5 lineTopGray">
                                     <table>
                                         <tbody>
@@ -708,15 +822,9 @@ function PO100(props){
                                                             <div className="tb04 mr20">                            
 
                                                                     <div className="txtL mb10">
-                                                                        <select className="w110">
-                                                                            <option>선택</option>
-                                                                            <CodeSelectOption codeGroup={'DOC_CLS_CD'} />
-                                                                        </select>
                                                                         <span className="filebox ml5"> 
-                                                                            <input type="file" id="file"/> 
-                                                                            <input className="uploadName"/>
-                                                                                <button type="button" className="btn01s"><span>파일찾기</span></button>
-                                                                                <button type="button" className="btn02s"><span>삭제</span></button>
+                                                                            <button type="button" className="btn01s" onClick={addFilesTR}><span>파일추가</span></button>
+                                                                            <button type="button" className="btn02s" onClick={delFilesTR}><span>파일삭제</span></button>
                                                                         </span>
                                                                     </div>
 
@@ -726,36 +834,37 @@ function PO100(props){
                                                                         <tr>
                                                                             <th scope="col">선택</th>
                                                                             <th scope="col">번호</th>
+                                                                            <th scope="col">파일구분</th>
                                                                             <th scope="col">파일명</th>
-                                                                            <th scope="col">크기</th>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
-                                                                        
-                                                                        <tr>
-                                                                            <td className="txtC"><span className="customhtmlForm"><input type="checkbox" name="check1" id="check11"/><label htmlFor="check11"><span></span></label></span></td>
-                                                                            <td className="txtC">1</td>
-                                                                            <td className="txtL">
-                                                                                <button type="button" className="attachedFile"><i className="ic_file"></i><span className="">정예맴버프로젝트관리시스템 사용자 매뉴얼_v1.0.pdf</span></button>
+
+                                                                    {fields.files.map((element, index) => (
+                                                                        <tr key={element.id}>
+                                                                            <td className="txtC"><span className="customhtmlForm">
+                                                                                <label>
+                                                                                    <input type="checkbox" name="filesChk" value={element.id} onClick={(e) => filesChangeHanle(e)}/><span></span>
+                                                                                </label>
+                                                                                </span>
                                                                             </td>
-                                                                            <td className="txtC">3Mb</td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td className="txtC"><span className="customhtmlForm"><input type="checkbox" name="check1" id="check12"/><label htmlFor="check12"><span></span></label></span></td>
-                                                                            <td className="txtC">2</td>
-                                                                            <td className="txtL">
-                                                                                <button type="button" className="attachedFile"><i className="ic_file"></i><span className="">KB 푸르덴셜 비대면 구축 RFP_v2.0KB 푸르덴셜 비대면 구축 RFP_v2.0..pdf</span></button>
+                                                                            <td className="txtC">{(index+1)}</td>
+                                                                            <td className="txtC">
+                                                                                <select className="w110" name="docClsCd" defaultValue={fields.files[index].docClsCd} onChange={(e) => handleChange(e, index, 'files')} >
+                                                                                    <option>선택</option>
+                                                                                    <CodeSelectOption codeGroup={'DOC_CLS_CD'} />
+                                                                                </select>
+                                                                                {errors && <p className="valid">{errors.files[index]?.docClsCd}</p>}
                                                                             </td>
-                                                                            <td className="txtC">3Mb</td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td className="txtC"><span className="customhtmlForm"><input type="checkbox" name="check1" id="check13"/><label htmlFor="check13"><span></span></label></span></td>
-                                                                            <td className="txtC">3</td>
+
                                                                             <td className="txtL">
-                                                                                <button type="button" className="attachedFile"><i className="ic_file"></i><span className="">KB 푸르덴셜 비대면 구축 공수산정_v1.0.pdf</span></button>
+                                                                                <input type="file" className="w100p" name="fileObj" onChange={(e) => handleChange(e, index, 'files')} />
+                                                                                {errors && <p className="valid">{errors.files[index]?.fileObj}</p>}
                                                                             </td>
-                                                                            <td className="txtC">3Mb</td>
                                                                         </tr>
+                                                                    ))}
+
+
                                                                     </tbody>
                                                                 </table>
                                                             </div>
@@ -770,6 +879,9 @@ function PO100(props){
                                         </tbody>
                                     </table>
                                 </div>
+
+
+
 
                                 <div className="gridUtilBottom">
                                     <div className="fr">
