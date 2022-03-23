@@ -328,6 +328,7 @@ function ME101(props) {
                     <th className="w10p">소속팀</th>
                     <td className="txtC">
                       <select className="w100p" id="timNum" onChange={(e) => { timNumModify(e.target.value); }} value={timNum} >
+                        <option>선택</option>
                         <TeamSelectOption />
                       </select>
                     </td>
