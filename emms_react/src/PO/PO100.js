@@ -75,7 +75,7 @@ function PO100(props){
                     , crtUsrNum : ''
                     , mdfDtm : ''
                     , mdfUsrNum : ''
-                    , fileObj:null }]
+                    , fileBase64:null }]
     });
 
   const [errors, setErrors] = useState({
@@ -108,48 +108,102 @@ function PO100(props){
         , orgFilNm : ''
         , filSiz : null
         , filExt : ''
-        , fileObj:null }]
+        , fileBase64:null }]
   });
   const handleChange = (event, arrId, arrName) => {
     const { name, value } = event.target;
     let v_fields = {...fields};
-    v_fields[name] = value;
-    
-    if( arrName == 'copInfo1' ){
+
+    if( !arrName ){
+        v_fields[name] = value;
+    }
+    if( arrName === 'copInfo1' ){
         let v_copInfo1 = v_fields.copInfo1;
         v_copInfo1[arrId][name] = value;
         v_fields['copInfo1'] = v_copInfo1;
     }
-    if( arrName == 'copInfo2' ){
+    if( arrName === 'copInfo2' ){
         let v_copInfo2 = v_fields.copInfo2;
         v_copInfo2[arrId][name] = value;
         v_fields['copInfo2'] = v_copInfo2;
     }
-    if( arrName == 'copInfo3' ){
+    if( arrName === 'copInfo3' ){
         let v_copInfo3 = v_fields.copInfo3;
         v_copInfo3[arrId][name] = value;
         v_fields['copInfo3'] = v_copInfo3;
     }
-    if( arrName == 'files' ){
+    if( arrName === 'files' ){
+        console.log( '=========== file start' )
         let v_files = v_fields.files;
-        v_files[arrId][name] = value;
-        if( event.target.files != null && event.target.files != undefined ){
-            v_files[arrId].fileObj = event.target.files[0];
+        const filesBase64Convert = async() => {
+            if( event.target.files !== null && event.target.files !== undefined ){
+                let reader = new FileReader();
+                reader.readAsDataURL( event.target.files[0] )
+                reader.onload = async() => {
+                    const base64data = reader.result
+                    console.log( '----------------' )
+                    console.log( base64data )
+                    console.log( event.target.files[0] )
+                    console.log( '=========== file end' )
+                    v_files[arrId].fileBase64 = base64data;
+                    v_files[arrId].orgFilNm = event.target.files[0].name;
+                    v_fields['files'] = v_files;
+                }
+            }else{
+                v_files[arrId][name] = value;
+                console.log( '=========== file end' )
+                v_fields['files'] = v_files;
+            }
         }
-        v_fields['files'] = v_files;
+        filesBase64Convert();
     }
 
-
-    setFields(v_fields);
-    
+    setFields(v_fields);    
   }
+
+  function processFile(file){
+      var reader = new FileReader();
+      reader.onload = function(){
+          var result = reader.result;
+          //console.log(result)
+          return result;
+      }
+      return reader.readAsDataURL(file);
+  }
+
+
   //submit 처리
   const onSubmitHandle = (e) => {
     e.preventDefault();
       if (validatehtmlForm()) {
           alert("htmlForm submitted");
-
-          
+          console.log( fields );
+          const submitProcess = async() => {
+              let sendInfo = await axios({
+                    method : 'post',
+                    url : '/api/po100/insert',
+                    //data : JSON.stringify({"paramVO":fields}),
+                    //data : JSON.stringify(fields),
+                    data : fields,
+                      //headers : {
+                          //'Content-Type': 'multipart/form-data',
+                          //"Content-Type": 'application/json;multipart/form-data'
+                          //"Content-Type": 'application/json'
+                      //},
+                })
+                .then(function (res) {
+                    //console.log(res);
+                    console.log(res.data);
+                    console.log('되냐')
+                    //setTeamList(res.data.list)
+                })
+                .catch(function (res) {
+                    console.log('등록 실패');
+                })
+            };
+        
+        const returnData = submitProcess();
+        console.log(returnData);
 
       }
   }
@@ -258,15 +312,15 @@ function PO100(props){
                 , orgFilNm : ''
                 , filSiz : null
                 , filExt : ''
-                , fileObj:null }
+                , fileBase64:null }
         );
         if (!v_files[index]["docClsCd"]) {
             htmlFormIsValid = false;
             errors.files[index].docClsCd = "*파일구분을 선택하세요.";
         }
-        if (!v_files[index]["fileObj"]) {
+        if (!v_files[index]["fileBase64"]) {
             htmlFormIsValid = false;
-            errors.files[index].fileObj = "*첨부파일을 입력하세요.";
+            errors.files[index].fileBase64 = "*첨부파일을 입력하세요.";
         }
     });
 
@@ -546,7 +600,7 @@ function PO100(props){
     let v_fields = {...fields};
     let v_files = v_fields['files']
     if( filesSeq > 0 ){
-        v_files.push({id:filesSeq, relDocNum:null, docClsCd : '', filNm : '', filPth : '', orgFilNm : '', filSiz : null, filExt : '', crtDtm : '', crtUsrNum : '', mdfDtm : '', mdfUsrNum : '', fileObj : null });
+        v_files.push({id:filesSeq, relDocNum:null, docClsCd : '', filNm : '', filPth : '', orgFilNm : '', filSiz : null, filExt : '', crtDtm : '', crtUsrNum : '', mdfDtm : '', mdfUsrNum : '', fileBase64 : null });
         v_fields['files'] = v_files;
         setFields(v_fields);
     }
@@ -669,7 +723,7 @@ function PO100(props){
                                             <tr>
                                                 <th scope="row"><span className="tit">프로젝트 기간</span></th>
                                                 <td className="txtL" colSpan="3">
-                                                    <span className="datepickerBox">
+                                                    
                                                         {/* <input type="text" id="prjStartYm" name="prjStartYm" placeholder="2022-03" value={fields.prjStartYm} onChange={handleChange}/> */}
                                                         <DatePicker
                                                             dateFormat="yyyy-MM"
@@ -677,10 +731,11 @@ function PO100(props){
                                                             onChange={date=>setStartDate(date)}
                                                             locale={ko}
                                                             value={fields.prjStartYm}
+                                                            showMonthYearPicker
+                                                            className='w100'
                                                         />
-                                                    </span>
                                                     ~
-                                                    <span className="datepickerBox">
+                                                    
                                                         {/* <input type="text" id="prjEndYm" name="prjEndYm" placeholder="2022-12" value={fields.prjEndYm} onChange={handleChange}/> */}
                                                         <DatePicker
                                                             dateFormat="yyyy-MM"
@@ -688,9 +743,9 @@ function PO100(props){
                                                             onChange={date=>setEndDate(date)}
                                                             locale={ko}
                                                             value={fields.prjEndYm}
+                                                            showMonthYearPicker
+                                                            className='w100'
                                                         />
-                                                    </span>
-
                                                     <input type="text" className="w50 ml30 mr5" id="prjNomYear"  name="prjNomYear"  value={fields.prjNomYear} readOnly/>년
                                                     <input type="text" className="w50 ml10 mr5" id="prjNomMonth" name="prjNomMonth" value={fields.prjNomMonth} readOnly/>개월
                                                     {errors && <p className="valid">{errors?.prjYm}</p>}
@@ -699,7 +754,7 @@ function PO100(props){
                                             <tr>
                                                 <th scope="row"><span className="tit">프로젝트 장소</span></th>
                                                 <td className="txtL" colSpan="3">
-                                                    <input type="text" className='w250' value={fields.prjPlcNm} onChange={handleChange}/>
+                                                    <input type="text" className='w250' id="prjPlcNm" name="prjPlcNm" value={fields.prjPlcNm} onChange={handleChange}/>
                                                     {/* <button type="button" className="btn02s"><i className="ic_search_blue"></i></button> */}
                                                     {errors && <p className="valid">{errors?.prjPlcNm}</p>}
                                                 </td>
@@ -858,8 +913,8 @@ function PO100(props){
                                                                             </td>
 
                                                                             <td className="txtL">
-                                                                                <input type="file" className="w100p" name="fileObj" onChange={(e) => handleChange(e, index, 'files')} />
-                                                                                {errors && <p className="valid">{errors.files[index]?.fileObj}</p>}
+                                                                                <input type="file" className="w100p" name="fileBase64" onChange={(e) => handleChange(e, index, 'files')} />
+                                                                                {errors && <p className="valid">{errors.files[index]?.fileBase64}</p>}
                                                                             </td>
                                                                         </tr>
                                                                     ))}
