@@ -1071,3 +1071,14 @@ td .picItem .pic img{max-width:100%;width:initial !important;margin:0 auto;}
   background-color: #fff;
   transition: all 600ms cubic-bezier(1, 1, 1, 1);
 }
+
+/******************************************************************
+  정현 행추가삭제 버튼_0321_오후4:45 재수정 업로드
+/******************************************************************/
+
+.btn06{background:#fff;color:#333;border:1px solid #c3c3c3;border-radius: 4px;padding:0px 14px;height:32px;}/*연한회색배경 | 취소, 인쇄하기*/
+.btnS6{background:#fff;color:#333;height:20px;width:20px;}
+.btnS7{background:#fff;color:#333;height:20px;width:20px;margin-left: 3px;}
+
+.ic_rowPlusBlue{background-image: url(../imgs/ic_rowPlus_blue.png);width:8px;height:8px;margin-bottom: 1px;}
+.ic_rowMinusRed{background-image: url(../imgs/ic_rowMinus_red.png);width:8px;height:8px;margin-bottom: 1px;}
