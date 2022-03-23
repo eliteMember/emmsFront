@@ -1,54 +1,25 @@
 import React, { useEffect, lazy, useState } from "react";
 import axios from 'axios';
 import './PM201.css';
-import DatePicker from "react-datepicker";
-
-let CodeSelectOption = lazy( ()=> import('../../Component/CodeSelectOption.js') );
-
 
 function PM201(props) {
 
-  const [startDate, startDateModify] = useState(new Date());
-  const [endDate, endDateModify] = useState(new Date());
-  const [searchErrorMsg, searchErrorMsgModify] = useState('');
-
-  const timeSe = setTimeout(()=>{ searchErrorMsgModify(''); }, 1000);
+  let [startDate, startDateModify] = useState('2022-01');    // 프로젝트 시작 년월
+  let [endDate, endDateModify] = useState('2022-04');        // 프로젝트 종료 년월
 
   // INIT
   useEffect(() => {
 
   }, []);
 
-
-  // 검색날짜 유효성 체크
-  function fn_changeSearchDate(se,date)  {
-    if  ( se === 'S' )  {
-      if  ( fn_setDateFormatting(date) <= fn_setDateFormatting(endDate) ) {
-        startDateModify(date);
-        searchErrorMsgModify('');
-      }  else  {
-        searchErrorMsgModify('검색 시작일이 종료일보다 클 수 없습니다.');
-        clearTimeout(timeSe);
-      }
-    }  else  {
-      if  ( fn_setDateFormatting(date) >= fn_setDateFormatting(startDate) ) {
-        endDateModify(date);
-        searchErrorMsgModify('');
-      }  else  {
-        searchErrorMsgModify('검색 종료일이 시작일보다 작을 수 없습니다.');
-        clearTimeout(timeSe);
-      }
-    }
+  // 프로젝트 선택 이벤트
+  function fn_choiceProject(option)  {
+    axios.post('/api/prjTrtCstList', {
+      searchProject : option,
+    }).then(function (res) {
+      console.log(res.data.pjData);
+    });
   }
-
-
-  function fn_setDateFormatting(date)  {
-    var month = (date.getMonth()+1) < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1;
-    var day = date.getDate() < 10 ? '0'+date.getDate() : date.getDate();
-
-    return date.getFullYear()+''+month+''+day;
-  }
-  
 
   return (
     <>
@@ -69,28 +40,23 @@ function PM201(props) {
                     <tr>
                       <th scope="row"><span className="tit">프로젝트</span></th>
                       <td className="txtL">
-                        <select className="mr20">
-                          <option>프로젝트 1</option>
-                          <option>프로젝트 2</option>
+                        <select className="mr20" onChange={(e)=>{ fn_choiceProject(e.target.value) }} >
+                          <option value={1} >프로젝트 1</option>
+                          <option value={2} >프로젝트 2</option>
                         </select>
                       </td>
                       <th scope="row"><span className="tit">프로젝트 기간</span></th>
                       <td className="txtL">
-                        <DatePicker locale="ko" onChange={date => fn_changeSearchDate('S',date)} selected={startDate} dateFormat="yyyy-MM-dd" />
+                        <label className="pmLabelSt" >{startDate}</label>
                       </td>
                       <td>&nbsp;~&nbsp;</td>
                       <td>
-                        <DatePicker locale="ko" onChange={date => fn_changeSearchDate('E',date)} selected={endDate} dateFormat="yyyy-MM-dd" />
+                        <label className="pmLabelSt" >{endDate}</label>
                       </td>
-                      <td>&nbsp;<label className="errorMsgSt" >{searchErrorMsg}</label></td>
                     </tr>
                   </tbody>
                 </table>
               </div>
-
-            </div>
-            <div className="fr">
-              <button type="button" className="btn01"><i className="ic_search"></i><span>조회</span></button>
             </div>
           </div>
 
