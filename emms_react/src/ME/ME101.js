@@ -100,7 +100,7 @@ function ME101(props) {
 
     for  ( var objNum in allDataList )  {
       /* 필수항목 체크 */
-      if  ( notNull.includes(allDataList[objNum]) && (allDataList[objNum] === "" || [objNum] === "선택") )  {
+      if  ( notNull.includes(allDataList[objNum]) && (allDataList[objNum] === "" || allDataList[objNum] === "0") )  {
         alert('필수 입력학목이 누락되었습니다.');
         checkValidation = false;
         break;
@@ -289,7 +289,6 @@ function ME101(props) {
                     <th className="w10p w23p">직위</th>
                     <td className="txtC">
                       <select className="w100p" id="incCd" onChange={(e) => { incCdModify(e.target.value); }} value={incCd} >
-                        <option>선택</option>
                         <CodeSelectOption codeGroup={'INC_CD'} />
                       </select>
                     </td>
@@ -298,14 +297,12 @@ function ME101(props) {
                     <th >등급</th>
                     <td className="txtC">
                       <select className="w100p" id="memRnkCd" onChange={(e) => { memRnkCdModify(e.target.value); }} value={memRnkCd} >
-                        <option>선택</option>
                         <CodeSelectOption codeGroup={'RNK_CD'} />
                       </select>
                     </td>
                     <th className="w10p">학력</th>
                     <td className="txtC">
                       <select className="w100p" id="eduCd" onChange={(e) => { eduCdModify(e.target.value); }} value={eduCd} >
-                        <option>선택</option>
                         <CodeSelectOption codeGroup={'EDU_CD'} />
                       </select>
                     </td>
@@ -331,7 +328,6 @@ function ME101(props) {
                     <th className="w10p">소속팀</th>
                     <td className="txtC">
                       <select className="w100p" id="timNum" onChange={(e) => { timNumModify(e.target.value); }} value={timNum} >
-                      <option>선택</option>
                         <TeamSelectOption />
                       </select>
                     </td>
