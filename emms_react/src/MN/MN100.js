@@ -18,7 +18,7 @@ function MN100(props) {
 
   const history = useHistory();
 
-  const { register, watch, handleSubmit, formState: { errors } } = useForm();
+  const { register, handleSubmit, formState: { errors } } = useForm();
   const onSubmit = (data) => {
     axios.post('/api/login', data)
       .then(function (res) {
@@ -51,7 +51,6 @@ function MN100(props) {
   const onError = (error) => {
     console.log(error);
   }
-  console.log(watch());
 
   return (
     <div className="loginPage">

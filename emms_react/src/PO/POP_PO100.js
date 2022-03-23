@@ -1,6 +1,8 @@
-import { React, useState, useEffect } from 'react';
-import { Link, Router, useHistory } from 'react-router-dom';
-import axios from 'axios';
+import { React } from 'react';
+//import { React, useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+//import { Link, Router, useHistory } from 'react-router-dom';
+//import axios from 'axios';
 import './POP_PO100.css';
 
 

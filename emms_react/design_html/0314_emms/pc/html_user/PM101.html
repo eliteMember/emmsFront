@@ -64,10 +64,12 @@
                     <div class="hr20"></div>
     
                     <!--조회결과-->  
-                    <div class="gridUtil mt20">
+                    <div class="gridUtil">
+                        <div class="fl">
+                            <p class="txtGuide">플러스 마이너스를 눌러 행을 추가하거나 삭제 할 수 있습니다.</p>
+                        </div>
+
                         <div class="fr">
-                            <button type="button" class="btn btn02 rad50 borderC2"><i class="ic_rowPlusBlue"></i><span>행추가</span></button>
-                            <button type="button" class="btn btn02 rad50 borderC2"><i class="ic_rowMinusRed"></i><span>행삭제</span></button>
                             <button type="button" class="btn btn02 rad50 borderC2"><i class="ic_rowUp"></i><span>위로</span></button>
                             <button type="button" class="btn btn02 rad50 borderC2"><i class="ic_rowDown"></i><span>아래로</span></button>
                             <button type="button" class="btn btn02 rad50 borderC2"><span>복사</span></button>
@@ -83,27 +85,27 @@
                                 <caption>실투입공수관리</caption>
                                 <colgroup>
                                     <col style="width:auto">
-                                    <col style="width:auto">
+                                    <col style="width:200px">
+                                    <col style="width:200px">
                                     <col style="width:100px">
                                     <col style="width:100px">
-                                    <col style="width:100px">
+                                    <col style="width:60px">
+                                    <col style="width:60px">
+                                    <col style="width:60px">
+                                    <col style="width:60px">
+                                    <col style="width:60px">
+                                    <col style="width:60px">
+                                    <col style="width:60px">
+                                    <col style="width:60px">
+                                    <col style="width:60px">
+                                    <col style="width:60px">
+                                    <col style="width:60px">
+                                    <col style="width:60px">
+                                    <col style="width:60px">
+                                    <col style="width:60px">
+                                    <col style="width:60px">
+                                    <col style="width:60px">
                                     <col style="width:80px">
-                                    <col style="width:80px">
-                                    <col style="width:80px">
-                                    <col style="width:80px">
-                                    <col style="width:80px">
-                                    <col style="width:80px">
-                                    <col style="width:80px">
-                                    <col style="width:80px">
-                                    <col style="width:80px">
-                                    <col style="width:80px">
-                                    <col style="width:80px">
-                                    <col style="width:80px">
-                                    <col style="width:80px">
-                                    <col style="width:80px">
-                                    <col style="width:80px">
-                                    <col style="width:80px">
-                                    <col style="width:auto">
                                     <col style="width:auto">
                                 </colgroup>
                                 <thead>
@@ -135,9 +137,30 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td class="txtC" rowspan="5">개발</td>
-                                        <td class="txtC" rowspan="2">업무총괄PL</td>
-                                        <td class="txtC">업무PL</td>
+                                        <td class="txtC" rowspan="5">개발<br>
+                                            <div class="mt10">
+                                                <button type="button" class="btnS6 rad50 borderC2"><i class="ic_rowPlusBlue"></i>
+                                                <button type="button" class="btnS7 rad50 borderC2"><i class="ic_rowMinusRed"></i>
+                                            </div>  
+                                        </td>
+                                        <td class="" rowspan="2">
+                                            <div class="txtL">
+                                                <span>업무총괄PL</span>
+                                            </div>
+                                            <div class="txtR">
+                                                <button type="button" class="btnS6 rad50 borderC2 "><i class="ic_rowPlusBlue"></i>
+                                                <button type="button" class="btnS7 rad50 borderC2 "><i class="ic_rowMinusRed"></i>
+                                            </div>
+                                        </td>
+                                        <td class="">
+                                            <div class="txtL">
+                                                <span>업무PL</span>
+                                            </div>
+                                            <div class="txtR">
+                                                <button type="button" class="btnS6 rad50 borderC2 "><i class="ic_rowPlusBlue"></i>
+                                                <button type="button" class="btnS7 rad50 borderC2 "><i class="ic_rowMinusRed"></i>
+                                            </div>
+                                        </td>
                                         <td class="txtC">TBD1</td>
                                         <td class="txtC">특급</td>
                                         <td class="txtC">1.0</td>
@@ -159,7 +182,7 @@
                                         <td class="txtR">6.0</td>
                                         <td class="txtR"></td>  
                                     </tr>
-                                    <tr>
+                                    <tr class="tfoot">
                                         <td class="txtC" colspan="3">소계</td>
                                         <td class="txtC">1.0</td>
                                         <td class="txtC">1.0</td>
@@ -172,7 +195,7 @@
                                         <td class="txtC">1.0</td>
                                         <td class="txtC">1.0</td>
                                         <td class="txtC">1.0</td>
-                                        <td class="txtC">1.0</td>
+                                        <td class="txtC">1,0</td>
                                         <td class="txtC">1,0</td>
                                         <td class="txtC">1.0</td>
                                         <td class="txtC">1,0</td>
@@ -181,8 +204,25 @@
                                         <td class="txtR"></td>  
                                     </tr>
                                     <tr>
-                                        <td class="txtC" rowspan="5">비대면 처리가능 업무</td>
-                                        <td class="txtC" rowspan="2">업무개발TL</td>
+                                        <td class="" rowspan="2">
+                                            <div class="txtL">
+                                                <span>비대면 처리가능업무</span>
+                                            </div>
+                                            <div class="txtR">
+                                                <button type="button" class="btnS6 rad50 borderC2 "><i class="ic_rowPlusBlue"></i>
+                                                <button type="button" class="btnS7 rad50 borderC2 "><i class="ic_rowMinusRed"></i>
+                                            </div>
+                                        </td>
+                                        
+                                        <td class="">
+                                            <div class="txtL">
+                                                <span>개발1</span>
+                                            </div>
+                                            <div class="txtR">
+                                                <button type="button" class="btnS6 rad50 borderC2 "><i class="ic_rowPlusBlue"></i>
+                                                <button type="button" class="btnS7 rad50 borderC2 "><i class="ic_rowMinusRed"></i>
+                                            </div>
+                                        </td>
                                         <td class="txtC">TBD2</td>
                                         <td class="txtC">중급</td>
                                         <td class="txtC">1.0</td>
@@ -205,6 +245,15 @@
                                         <td class="txtR"></td>  
                                     </tr>
                                     <tr>
+                                        <td class="">
+                                            <div class="txtL">
+                                                <span>개발2</span>
+                                            </div>
+                                            <div class="txtR">
+                                                <button type="button" class="btnS6 rad50 borderC2 "><i class="ic_rowPlusBlue"></i>
+                                                <button type="button" class="btnS7 rad50 borderC2 "><i class="ic_rowMinusRed"></i>
+                                            </div>
+                                        </td>
                                         <td class="txtC">TBD3</td>
                                         <td class="txtC">초급</td>
                                         <td class="txtC">0.5</td>
@@ -226,8 +275,8 @@
                                         <td class="txtR">6.0</td>
                                         <td class="txtR"></td>  
                                     </tr>
-                                    <tr>
-                                        <td class="txtC" colspan="3">소계</td>
+                                    <tr class="tfoot">
+                                        <td class="txtC" colspan="4">소계</td>
                                         <td class="txtC">1.0</td>
                                         <td class="txtC">1.0</td>
                                         <td class="txtC">1.0</td>
@@ -257,34 +306,33 @@
                             <caption>실투입공수관리</caption>
                             <colgroup>
                                 <col style="width:auto">
-                                <col style="width:auto">
-                                <col style="width:auto">
-                                <col style="width:auto">
-                                <col style="width:auto">
-                                <col style="width:auto">
-                                <col style="width:auto">
-                                <col style="width:auto">
-                                <col style="width:auto">
-                                <col style="width:auto">
-                                <col style="width:auto">
-                                <col style="width:auto">
-                                <col style="width:auto">
-                                <col style="width:auto">
-                                <col style="width:auto">
-                                <col style="width:auto">
-                                <col style="width:auto">
-                                <col style="width:auto">
-                                <col style="width:auto">
-                                <col style="width:auto">
-                                <col style="width:auto">
+                                <col style="width:200px">
+                                <col style="width:200px">
+                                <col style="width:100px">
+                                <col style="width:100px">
+                                
+                                <col style="width:60px">
+                                <col style="width:60px">
+                                <col style="width:60px">
+                                <col style="width:60px">
+                                <col style="width:60px">
+                                <col style="width:60px">
+                                <col style="width:60px">
+                                <col style="width:60px">
+                                <col style="width:60px">
+                                <col style="width:60px">
+                                <col style="width:60px">
+                                <col style="width:60px">
+                                <col style="width:60px">
+                                <col style="width:60px">
+                                <col style="width:60px">
+                                <col style="width:60px">
+                                <col style="width:80px">
                                 <col style="width:auto">
                             </colgroup>
                             <tbody>
                                 <tr class="tfoot">
-                                    <td class="txtR"></td>
-                                    <td class="txtR"></td>
-                                    <td class="txtR"></td>
-                                    <td class="txtR"></td>
+                                    <td class="txtR" colspan="4"></td>
                                     <td class="txtR"></td>
                                     <td class="txtR"></td>
                                     <td class="txtR"></td>
@@ -317,7 +365,7 @@
                             </div>
                         </div>
                         <div class="fr">
-                            <button type="button" class="btn01"><span>등록/수정</span></button>
+                            <button type="button" class="btn04"><span>등록/수정</span></button>
                         </div>
                     </div>
     

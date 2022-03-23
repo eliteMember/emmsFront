@@ -18,8 +18,8 @@
 
 /*레이아웃*/
 .subPage{overflow: hidden;}
-.wrapper{position: relative;overflow:hidden}
-.header{width:100%;min-width:1280px;z-index: 10;background-color:#fff;position: fixed;display: block;}
+.wrapper{position: relative;overflow:hidden;}
+.header{width:100%;height:118px;min-width:1280px;z-index: 50;background-color:#fff;position: fixed;display: block;}
 /*.footer{width:100%;display: block;position: absolute;bottom:10px;left:50%;width:1200px;transform: translateX(-50%);}*/
 .footer{border-top:1px solid #dfdfdf;padding-top:20px;padding-bottom:20px;/*padding-bottom:165px;*/}
 .footer .inner{width:1200px;margin:0 auto;height:""}

@@ -1060,3 +1060,97 @@ td .picItem .pic img{max-width:100%;width:initial !important;margin:0 auto;}
 .resultMsgWrap .callCenterTxt{margin:10px auto 20px;text-align: center;font-size:14px}
 .resultMsgWrap button.btn10{background:#2b6ed8;color:#fff;font-size:14px;height:36px !important;padding:0px 14px;width:100px;border-radius: 4px;}
 .resultMsgWrap button.btn10 span{color:#fff}
+
+
+/******************************************************************
+  정현하단 바텀시트_0317
+/******************************************************************/
+
+.dimmed{position:fixed;left:0;top:0;right:0;bottom:0;background:#000;z-index:101;}
+.dimmed.UP{
+  opacity:0.2;
+  visibility: initial;
+  transition: all 600ms cubic-bezier(0.86, 0, 0.6, 1);
+}
+.dimmed.DOWN{
+  opacity:0;
+  visibility: hidden;
+  transition: all 600ms cubic-bezier(0.86, 0, 0.6, 1);
+}
+
+.bottomupToggleBtn{
+  position: fixed;
+  margin-left: 41%;
+  margin-bottom: 20px;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+  width: 300px;
+  height: 40px;
+  border-radius: 12px;
+  text-align: center;
+  background-color: rgb(255, 255, 255);
+  z-index: 103;
+}
+
+.bottomupToggleBtn.DOWN{
+  bottom: -10px;
+  transition: bottom 600ms cubic-bezier(1, 0, 0.6, 0.2);
+}
+.bottomupToggleBtn.UP{
+  bottom: 10px;
+  transition: bottom 600ms cubic-bezier(0, 0, 0, 1);
+}
+.bottomupToggleBtn:hover{
+background-color: rgb(185, 177, 255);
+}
+
+.bottomup{width:95%;border-radius: 5px; background: #fff;box-shadow:0px 1px 10px rgba(0,0,0,0.4);position: fixed; left: 50%;  
+  min-height:100px;
+  transform:translate(-50%);z-index:103; background-position: center bottom;}
+
+.bottomup .bottomupTitle{background:#333333;border-top-left-radius: 5px;border-top-right-radius: 5px; }
+.bottomup .bottomupTitle h2{color:#fff;font-size:16px;font-weight:500;padding-left:30px;height:48px;line-height:48px;}
+.bottomup .bottomupCont{width:100%;background:#fff;/*padding:20px 30px 40px;*/padding:10px 30px 20px;overflow:auto;border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;}
+.bottomup .bottomupClose{position: absolute;right:25px;top:15px;height:18px;width:18px;display: block;
+	text-indent: -999em;
+	background: url(../imgs/btnX_wh.png) no-repeat center center;
+}
+
+.bottomup .btnArea {
+	margin-top: 5px;
+	overflow: hidden;
+}
+
+.bottomup .btnTopRightArea{position: absolute;top:-8px;right:0}
+.bottomup .btnTopRightArea button{margin-left:3px}
+
+.bottomup .bottomupTitle h2 .titBox{display: flex;align-items: center;height:48px}
+.bottomup .bottomupTitle h2 .titBox dt{position: relative;padding-left:10px}
+.bottomup .bottomupTitle h2 .titBox dt:before{content: '';display: block;clear: both;overflow:hidden;width:3px;height:3px;position:absolute;left:0;top:9px;background: #fff;opacity: 0.7;}
+.bottomup .bottomupTitle h2 .titBox dd{color:#50c8ff;margin-left:10px;margin-right:25px}
+.bottomup .bottomupTitle h2 .point01{color:#50c8ff !important;}
+.bottomup iframe{width:100%;height:100%;border:0;}
+
+.bottomupContIframe{padding:0;border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;overflow:hidden}
+
+.bottomup{background:#fff}
+.bottomupCont{width:100%;background:#fff;padding:20px 30px 40px;border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;}
+
+.bottomup.DOWN{
+  bottom: -100%;
+  transition: all 600ms cubic-bezier(0.8, 0.3, 0.2, 1);
+}
+.bottomup.UP{
+  bottom: 100px;
+  transition: all 600ms cubic-bezier(0.5, 0, 0.02, 1);
+}
+
+/******************************************************************
+  정현 행추가삭제 버튼_0321_오후4:45 재수정 업로드
+/******************************************************************/
+
+.btn06{background:#fff;color:#333;border:1px solid #c3c3c3;border-radius: 4px;padding:0px 14px;height:32px;}/*연한회색배경 | 취소, 인쇄하기*/
+.btnS6{background:#fff;color:#333;height:20px;width:20px;}
+.btnS7{background:#fff;color:#333;height:20px;width:20px;margin-left: 3px;}
+
+.ic_rowPlusBlue{background-image: url(../imgs/ic_rowPlus_blue.png);width:8px;height:8px;margin-bottom: 1px;}
+.ic_rowMinusRed{background-image: url(../imgs/ic_rowMinus_red.png);width:8px;height:8px;margin-bottom: 1px;}

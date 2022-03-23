@@ -1,7 +1,9 @@
 import { React, useState, useEffect, lazy } from 'react';
-import { Link, Router, useHistory } from 'react-router-dom';
+//import { useHistory } from 'react-router-dom';
+//import { Link, Router, useHistory } from 'react-router-dom';
 import axios from 'axios';
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+//import { useDispatch, useSelector } from "react-redux";
 
 import './PO100.css';
 import './POP_PO200';
@@ -16,18 +18,18 @@ let CodeSelectOption = lazy(()=> import('../Component/CodeSelectOption.js') );
 
 function PO100(props){
   
-  const history = useHistory();
+  //const history = useHistory();
 
   //////////////////////////////////////////////////////////////////////////////////
   // 모달 useState를 사용하여 open상태를 변경한다. (open일때 true로 만들어 열리는 방식)
   const [modalOpen, setModalOpen] = useState(false);
 
   const openModal = () => {
-    console.log('모달 열기');
+    //console.log('모달 열기');
     setModalOpen(true);
   };
   const closeModal = () => {
-    console.log('모달 닫기');
+    //console.log('모달 닫기');
     setModalOpen(false);
   };
 
@@ -58,12 +60,26 @@ function PO100(props){
 	//, crtUsrNum   : ''  //등록사용자번호
 	//, mdfDtm      : ''  //수정일시
 	//, mdfUsrNum   : ''  //수정사용자번호
-    , copInfo1     : [{copSeqNum: null, copDivCd:'1', copNm:'', copMgrName:'', copMgrCtt:''}]   //고객사 담당자 정보
-    , copInfo2     : [{copSeqNum: null, copDivCd:'2', copNm:'', copMgrName:'', copMgrCtt:''}]
-    , copInfo3     : [{copSeqNum: null, copDivCd:'3', copNm:'', copMgrName:'', copMgrCtt:''}]
+    , copInfo1     : [{id:0, copSeqNum: null, copDivCd:'1', copNm:'', copMgrName:'', copMgrCtt:'' }]   //고객사 담당자 정보
+    , copInfo2     : [{id:0, copSeqNum: null, copDivCd:'2', copNm:'', copMgrName:'', copMgrCtt:'' }]
+    , copInfo3     : [{id:0, copSeqNum: null, copDivCd:'3', copNm:'', copMgrName:'', copMgrCtt:'' }]
+    , files        : [{id:0
+                    , relDocNum:null 
+                    , docClsCd : ''
+                    , filNm : ''
+                    , filPth : ''
+                    , orgFilNm : ''
+                    , filSiz : null
+                    , filExt : ''
+                    , crtDtm : ''
+                    , crtUsrNum : ''
+                    , mdfDtm : ''
+                    , mdfUsrNum : ''
+                    , fileBase64:null }]
     });
+
   const [errors, setErrors] = useState({
-      prjNewOrOld : 'new'
+      prjNewOrOld : ''
     , prjNum	  : ''  //프로젝트번호
 	, prjNm       : ''  //프로젝트명
 	, prjDivCd    : ''  //프로젝트구분코드
@@ -81,25 +97,124 @@ function PO100(props){
 	//, crtUsrNum   : ''  //등록사용자번호
 	//, mdfDtm      : ''  //수정일시
 	//, mdfUsrNum   : ''  //수정사용자번호
+    , copInfo1     : [{id:0, copNm:'', copMgrName:'', copMgrCtt:''}]   //고객사 담당자 정보
+    , copInfo2     : [{id:0, copNm:'', copMgrName:'', copMgrCtt:''}]   //수행사 담당자 정보
+    , copInfo3     : [{id:0, copNm:'', copMgrName:'', copMgrCtt:''}]   //협력사 담당자 정보
+    , files        : [{id:0
+        , relDocNum:null 
+        , docClsCd : ''
+        , filNm : ''
+        , filPth : ''
+        , orgFilNm : ''
+        , filSiz : null
+        , filExt : ''
+        , fileBase64:null }]
   });
-
-  const handleChange = event => {
+  const handleChange = (event, arrId, arrName) => {
     const { name, value } = event.target;
     let v_fields = {...fields};
-    v_fields[name] = value;
-    setFields(v_fields);
+
+    if( !arrName ){
+        v_fields[name] = value;
+    }
+    if( arrName === 'copInfo1' ){
+        let v_copInfo1 = v_fields.copInfo1;
+        v_copInfo1[arrId][name] = value;
+        v_fields['copInfo1'] = v_copInfo1;
+    }
+    if( arrName === 'copInfo2' ){
+        let v_copInfo2 = v_fields.copInfo2;
+        v_copInfo2[arrId][name] = value;
+        v_fields['copInfo2'] = v_copInfo2;
+    }
+    if( arrName === 'copInfo3' ){
+        let v_copInfo3 = v_fields.copInfo3;
+        v_copInfo3[arrId][name] = value;
+        v_fields['copInfo3'] = v_copInfo3;
+    }
+    if( arrName === 'files' ){
+        console.log( '=========== file start' )
+        let v_files = v_fields.files;
+        const filesBase64Convert = async() => {
+            if( event.target.files !== null && event.target.files !== undefined ){
+                let reader = new FileReader();
+                reader.readAsDataURL( event.target.files[0] )
+                reader.onload = async() => {
+                    const base64data = reader.result
+                    console.log( '----------------' )
+                    console.log( base64data )
+                    console.log( event.target.files[0] )
+                    console.log( '=========== file end' )
+                    v_files[arrId].fileBase64 = base64data;
+                    v_files[arrId].orgFilNm = event.target.files[0].name;
+                    v_fields['files'] = v_files;
+                }
+            }else{
+                v_files[arrId][name] = value;
+                console.log( '=========== file end' )
+                v_fields['files'] = v_files;
+            }
+        }
+        filesBase64Convert();
+    }
+
+    setFields(v_fields);    
   }
+
+  function processFile(file){
+      var reader = new FileReader();
+      reader.onload = function(){
+          var result = reader.result;
+          //console.log(result)
+          return result;
+      }
+      return reader.readAsDataURL(file);
+  }
+
+
   //submit 처리
   const onSubmitHandle = (e) => {
     e.preventDefault();
       if (validatehtmlForm()) {
           alert("htmlForm submitted");
+          console.log( fields );
+          const submitProcess = async() => {
+              let sendInfo = await axios({
+                    method : 'post',
+                    url : '/api/po100/insert',
+                    //data : JSON.stringify({"paramVO":fields}),
+                    //data : JSON.stringify(fields),
+                    data : fields,
+                      //headers : {
+                          //'Content-Type': 'multipart/form-data',
+                          //"Content-Type": 'application/json;multipart/form-data'
+                          //"Content-Type": 'application/json'
+                      //},
+                })
+                .then(function (res) {
+                    //console.log(res);
+                    console.log(res.data);
+                    console.log('되냐')
+                    //setTeamList(res.data.list)
+                })
+                .catch(function (res) {
+                    console.log('등록 실패');
+                })
+            };
+        
+        const returnData = submitProcess();
+        console.log(returnData);
+
       }
   }
   //유효성 검사
   const validatehtmlForm = () => {
 
     let v_fields = fields;
+    let v_copInfo1 = v_fields.copInfo1;
+    let v_copInfo2 = v_fields.copInfo2;
+    let v_copInfo3 = v_fields.copInfo3;
+    let v_files = v_fields.files;
     let errors = {};
     let htmlFormIsValid = true;
 
@@ -131,6 +246,84 @@ function PO100(props){
         errors["prjPlcNm"] = "*프로젝트장소를 입력하세요.";
     }
 
+    // 고객사
+    errors.copInfo1 = [];
+    v_copInfo1.map((element, index) => {
+        errors.copInfo1.push({id:0, copNm:'', copMgrName:'', copMgrCtt:''});
+        if (!v_copInfo1[index]["copNm"]) {
+            htmlFormIsValid = false;
+            errors.copInfo1[index].copNm = "*고객사명을 입력하세요.";
+        }
+        if (!v_copInfo1[index]["copMgrName"]) {
+            htmlFormIsValid = false;
+            errors.copInfo1[index].copMgrName = "*담당자명을 입력하세요.";
+        }
+        if (!v_copInfo1[index]["copMgrCtt"]) {
+            htmlFormIsValid = false;
+            errors.copInfo1[index].copMgrCtt = "*연락처 입력하세요.";
+        }
+    });
+
+    // 수행사
+    errors.copInfo2 = [];
+    v_copInfo2.map((element, index) => {
+        errors.copInfo2.push({id:0, copNm:'', copMgrName:'', copMgrCtt:''});
+        if (!v_copInfo2[index]["copNm"]) {
+            htmlFormIsValid = false;
+            errors.copInfo2[index].copNm = "*고객사명을 입력하세요.";
+        }
+        if (!v_copInfo2[index]["copMgrName"]) {
+            htmlFormIsValid = false;
+            errors.copInfo2[index].copMgrName = "*담당자명을 입력하세요.";
+        }
+        if (!v_copInfo2[index]["copMgrCtt"]) {
+            htmlFormIsValid = false;
+            errors.copInfo2[index].copMgrCtt = "*연락처 입력하세요.";
+        }
+    });
+
+    // 협력사
+    errors.copInfo3 = [];
+    v_copInfo3.map((element, index) => {
+        errors.copInfo3.push({id:0, copNm:'', copMgrName:'', copMgrCtt:''});
+        if (!v_copInfo3[index]["copNm"]) {
+            htmlFormIsValid = false;
+            errors.copInfo3[index].copNm = "*고객사명을 입력하세요.";
+        }
+        if (!v_copInfo3[index]["copMgrName"]) {
+            htmlFormIsValid = false;
+            errors.copInfo3[index].copMgrName = "*담당자명을 입력하세요.";
+        }
+        if (!v_copInfo2[index]["copMgrCtt"]) {
+            htmlFormIsValid = false;
+            errors.copInfo3[index].copMgrCtt = "*연락처 입력하세요.";
+        }
+    });
+
+    // 첨부파일
+    errors.files = [];
+    v_files.map((element, index) => {
+        errors.files.push(
+            {id:0
+                , relDocNum:null 
+                , docClsCd : ''
+                , filNm : ''
+                , filPth : ''
+                , orgFilNm : ''
+                , filSiz : null
+                , filExt : ''
+                , fileBase64:null }
+        );
+        if (!v_files[index]["docClsCd"]) {
+            htmlFormIsValid = false;
+            errors.files[index].docClsCd = "*파일구분을 선택하세요.";
+        }
+        if (!v_files[index]["fileBase64"]) {
+            htmlFormIsValid = false;
+            errors.files[index].fileBase64 = "*첨부파일을 입력하세요.";
+        }
+    });
+
     setErrors(errors);
     return htmlFormIsValid;
   }
@@ -142,7 +335,7 @@ function PO100(props){
      var keys = Object.keys(v_fields); //키를 가져옵니다. 이때, keys 는 반복가능한 객체가 됩니다.
      for (var i=0; i<keys.length; i++) {
     	var key = keys[i];
-    	console.log("key : " + key + ", value : " + v_fields[key]);
+    	//console.log("key : " + key + ", value : " + v_fields[key]);
       v_fields[key] = '';
     }
     setFields(v_fields);
@@ -157,12 +350,12 @@ function PO100(props){
     //프로젝트 팀 조회 ( DB )
     axios.get('/api/cmmn/listTeam', {})
         .then(function (res) {
-            console.log(res);
-            console.log(res.data);
+            //console.log(res);
+            //console.log(res.data);
             setTeamList(res.data.list)
         })
         .catch(function (res) {
-          console.log('팀조회 실패');
+          //console.log('팀조회 실패');
         })
   }, []);
   //우리팀진행 선택
@@ -232,7 +425,8 @@ function PO100(props){
 
 
   //////////////////////////////////////////////
-  // 고객사 추가
+  // 고객사 관리
+  // 고객사 선택
   const [corp1ChkList, setCorp1ChkList] = useState([]);
   const corp1ChangeHanle = (e) => {
     if (e.target.checked) {
@@ -241,33 +435,207 @@ function PO100(props){
         setCorp1ChkList(corp1ChkList.filter((checkedId) => checkedId !== e.target.value));
      }
   }
-
-  const addCopTR = () => {
+  //고객사 추가
+  const [corp1Seq, setCorp1Seq] = useState(0);
+  useEffect(() => {
     let v_fields = {...fields};
     let v_copInfo1 = v_fields['copInfo1']
-    v_copInfo1.push({copSeqNum: null, copDivCd:'1', copNm:'', copMgrName:'', copMgrCtt:''});
-    v_fields['copInfo1'] = v_copInfo1;
-
-    setFields(v_fields);
+    if( corp1Seq > 0 ){
+        v_copInfo1.push({id: corp1Seq, copSeqNum: null, copDivCd:'1', copNm:'', copMgrName:'', copMgrCtt:''});
+        v_fields['copInfo1'] = v_copInfo1;
+        setFields(v_fields);
+    }
+    // else{
+    //     v_copInfo1 = {id:1, copSeqNum: null, copDivCd:'1', copNm:'', copMgrName:'', copMgrCtt:''};
+    //     v_fields['copInfo1'] = v_copInfo1;
+    //     setFields(v_fields);
+    // }
+  },[corp1Seq]);
+  const addCop1TR = () => {
+    setCorp1Seq(corp1Seq + 1)
   }
   // 고객사 삭제
-  const delCopTR = (e) => {
+  const delCop1TR = () => {
     let v_fields = {...fields};
     let v_copInfo1 = v_fields['copInfo1']
-    
-    //v_copInfo1 for(){
-    //    v_copInfo1.delete(index == index)
-   //}
-
-    // fields.copInfo1.map((element, index) => (
-    //     console.log(index)
-    //     //v_copInfo1.slice
-
-    //     v_copInfo1.del
-
-    // ));
-    
+    if( v_copInfo1.length == corp1ChkList.length ){
+        alert('고객사는 최소 1개 이상');
+    }else{
+        corp1ChkList.map((element, index) => (
+            v_copInfo1 = v_copInfo1.filter((arr_info) => arr_info.id != element)
+            //v_copInfo1.filter((arr_info) => { console.log(arr_info.id); console.log(element); console.log(arr_info.id == element) })
+        ));
+        setCorp1ChkList([]);
+        v_fields['copInfo1'] = v_copInfo1;
+        setFields(v_fields);
+    }
+    // let timer = setTimeout(()=>{ 
+    //     console.log('--------------------------')
+    //     console.log(fields.copInfo1)
+    //     console.log('--------------------------')
+    //  }, 1000);
   }
+
+
+//////////////////////////////////////////////
+  // 수행사 관리
+  // 수행사 선택
+  const [corp2ChkList, setCorp2ChkList] = useState([]);
+  const corp2ChangeHanle = (e) => {
+    if (e.target.checked) {
+        setCorp2ChkList([...corp2ChkList, e.target.value]);
+     } else {
+        setCorp2ChkList(corp2ChkList.filter((checkedId) => checkedId !== e.target.value));
+     }
+  }
+  //수행사 추가
+  const [corp2Seq, setCorp2Seq] = useState(0);
+  useEffect(() => {
+    let v_fields = {...fields};
+    let v_copInfo2 = v_fields['copInfo2']
+    if( corp2Seq > 0 ){
+        v_copInfo2.push({id: corp2Seq, copSeqNum: null, copDivCd:'2', copNm:'', copMgrName:'', copMgrCtt:''});
+        v_fields['copInfo2'] = v_copInfo2;
+        setFields(v_fields);
+    }
+    // else{
+    //     v_copInfo1 = {id:1, copSeqNum: null, copDivCd:'1', copNm:'', copMgrName:'', copMgrCtt:''};
+    //     v_fields['copInfo1'] = v_copInfo1;
+    //     setFields(v_fields);
+    // }
+  },[corp2Seq]);
+  const addCop2TR = () => {
+    setCorp2Seq(corp2Seq + 1)
+  }
+  // 수행사 삭제
+  const delCop2TR = () => {
+    let v_fields = {...fields};
+    let v_copInfo2 = v_fields['copInfo2']
+    if( v_copInfo2.length == corp2ChkList.length ){
+        alert('수행사는 최소 1개 이상');
+    }else{
+        corp2ChkList.map((element, index) => (
+            v_copInfo2 = v_copInfo2.filter((arr_info) => arr_info.id != element)
+            //v_copInfo1.filter((arr_info) => { console.log(arr_info.id); console.log(element); console.log(arr_info.id == element) })
+        ));
+        setCorp2ChkList([]);
+        v_fields['copInfo2'] = v_copInfo2;
+        setFields(v_fields);
+    }
+    // let timer = setTimeout(()=>{ 
+    //     console.log('--------------------------')
+    //     console.log(fields.copInfo1)
+    //     console.log('--------------------------')
+    //  }, 1000);
+  }
+
+
+  //////////////////////////////////////////////
+  // 협력사 관리
+  // 협력사 선택
+  const [corp3ChkList, setCorp3ChkList] = useState([]);
+  const corp3ChangeHanle = (e) => {
+    if (e.target.checked) {
+        setCorp3ChkList([...corp3ChkList, e.target.value]);
+     } else {
+        setCorp3ChkList(corp3ChkList.filter((checkedId) => checkedId !== e.target.value));
+     }
+  }
+  //협력사 추가
+  const [corp3Seq, setCorp3Seq] = useState(0);
+  useEffect(() => {
+    let v_fields = {...fields};
+    let v_copInfo3 = v_fields['copInfo3']
+    if( corp3Seq > 0 ){
+        v_copInfo3.push({id: corp3Seq, copSeqNum: null, copDivCd:'3', copNm:'', copMgrName:'', copMgrCtt:''});
+        v_fields['copInfo3'] = v_copInfo3;
+        setFields(v_fields);
+    }
+    // else{
+    //     v_copInfo1 = {id:1, copSeqNum: null, copDivCd:'1', copNm:'', copMgrName:'', copMgrCtt:''};
+    //     v_fields['copInfo1'] = v_copInfo1;
+    //     setFields(v_fields);
+    // }
+  },[corp3Seq]);
+  const addCop3TR = () => {
+    setCorp3Seq(corp3Seq + 1)
+  }
+  // 협력사 삭제
+  const delCop3TR = () => {
+    let v_fields = {...fields};
+    let v_copInfo3 = v_fields['copInfo3']
+    if( v_copInfo3.length == corp3ChkList.length ){
+        alert('협력사는 최소 1개 이상');
+    }else{
+        corp3ChkList.map((element, index) => (
+            v_copInfo3 = v_copInfo3.filter((arr_info) => arr_info.id != element)
+            //v_copInfo1.filter((arr_info) => { console.log(arr_info.id); console.log(element); console.log(arr_info.id == element) })
+        ));
+        setCorp3ChkList([]);
+        v_fields['copInfo3'] = v_copInfo3;
+        setFields(v_fields);
+    }
+    // let timer = setTimeout(()=>{ 
+    //     console.log('--------------------------')
+    //     console.log(fields.copInfo1)
+    //     console.log('--------------------------')
+    //  }, 1000);
+  }
+
+
+  //////////////////////////////////////////////
+  // 파일 관리
+  // 파일 선택
+  const [filesChkList, setFilesChkList] = useState([]);
+  const filesChangeHanle = (e) => {
+    if (e.target.checked) {
+        setFilesChkList([...filesChkList, e.target.value]);
+     } else {
+        setFilesChkList(filesChkList.filter((checkedId) => checkedId !== e.target.value));
+     }
+  }
+  //파일 추가
+  const [filesSeq, setFilesSeq] = useState(0);
+  useEffect(() => {
+    let v_fields = {...fields};
+    let v_files = v_fields['files']
+    if( filesSeq > 0 ){
+        v_files.push({id:filesSeq, relDocNum:null, docClsCd : '', filNm : '', filPth : '', orgFilNm : '', filSiz : null, filExt : '', crtDtm : '', crtUsrNum : '', mdfDtm : '', mdfUsrNum : '', fileBase64 : null });
+        v_fields['files'] = v_files;
+        setFields(v_fields);
+    }
+    // else{
+    //     v_copInfo1 = {id:1, copSeqNum: null, copDivCd:'1', copNm:'', copMgrName:'', copMgrCtt:''};
+    //     v_fields['copInfo1'] = v_copInfo1;
+    //     setFields(v_fields);
+    // }
+  },[filesSeq]);
+  const addFilesTR = () => {
+    setFilesSeq(filesSeq + 1)
+  }
+  //파일 삭제
+  const delFilesTR = () => {
+    let v_fields = {...fields};
+    let v_files = v_fields['files']
+    if( v_files.length == filesChkList.length ){
+        alert('첨부파일은 최소 1개 이상');
+    }else{
+        filesChkList.map((element, index) => (
+            v_files = v_files.filter((arr_info) => arr_info.id != element)
+            //v_copInfo1.filter((arr_info) => { console.log(arr_info.id); console.log(element); console.log(arr_info.id == element) })
+        ));
+        setFilesChkList([]);
+        v_fields['files'] = v_files;
+        setFields(v_fields);
+    }
+    // let timer = setTimeout(()=>{ 
+    //     console.log('--------------------------')
+    //     console.log(fields.copInfo1)
+    //     console.log('--------------------------')
+    //  }, 1000);
+  }
+
+
 
   return (
 
@@ -355,7 +723,7 @@ function PO100(props){
                                             <tr>
                                                 <th scope="row"><span className="tit">프로젝트 기간</span></th>
                                                 <td className="txtL" colSpan="3">
-                                                    <span className="datepickerBox">
+                                                    
                                                         {/* <input type="text" id="prjStartYm" name="prjStartYm" placeholder="2022-03" value={fields.prjStartYm} onChange={handleChange}/> */}
                                                         <DatePicker
                                                             dateFormat="yyyy-MM"
@@ -363,10 +731,11 @@ function PO100(props){
                                                             onChange={date=>setStartDate(date)}
                                                             locale={ko}
                                                             value={fields.prjStartYm}
+                                                            showMonthYearPicker
+                                                            className='w100'
                                                         />
-                                                    </span>
                                                     ~
-                                                    <span className="datepickerBox">
+                                                    
                                                         {/* <input type="text" id="prjEndYm" name="prjEndYm" placeholder="2022-12" value={fields.prjEndYm} onChange={handleChange}/> */}
                                                         <DatePicker
                                                             dateFormat="yyyy-MM"
@@ -374,9 +743,9 @@ function PO100(props){
                                                             onChange={date=>setEndDate(date)}
                                                             locale={ko}
                                                             value={fields.prjEndYm}
+                                                            showMonthYearPicker
+                                                            className='w100'
                                                         />
-                                                    </span>
-
                                                     <input type="text" className="w50 ml30 mr5" id="prjNomYear"  name="prjNomYear"  value={fields.prjNomYear} readOnly/>년
                                                     <input type="text" className="w50 ml10 mr5" id="prjNomMonth" name="prjNomMonth" value={fields.prjNomMonth} readOnly/>개월
                                                     {errors && <p className="valid">{errors?.prjYm}</p>}
@@ -385,7 +754,7 @@ function PO100(props){
                                             <tr>
                                                 <th scope="row"><span className="tit">프로젝트 장소</span></th>
                                                 <td className="txtL" colSpan="3">
-                                                    <input type="text" className='w250' value={fields.prjPlcNm} onChange={handleChange}/>
+                                                    <input type="text" className='w250' id="prjPlcNm" name="prjPlcNm" value={fields.prjPlcNm} onChange={handleChange}/>
                                                     {/* <button type="button" className="btn02s"><i className="ic_search_blue"></i></button> */}
                                                     {errors && <p className="valid">{errors?.prjPlcNm}</p>}
                                                 </td>
@@ -396,79 +765,104 @@ function PO100(props){
 
                                 <div className="tb03 mt10 lineTopGray">
                                     
-                                <div className="txtL mb10">
-                                        <span className="filebox ml5"> 
-                                            <button type="button" className="btn01s" onClick={addCopTR}><span>고객사 추가</span></button>
-                                            <button type="button" className="btn02s" onClick={delCopTR}><span>고객사 삭제</span></button>
-                                        </span>
+                                    <div className="txtL mb10">
+                                            <span className="filebox ml5"> 
+                                                <button type="button" className="btn01s" onClick={addCop1TR}><span>고객사 추가</span></button>
+                                                <button type="button" className="btn02s" onClick={delCop1TR}><span>고객사 삭제</span></button>
+                                            </span>
                                     </div>
-
                                     <table>
                                         <tbody>
                                             {fields.copInfo1.map((element, index) => (
-                                                 <tr key={index}>
-                                                    <th scope="row"><label><input type="checkbox" name="copChk1" value={index} onChange={(e) => corp1ChangeHanle}/>고객사</label></th>
+                                                 <tr key={element.id}>
+                                                    <th scope="row"><label><input type="checkbox" name="copChk1" value={element.id} onClick={(e) => corp1ChangeHanle(e)}/>{element.id} 고객사</label></th>
                                                     <td>
-                                                        <input type="text" className="w250"/>
+                                                        <input type="text" className="w250" name="copNm" value={fields.copInfo1[index].copNm} onChange={(e) => handleChange(e, index, 'copInfo1')} />
+                                                        {errors && <p className="valid">{errors.copInfo1[index]?.copNm}</p>}
                                                     </td>
                                                     <th scope="row">담당자</th>
                                                     <td>
-                                                        <input type="text" className="w100" placeholder="홍길동 부장"/>
+                                                        <input type="text" className="w100" name="copMgrName" value={fields.copInfo1[index].copMgrName} onChange={(e) => handleChange(e, index, 'copInfo1')} />
+                                                        {errors && <p className="valid">{errors.copInfo1[index]?.copMgrName}</p>}
                                                     </td>
                                                     <th scope="row">연락처</th>
                                                     <td>
-                                                        <input type="text" className="w250"/>
+                                                    <input type="text" className="w200" name="copMgrCtt" value={fields.copInfo1[index].copMgrCtt} onChange={(e) => handleChange(e, index, 'copInfo1')} />
+                                                    {errors && <p className="valid">{errors.copInfo1[index]?.copMgrCtt}</p>}
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                    <div className="txtL mb10">
+                                        <span className="filebox ml5"> 
+                                            <button type="button" className="btn01s" onClick={addCop2TR}><span>수행사 추가</span></button>
+                                            <button type="button" className="btn02s" onClick={delCop2TR}><span>수행사 삭제</span></button>
+                                        </span>
+                                    </div>                   
+                                    <table>
+                                        <tbody>
+                                            {fields.copInfo2.map((element, index) => (
+                                                 <tr key={element.id}>
+                                                    <th scope="row"><label><input type="checkbox" name="copChk2" value={element.id} onClick={(e) => corp2ChangeHanle(e)}/>{element.id} 수행사</label></th>
+                                                    <td>
+                                                        <input type="text" className="w250" name="copNm" value={fields.copInfo2[index].copNm} onChange={(e) => handleChange(e, index, 'copInfo2')} />
+                                                        {errors && <p className="valid">{errors.copInfo2[index]?.copNm}</p>}
+                                                    </td>
+                                                    <th scope="row">담당자</th>
+                                                    <td>
+                                                        <input type="text" className="w100" name="copMgrName" value={fields.copInfo2[index].copMgrName} onChange={(e) => handleChange(e, index, 'copInfo2')} />
+                                                        {errors && <p className="valid">{errors.copInfo2[index]?.copMgrName}</p>}
+                                                    </td>
+                                                    <th scope="row">연락처</th>
+                                                    <td>
+                                                    <input type="text" className="w200" name="copMgrCtt" value={fields.copInfo2[index].copMgrCtt} onChange={(e) => handleChange(e, index, 'copInfo2')} />
+                                                    {errors && <p className="valid">{errors.copInfo2[index]?.copMgrCtt}</p>}
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                    <div className="txtL mb10">
+                                        <span className="filebox ml5"> 
+                                            <button type="button" className="btn01s" onClick={addCop3TR}><span>협력사 추가</span></button>
+                                            <button type="button" className="btn02s" onClick={delCop3TR}><span>협력사 삭제</span></button>
+                                        </span>
+                                    </div>                   
+                                    <table>
+                                        <tbody>
+                                            {fields.copInfo3.map((element, index) => (
+                                                 <tr key={element.id}>
+                                                    <th scope="row"><label><input type="checkbox" name="copChk3" value={element.id} onClick={(e) => corp3ChangeHanle(e)}/>{element.id} 협력사</label></th>
+                                                    <td>
+                                                        <input type="text" className="w250" name="copNm" value={fields.copInfo3[index].copNm} onChange={(e) => handleChange(e, index, 'copInfo3')} />
+                                                        {errors && <p className="valid">{errors.copInfo3[index]?.copNm}</p>}
+                                                    </td>
+                                                    <th scope="row">담당자</th>
+                                                    <td>
+                                                        <input type="text" className="w100" name="copMgrName" value={fields.copInfo3[index].copMgrName} onChange={(e) => handleChange(e, index, 'copInfo3')} />
+                                                        {errors && <p className="valid">{errors.copInfo3[index]?.copMgrName}</p>}
+                                                    </td>
+                                                    <th scope="row">연락처</th>
+                                                    <td>
+                                                    <input type="text" className="w200" name="copMgrCtt" value={fields.copInfo3[index].copMgrCtt} onChange={(e) => handleChange(e, index, 'copInfo3')} />
+                                                    {errors && <p className="valid">{errors.copInfo3[index]?.copMgrCtt}</p>}
                                                     </td>
                                                 </tr>
                                             ))}
 
                                             <tr>
-                                                <th scope="row">수행사</th>
-                                                <td>
-                                                    <input type="text" className="w250"/>
-                                                </td>
-                                                <th scope="row">담당자</th>
-                                                <td>
-                                                    <input type="text" className="w100" placeholder="박민영 차장"/>
-                                                </td>
-                                                <th scope="row">연락처</th>
-                                                <td>
-                                                    <input type="text" className="w60"/>
-                                                    -
-                                                    <input type="text" className="w60"/>
-                                                    -
-                                                    <input type="text" className="w60"/>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">협력사</th>
-                                                <td>
-                                                    <input type="text" className="w250"/>
-                                                </td>
-                                                <th scope="row">담당자</th>
-                                                <td>
-                                                    <input type="text" className="w100" placeholder="김우빈 부장"/>
-                                                </td>
-                                                <th scope="row">연락처</th>
-                                                <td>
-                                                    <input type="text" className="w60"/>
-                                                    -
-                                                    <input type="text" className="w60"/>
-                                                    -
-                                                    <input type="text" className="w60"/>
-                                                </td>
-                                            </tr>
-                                            <tr>
                                                 <th scope="row">참조사항</th>
                                                 <td colSpan="6">
-                                                    <textarea className="h150">
-                                                    </textarea>
+                                                    <textarea className="h150" defaultValue={fields.prjRefCmt} onChange={(e) => handleChange(e)}></textarea>
                                                 </td>
                                             </tr>
                                         </tbody>
                                     </table>
                                 </div>
                                 
+
+
                                 <div className="tb03 mt5 lineTopGray">
                                     <table>
                                         <tbody>
@@ -483,15 +877,9 @@ function PO100(props){
                                                             <div className="tb04 mr20">                            
 
                                                                     <div className="txtL mb10">
-                                                                        <select className="w110">
-                                                                            <option>선택</option>
-                                                                            <CodeSelectOption codeGroup={'DOC_CLS_CD'} />
-                                                                        </select>
                                                                         <span className="filebox ml5"> 
-                                                                            <input type="file" id="file"/> 
-                                                                            <input className="uploadName"/>
-                                                                                <button type="button" className="btn01s"><span>파일찾기</span></button>
-                                                                                <button type="button" className="btn02s"><span>삭제</span></button>
+                                                                            <button type="button" className="btn01s" onClick={addFilesTR}><span>파일추가</span></button>
+                                                                            <button type="button" className="btn02s" onClick={delFilesTR}><span>파일삭제</span></button>
                                                                         </span>
                                                                     </div>
 
@@ -501,36 +889,37 @@ function PO100(props){
                                                                         <tr>
                                                                             <th scope="col">선택</th>
                                                                             <th scope="col">번호</th>
+                                                                            <th scope="col">파일구분</th>
                                                                             <th scope="col">파일명</th>
-                                                                            <th scope="col">크기</th>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
-                                                                        
-                                                                        <tr>
-                                                                            <td className="txtC"><span className="customhtmlForm"><input type="checkbox" name="check1" id="check11"/><label htmlFor="check11"><span></span></label></span></td>
-                                                                            <td className="txtC">1</td>
-                                                                            <td className="txtL">
-                                                                                <button type="button" className="attachedFile"><i className="ic_file"></i><span className="">정예맴버프로젝트관리시스템 사용자 매뉴얼_v1.0.pdf</span></button>
+
+                                                                    {fields.files.map((element, index) => (
+                                                                        <tr key={element.id}>
+                                                                            <td className="txtC"><span className="customhtmlForm">
+                                                                                <label>
+                                                                                    <input type="checkbox" name="filesChk" value={element.id} onClick={(e) => filesChangeHanle(e)}/><span></span>
+                                                                                </label>
+                                                                                </span>
                                                                             </td>
-                                                                            <td className="txtC">3Mb</td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td className="txtC"><span className="customhtmlForm"><input type="checkbox" name="check1" id="check12"/><label htmlFor="check12"><span></span></label></span></td>
-                                                                            <td className="txtC">2</td>
-                                                                            <td className="txtL">
-                                                                                <button type="button" className="attachedFile"><i className="ic_file"></i><span className="">KB 푸르덴셜 비대면 구축 RFP_v2.0KB 푸르덴셜 비대면 구축 RFP_v2.0..pdf</span></button>
+                                                                            <td className="txtC">{(index+1)}</td>
+                                                                            <td className="txtC">
+                                                                                <select className="w110" name="docClsCd" defaultValue={fields.files[index].docClsCd} onChange={(e) => handleChange(e, index, 'files')} >
+                                                                                    <option>선택</option>
+                                                                                    <CodeSelectOption codeGroup={'DOC_CLS_CD'} />
+                                                                                </select>
+                                                                                {errors && <p className="valid">{errors.files[index]?.docClsCd}</p>}
                                                                             </td>
-                                                                            <td className="txtC">3Mb</td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td className="txtC"><span className="customhtmlForm"><input type="checkbox" name="check1" id="check13"/><label htmlFor="check13"><span></span></label></span></td>
-                                                                            <td className="txtC">3</td>
+
                                                                             <td className="txtL">
-                                                                                <button type="button" className="attachedFile"><i className="ic_file"></i><span className="">KB 푸르덴셜 비대면 구축 공수산정_v1.0.pdf</span></button>
+                                                                                <input type="file" className="w100p" name="fileBase64" onChange={(e) => handleChange(e, index, 'files')} />
+                                                                                {errors && <p className="valid">{errors.files[index]?.fileBase64}</p>}
                                                                             </td>
-                                                                            <td className="txtC">3Mb</td>
                                                                         </tr>
+                                                                    ))}
+
+
                                                                     </tbody>
                                                                 </table>
                                                             </div>
@@ -545,6 +934,9 @@ function PO100(props){
                                         </tbody>
                                     </table>
                                 </div>
+
+
+
 
                                 <div className="gridUtilBottom">
                                     <div className="fr">
