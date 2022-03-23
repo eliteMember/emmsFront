@@ -2,6 +2,11 @@
     cursor: pointer;
 }
 
-.colsapnSt {
-    width: 100%;
+.w16p {
+    width: 16%;
+}
+
+.pmLabelSt {
+    font-style: oblique;
+    font-weight: bold;
 }

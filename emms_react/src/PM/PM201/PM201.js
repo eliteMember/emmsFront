@@ -1,16 +1,25 @@
 import React, { useEffect, lazy, useState } from "react";
 import axios from 'axios';
-// import './PM201.css';
-
-let CodeSelectOption = lazy( ()=> import('../../Component/CodeSelectOption.js') );
-
+import './PM201.css';
 
 function PM201(props) {
 
+  let [startDate, startDateModify] = useState('2022-01');    // 프로젝트 시작 년월
+  let [endDate, endDateModify] = useState('2022-04');        // 프로젝트 종료 년월
+
   // INIT
   useEffect(() => {
+
   }, []);
 
+  // 프로젝트 선택 이벤트
+  function fn_choiceProject(option)  {
+    axios.post('/api/prjTrtCstList', {
+      searchProject : option,
+    }).then(function (res) {
+      console.log(res.data.pjData);
+    });
+  }
 
   return (
     <>
@@ -25,30 +34,29 @@ function PM201(props) {
                     <col />
                     <col />
                     <col />
+                    <col />
                   </colgroup>
                   <tbody>
                     <tr>
                       <th scope="row"><span className="tit">프로젝트</span></th>
                       <td className="txtL">
-                        <select className="mr20">
-                          <option>미래에셋생명 비대면업무확대</option>
-                          <option>NH차세대지방재정 구축</option>
+                        <select className="mr20" onChange={(e)=>{ fn_choiceProject(e.target.value) }} >
+                          <option value={1} >프로젝트 1</option>
+                          <option value={2} >프로젝트 2</option>
                         </select>
                       </td>
                       <th scope="row"><span className="tit">프로젝트 기간</span></th>
-                      <td className="txtL" colSpan={3}>
-                        <span className="datepickerBox"><input type="text" placeholder="2021-08-15" /></span>
-                        ~
-                        <span className="datepickerBox"><input type="text" placeholder="2022-11-15" /></span>
+                      <td className="txtL">
+                        <label className="pmLabelSt" >{startDate}</label>
+                      </td>
+                      <td>&nbsp;~&nbsp;</td>
+                      <td>
+                        <label className="pmLabelSt" >{endDate}</label>
                       </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
-
-            </div>
-            <div className="fr">
-              <button type="button" className="btn01"><i className="ic_search"></i><span>조회</span></button>
             </div>
           </div>
 
@@ -61,9 +69,6 @@ function PM201(props) {
               <button type="button" className="btn btn02 rad50 borderC2"><i className="ic_rowMinusRed"></i><span>행삭제</span></button>
               <button type="button" className="btn btn02 rad50 borderC2"><i className="ic_rowUp"></i><span>위로</span></button>
               <button type="button" className="btn btn02 rad50 borderC2"><i className="ic_rowDown"></i><span>아래로</span></button>
-              <button type="button" className="btn btn02 rad50 borderC2"><span>복사</span></button>
-              <button type="button" className="btn btn02 rad50 borderC2"><span>붙여넣기</span></button>
-              <button type="button" className="btn05"><i className="ic_excel"></i><span>다운로드</span></button>
             </div>
           </div>
 
@@ -73,12 +78,12 @@ function PM201(props) {
               <table>
                 <caption>비용처리</caption>
                 <colgroup>
-                  <col />
-                  <col />
-                  <col />
-                  <col />
-                  <col />
-                  <col />
+                  <col className="w16p"/>
+                  <col className="w16p"/>
+                  <col className="w16p"/>
+                  <col className="w16p"/>
+                  <col className="w16p"/>
+                  <col className="w20p"/>
                 </colgroup>
                 <thead>
                   <tr>
@@ -113,7 +118,6 @@ function PM201(props) {
                     <td className="txtR">0</td>
                     <td className="txtL"></td>
                   </tr>
-
                   <tr>
                     <td className="txtC" rowSpan={4}>경비</td>
                     <td className="txtC">영업비</td>
@@ -143,10 +147,6 @@ function PM201(props) {
                     <td className="txtR">0</td>
                     <td className="txtL"></td>
                   </tr>
-
-
-
-
                 </tbody>
               </table>
             </div>
@@ -154,17 +154,15 @@ function PM201(props) {
           <div className="tb02 mt10">
             <table>
               <colgroup>
-                <col />
-                <col />
-                <col />
-                <col />
-                <col />
-                <col />
+                <col className="w32p"/>
+                <col className="w16p"/>
+                <col className="w16p"/>
+                <col className="w16p"/>
+                <col className="w20p"/>
               </colgroup>
               <tbody>
                 <tr className="tfoot">
-                  <td className="txtR">합계</td>
-                  <td className="txtR"></td>
+                  <td className="txtC">합계</td>
                   <td className="txtR"></td>
                   <td className="txtR"></td>
                   <td className="txtR"></td>

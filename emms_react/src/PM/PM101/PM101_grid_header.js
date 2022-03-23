@@ -1,29 +1,56 @@
+/* eslint-disable react/jsx-no-duplicate-props */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { forwardRef, useEffect, useState } from 'react';
+import DatePicker from "react-datepicker";
 
 function PM101GridHeader(props) {
-    const [prjList, setPrjList] = useState(null);
-    const [prjStartYm, setPrjStartYm] = useState(null);
-    const [prjEndYm, setPrjEndYm] = useState(null);
+    const [prjList, setPrjList] = useState();
+    const [prjStartYm, setPrjStartYm] = useState();
+    const [prjEndYm, setPrjEndYm] = useState();
     const [searchEvent, setSearchEvent] = useState(null);
+    const [selectPrj, setSelectPrj] = useState(null);
 
     useEffect(() => {
-        searchPrj();
-    }, [])
-
-    function searchPrj() {
-        axios.post('/api/pm101/getPrjList', { prjStartYm: prjStartYm, prjEndYm: prjEndYm })
+        axios.post('/api/pm101/getPrjList', {})
             .then((rs) => {
                 rs.data && updatePrjList(rs.data);
-                console.log(JSON.stringify(prjList));
+                handleChange(rs.data[0]);
             }).catch(() => {
-                updatePrjList("메뉴 호출 오류");
+                console.log("error");
             })
+    }, [])
+
+    function updateSelectPrj(prj) {
+        setSelectPrj(prj);
     }
+
+    function handleChange(val) {
+        if(typeof(val) !== "object") val = JSON.parse(val);
+        updateSelectPrj(val);
+        setPrjStartYm(val.prjStartYm);
+        setPrjEndYm(val.prjEndYm);
+    }
+
     function updatePrjList(data) {
         setPrjList(data);
-        setSearchEvent("evt");
+        selectEvt("evt");
+        setTimeout(() => { selectEvt("evtEnd") }, 1);
+    }
+
+    function selectEvt(className) {
+        setSearchEvent(className);
+    }
+
+    function fnStr2Date(str) {
+        const year = str.substring(0, 4);
+        const month = str.substring(4);
+        return new Date(year + "-" + month + "-01");
+    }
+
+    function fnDate2Str(date) {
+        const dt = new Date(date);
+        return dt.getFullYear + ("0"+dt.getMonth).slice(-2);
     }
 
     return (
@@ -41,25 +68,43 @@ function PM101GridHeader(props) {
                             <tbody>
                                 <tr>
                                     <th scope="row"><span className="tit">프로젝트</span></th>
+
+                                    {/* PROJECT SELECTBOX */}
                                     <td className="txtL">
-                                        <select className={"mr20 " + searchEvent}>
-                                            {prjList && prjList.map((prj) => <option key={prj.prjNum}>{prj.prjNm}</option>)}
+                                        <select className={"mr20 " + searchEvent} onChange={(e) => { handleChange(e.target.value) }}>
+                                            {prjList && prjList.map((prj) => <option key={prj.prjNum} value={JSON.stringify(prj)}>{prj.prjNm}</option>)}
                                         </select>
                                     </td>
                                     <th scope="row"><span className="tit">프로젝트 기간</span></th>
-                                    <td className="txtL" colSpan="3">
-                                        <span className="datepickerBox"><input type="text" onChange={(event) => setPrjStartYm(event.target.value)} placeholder="2021-08-15" /></span>
+
+                                    {/* START DATE DATEPICKER */}
+                                    <td className="txtL">
+                                        <DatePicker selected={prjStartYm && fnStr2Date(prjStartYm)} onChange={(date) => setPrjStartYm(date)}
+                                            locale="ko"
+                                            dateFormat="yyyy-MM"
+                                            showMonthYearPicker
+                                            className="datepickerBox"
+                                        />
+                                    </td>
+
+                                    <td className="txtL">
                                         ~
-                                        <span className="datepickerBox"><input type="text" onChange={(event) => setPrjEndYm(event.target.value)} placeholder="2022-11-15" /></span>
+                                    </td>
+
+                                    {/* END DATE DATEPICKER */}
+                                    <td className="txtL">
+                                        <DatePicker selected={prjEndYm && fnStr2Date(prjEndYm)} onChange={(date) => setPrjEndYm(date)}
+                                            locale="ko"
+                                            dateFormat="yyyy-MM"
+                                            showMonthYearPicker
+                                            className="datepickerBox"
+                                        />
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
 
-                </div>
-                <div className="fr">
-                    <button type="button" onClick={()=>searchPrj()} className="btn01"><i className="ic_search"></i><span>조회</span></button>
                 </div>
             </div>
         </>
