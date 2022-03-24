@@ -379,6 +379,7 @@ div[class^=ic_depth]{padding-left:25px;display: block;background-position: left 
 .fr{float:right !important;}
 
 .txtC{text-align: center !important;}
+.txtC.mrg{min-width: 64px;}
 .txtR{text-align: right !important;}
 .txtL{text-align: left !important;}
 
