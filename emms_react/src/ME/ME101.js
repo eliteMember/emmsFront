@@ -6,6 +6,7 @@ import BottomSlidePop from '../Component/BottomSlidePop';
 import {ACT_BOTTOM_SLIDE_POP} from '../reducers/bottomSlidePop';
 
 let CodeSelectOption = lazy( ()=> import('../Component/CodeSelectOption.js') );
+let TeamSelectOption = lazy( ()=> import('../Component/TeamListSelectOption.js') );
 
 
 function ME101(props) {
@@ -28,12 +29,12 @@ function ME101(props) {
   let [memFcst, memFcstModify] = useState('');       // 인력원가
   let [memCtt, memCttModify] = useState('');         // 인력연락처
   let [memAdr, memAdrModify] = useState('');         // 인력주소
-  let [affTimName, affTimNameModify] = useState(''); // 소속팀이름
+  let [timNum, timNumModify] = useState('');         // 소속팀이름
   let [affCoName, affCoNameModify] = useState('');   // 소속회사이름
   
   // From DataModify Group
   let formDataList = ([memNumModify,memNameModify,memBirMdModify,incCdModify,memRnkCdModify,eduCdModify,ctfNmModify
-                      ,memUnpModify,memFcstModify,memCttModify,memAdrModify,affTimNameModify,affCoNameModify]);
+                      ,memUnpModify,memFcstModify,memCttModify,memAdrModify,timNumModify,affCoNameModify]);
 
   // INIT
   useEffect(() => {
@@ -76,7 +77,7 @@ function ME101(props) {
         if  ( data === "memFcst" )  memFcstModify(res.data.value[data]);      // 인력원가
         if  ( data === "memCtt" )  memCttModify(res.data.value[data]);        // 연락처
         if  ( data === "memAdr" )  memAdrModify(res.data.value[data]);        // 주소
-        if  ( data === "affTimName" )  affTimNameModify(res.data.value[data]);// 소속팀명
+        if  ( data === "timNum" )  timNumModify(res.data.value[data]);        // 소속팀명
         if  ( data === "affCoName" )  affCoNameModify(res.data.value[data]);  // 회사명
         if  ( data === "incCd" )  incCdModify(res.data.value[data]);          // 직위
         if  ( data === "memRnkCd" )  memRnkCdModify(res.data.value[data]);    // 등급
@@ -91,7 +92,7 @@ function ME101(props) {
 
     let checkValidation = true;
     
-    const allDataList = [memNum,memName,memBirMd,incCd,memRnkCd,eduCd,ctfNm,memUnp,memFcst,memCtt,memAdr,affTimName,affCoName];
+    const allDataList = [memNum,memName,memBirMd,incCd,memRnkCd,eduCd,ctfNm,memUnp,memFcst,memCtt,memAdr,timNum,affCoName];
     const notNull = [memName, memBirMd, incCd, memRnkCd, eduCd, memUnp, memFcst, memCtt, memAdr];
     const numberType = [memBirMd, memUnp, memFcst];
     const numberCheckStyle = /^[0-9]*$/;
@@ -99,7 +100,7 @@ function ME101(props) {
 
     for  ( var objNum in allDataList )  {
       /* 필수항목 체크 */
-      if  ( notNull.includes(allDataList[objNum]) && (allDataList[objNum] === "" || allDataList[objNum] === "선택") )  {
+      if  ( notNull.includes(allDataList[objNum]) && (allDataList[objNum] === "" || allDataList[objNum] === "0") )  {
         alert('필수 입력학목이 누락되었습니다.');
         checkValidation = false;
         break;
@@ -128,7 +129,7 @@ function ME101(props) {
     /* 저장 */
     if  ( checkValidation && window.confirm("저장 하시겠습니까?") )  {
       let regDataList = {"memNum":memNum , "memName":memName , "memBirMd":memBirMd , "ctfNm":ctfNm , "memUnp":memUnp , "memFcst":memFcst , "memCtt":memCtt
-                  , "memAdr":memAdr , "affTimName":affTimName , "affCoName":affCoName , "incCd":incCd , "memRnkCd":memRnkCd, "eduCd":eduCd};
+                  , "memAdr":memAdr , "timNum":timNum , "affCoName":affCoName , "incCd":incCd , "memRnkCd":memRnkCd, "eduCd":eduCd};
       
       axios.post('/api/memAddData', regDataList).then(function (res) {
         if  ( res.data.result > 0 )  {
@@ -288,7 +289,6 @@ function ME101(props) {
                     <th className="w10p w23p">직위</th>
                     <td className="txtC">
                       <select className="w100p" id="incCd" onChange={(e) => { incCdModify(e.target.value); }} value={incCd} >
-                        <option>선택</option>
                         <CodeSelectOption codeGroup={'INC_CD'} />
                       </select>
                     </td>
@@ -297,14 +297,12 @@ function ME101(props) {
                     <th >등급</th>
                     <td className="txtC">
                       <select className="w100p" id="memRnkCd" onChange={(e) => { memRnkCdModify(e.target.value); }} value={memRnkCd} >
-                        <option>선택</option>
                         <CodeSelectOption codeGroup={'RNK_CD'} />
                       </select>
                     </td>
                     <th className="w10p">학력</th>
                     <td className="txtC">
                       <select className="w100p" id="eduCd" onChange={(e) => { eduCdModify(e.target.value); }} value={eduCd} >
-                        <option>선택</option>
                         <CodeSelectOption codeGroup={'EDU_CD'} />
                       </select>
                     </td>
@@ -328,7 +326,12 @@ function ME101(props) {
                     <th className="w10p">소속회사</th>
                     <td className="txtC"><input type={'text'} className="w100p" id="affCoName" value={affCoName} onChange={(e) => { affCoNameModify(e.target.value); }} /></td>
                     <th className="w10p">소속팀</th>
-                    <td className="txtC"><input type={'text'} className="w100p" id="affTimName" value={affTimName} onChange={(e) => { affTimNameModify(e.target.value); }} /></td>
+                    <td className="txtC">
+                      <select className="w100p" id="timNum" onChange={(e) => { timNumModify(e.target.value); }} value={timNum} >
+                        <option>선택</option>
+                        <TeamSelectOption />
+                      </select>
+                    </td>
                   </tr>
                 </tbody>
               </table>

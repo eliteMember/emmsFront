@@ -1,42 +1,77 @@
 import './MN400.css'
-import {React, useState, useEffect} from "react";
+import {React, useState, useEffect } from "react";
 import axios from 'axios';
-import Pagination from '../Component/pagination';
 
 function MN400(){
 
-    let [usr, setusr] = useState([]);
-
-    const [currentPage, setCurrentPage] = useState(1);
-    const [postsPerPage, setPostsPerPage] = useState(5);
-    console.log(currentPage);
     const [showList, setShowList] = useState();
+    const [nextList, setNextList] = useState();
+    const [nextYN, setNextYN] = useState();
+    //페이지번호
+    const [PNo, setPNo] = useState(1);
+    //불러오고싶은 데이터 갯수
+    const [getCnt, setCnt] = useState(10);
+    //데이터 시작번호 
+    const [startNo, setstartNo] = useState();
+    //데이터 종료번호 
+    const [endNo, setendNo] = useState();
+    const [test, settest] = useState(0);
+    const [scrollY, setscrollY] = useState(0);
+    const handleFollow = (e) =>{
+        setscrollY(e.target.scrollTop);
+        settest(e.target.scrollHeight);
+    }
+    useEffect( ()=>{
+        Paging();   
+    },[scrollY])
 
-    const [reset, setReset] = useState({
-        id: '',
-        bir: ''
-    });
-    const [update, setupdate] = useState({
-        id: '',
-        column: '',
-        value: '',
-        defaultValue:''
-    });
-    
-    
+    function Paging(){
+        if((test - scrollY) === scrollSize){
+            if(nextYN === 'Y'){
+                setShowList([...showList, ...nextList])
+                setNextList(null);
+                axios.post('/api/pagination/MN400/nextPage',{getCnt : getCnt, nextYN : nextYN, startNo : startNo, endNo : endNo})
+                .then((rs) =>{
+                    setNextYN(rs.data.nextYn);
+                    console.log(rs.data.nextYn);
+                    setNextList(rs.data.nextUSR);
+                    setstartNo(rs.data.startNo);
+                    setendNo(rs.data.endNo);
+                }).catch(() => {
+                    alert("사용자 불러오기 실패");
+                })
+            }else{
+                return
+            }
+        }
+    }
     
 
+    useEffect(() =>{
+        const watch = () =>{
+            window.addEventListener('scroll',handleFollow);
+        }
+        watch();
+        return () =>{
+            window.removeEventListener('scroll',handleFollow);
+        }
+    })
+
+    //처음 데이터 불러오기
     useEffect(() => {
-        console.log("useEffect 실행됨");
-        axios.get('/api/MN400/getList')
+        axios.post('/api/pagination/MN400', {PNo : PNo, getCnt : getCnt})
         .then((rs) =>{
-            setusr(rs.data.USR);
-            console.log(rs.data.USR);
+            //처음 보여줄데이터
+            setShowList(rs.data.USR);
+            setNextYN(rs.data.nextYn);
+            setNextList(rs.data.nextUSR);
+            setstartNo(rs.data.startNo);
+            setendNo(rs.data.endNo);
         }).catch(() => {
             alert("사용자 불러오기 실패");
         })
     },[])
-    console.log(showList);
+
     function resetPW(usrNum,usrBirMd){
         axios.post('/api/MN400/resetPW',{usrNum : usrNum, usrBirMd: usrBirMd})
         .then(() =>{
@@ -45,38 +80,13 @@ function MN400(){
             alert('초기화 실패');
         })
     };
-
-    const onChange = ((e)=>{
-        if(e.key === 'Enter'){
-            setupdate({
-            id : e.target.id,
-            column : e.target.name,
-            value : e.target.value,
-            defaultValue : e.target.defaultValue
-            })
-            return setupdate();
-        }
-    })
-    const callAxios = (()=>{
-        if(update.value !== update.defaultValue){
-            axios.post('/api/MN400/updateMember',update)
-            .then((rs) =>{
-                setusr(rs.data.USR);
-                console.log(rs.data.USR);
-                alert('변경 성공');
-            }).catch(() => {
-                alert("업데이트 실패");
-            })
-        }else if(update.value === update.defaultValue){
-              alert("변경내용이 없습니다.");
-            }
-    })
-
     
     const col1 = {width:'40px'};
     const col2 = {width:'120px'};
     const col3 = {width:'100px'};
     const col4 = {width:'auto'};
+    const scrollSize = 330;
+    const scroll = {overflow:'auto', height:scrollSize + 'px'};
 
     return(
         <div className="subWrap">
@@ -120,7 +130,12 @@ function MN400(){
                     </div>
                 </div>
                                 <div className="gridWrap">
-                                    <div className="tb02">
+                                    <div className="tb02" style=
+                                    {   
+                                        showList && showList.length > 8
+                                        ? scroll
+                                        : null
+                                    } onScroll={handleFollow}>
                                         <table>
                                             <caption>표</caption>
                                             <colgroup>
@@ -190,16 +205,16 @@ function MN400(){
                                         </table>
                                     </div>
                                 </div>
-                                  <Pagination list={usr} ShowList={fnSetShowList} currentPage={currentPage} postsPerPage={postsPerPage} totalPosts={usr.length} paginate={setCurrentPage}>
+                                  {/* <Pagination list={usr} ShowList={fnSetShowList} totalPosts={usr.length}>
 
-                                  </Pagination>
+                                  </Pagination> */}
                              </section>
                              <div className="gridUtilBottom">
                                 <div className="fr">
                                     <button type="button" className="btn04"><span>신규등록</span></button>
                                     <button type="button" className="btn08"><span>수정</span></button>
                                     <button type="button" className="btn01"><span>저장</span></button>
-                                    <button type="button" className="btn02"><span>취소</span></button>
+                                    <button type="button" className="btn02"><span>더보기</span></button>
                                     <button type="button" className="btn03"><span>삭제</span></button>
                                 </div>
                             </div>
@@ -208,10 +223,7 @@ function MN400(){
         
    );
 
-   function fnSetShowList(list){
-    setShowList(list);
-
-   }
+   
 }
 
 

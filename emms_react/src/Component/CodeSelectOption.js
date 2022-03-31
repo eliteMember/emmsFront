@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 function CodeSelectOption(props) {
@@ -9,7 +8,9 @@ function CodeSelectOption(props) {
     <>
       {
         cmmnCode[props.codeGroup].map((data, i)=>{
-          return <option key={i} value={data.cdVal} >{data.cdNm}</option>
+          var optionText = data.cdNm;
+          if  ( data.cdVal == 0 )  optionText = "선택";
+          return <option key={i} value={data.cdVal} >{optionText}</option>
         })
       }
     </>

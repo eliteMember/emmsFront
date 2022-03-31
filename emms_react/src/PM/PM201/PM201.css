@@ -6,7 +6,7 @@
     width: 16%;
 }
 
-.errorMsgSt {
-    font-size: small;
-    color: red;
+.pmLabelSt {
+    font-style: oblique;
+    font-weight: bold;
 }
