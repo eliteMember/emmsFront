@@ -7,9 +7,26 @@ import PM101GridFooter from './PM101_grid_footer';
 function PM101Grid(props) {
     return (
         <>
-            <PM101GridHeader/>
-            <PM101GridBody/>
-            <PM101GridFooter/>
+            <PM101GridHeader
+                prjStartYm      = {props.prjStartYm}
+                prjEndYm        = {props.prjEndYm}
+
+                selectPrj       = {props.selectPrj}
+                setPrjStartYm   = {props.setPrjStartYm}
+                setPrjEndYm     = {props.setPrjEndYm}
+                setSelectPrj     ={props.setSelectPrj} />
+
+            <PM101GridBody
+                selectPrj       = {props.selectPrj}
+                gridData        = {props.gridData}
+                prjStartYm      = {props.prjStartYm}
+                prjEndYm        = {props.prjEndYm}
+
+                setPrjStartYm   = {props.setPrjStartYm}
+                setPrjEndYm     = {props.setPrjEndYm}
+                setGridData     = {props.setGridData}
+                />
+            <PM101GridFooter />
         </>
     )
 }

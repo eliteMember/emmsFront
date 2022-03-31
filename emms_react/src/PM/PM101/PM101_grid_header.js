@@ -1,35 +1,38 @@
 /* eslint-disable react/jsx-no-duplicate-props */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import axios from 'axios';
-import React, { forwardRef, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DatePicker from "react-datepicker";
+import { useSelector } from 'react-redux';
 
 function PM101GridHeader(props) {
     const [prjList, setPrjList] = useState();
-    const [prjStartYm, setPrjStartYm] = useState();
-    const [prjEndYm, setPrjEndYm] = useState();
     const [searchEvent, setSearchEvent] = useState(null);
-    const [selectPrj, setSelectPrj] = useState(null);
+
+    const userInfo = useSelector(state => state.userInfo)
 
     useEffect(() => {
-        axios.post('/api/pm101/getPrjList', {})
+        axios.post('/api/pm101/getPrjList', { 'mhr': "MHR", 'timNum': userInfo.timNum })
             .then((rs) => {
-                rs.data && updatePrjList(rs.data);
+                if (rs.data.length <= 0) {
+                    const errMsg = "null"
+                    throw errMsg;
+                }
+                updatePrjList(rs.data);
                 handleChange(rs.data[0]);
-            }).catch(() => {
-                console.log("error");
+            }).catch((e) => {
+                if (e === "null") {
+                    alert('조회 할 프로젝트가 없습니다.');
+                }
             })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    function updateSelectPrj(prj) {
-        setSelectPrj(prj);
-    }
-
     function handleChange(val) {
-        if(typeof(val) !== "object") val = JSON.parse(val);
-        updateSelectPrj(val);
-        setPrjStartYm(val.prjStartYm);
-        setPrjEndYm(val.prjEndYm);
+        if (typeof (val) !== "object") val = JSON.parse(val);
+        props.setSelectPrj(val);
+        props.setPrjStartYm(val.prjStartYm);
+        props.setPrjEndYm(val.prjEndYm);
     }
 
     function updatePrjList(data) {
@@ -43,14 +46,33 @@ function PM101GridHeader(props) {
     }
 
     function fnStr2Date(str) {
-        const year = str.substring(0, 4);
-        const month = str.substring(4);
-        return new Date(year + "-" + month + "-01");
+        let result = str;
+        
+        if (typeof (str) !== 'object') {
+            const year = str.substring(0, 4);
+            const month = str.substring(4);
+            result = new Date(year + "-" + month + "-01");
+        }
+
+        return result;
     }
 
     function fnDate2Str(date) {
         const dt = new Date(date);
-        return dt.getFullYear + ("0"+dt.getMonth).slice(-2);
+        let result;
+        result = dt.getFullYear() + ("0" + (dt.getMonth() + 1)).slice(-2);
+
+        return result;
+    }
+
+    function checkDate(stDate, endDate) {
+        let st = fnStr2Date(stDate);
+        let end = fnStr2Date(endDate);
+        if (st > end) {
+            alert("잘못 된 기간입니다.");
+            return false;
+        }
+        return true;
     }
 
     return (
@@ -79,7 +101,7 @@ function PM101GridHeader(props) {
 
                                     {/* START DATE DATEPICKER */}
                                     <td className="txtL">
-                                        <DatePicker selected={prjStartYm && fnStr2Date(prjStartYm)} onChange={(date) => setPrjStartYm(date)}
+                                        <DatePicker selected={props.prjStartYm && fnStr2Date(props.prjStartYm)} onChange={(date) => checkDate(date, props.prjEndYm) ? props.setPrjStartYm(fnDate2Str(date)) : null}
                                             locale="ko"
                                             dateFormat="yyyy-MM"
                                             showMonthYearPicker
@@ -93,7 +115,7 @@ function PM101GridHeader(props) {
 
                                     {/* END DATE DATEPICKER */}
                                     <td className="txtL">
-                                        <DatePicker selected={prjEndYm && fnStr2Date(prjEndYm)} onChange={(date) => setPrjEndYm(date)}
+                                        <DatePicker selected={props.prjEndYm && fnStr2Date(props.prjEndYm)} onChange={(date) => checkDate(props.prjStartYm, date) ? props.setPrjEndYm(fnDate2Str(date)) : null}
                                             locale="ko"
                                             dateFormat="yyyy-MM"
                                             showMonthYearPicker
