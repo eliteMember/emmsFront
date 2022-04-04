@@ -1,9 +1,12 @@
 import { React, useEffect, useState } from "react";
 
-// scrollY=스크롤이 하단에 도착여부, scrollSize=스크롤크기, Paging=서버로 다음데이터 요청을 보내는 함수
+// scrollSize=스크롤크기, Paging=서버로 다음데이터 요청을 보내는 함수
+// showList=화면에 보여줄 데이터
 
 function InfiniteScroll(props){
 
+    //스크롤 좌표
+    const [scrollY, setscrollY] = useState('N');
     //중첩으로 데이터생성막기위한 state
     const [isMount, setIsMount] = useState(false);
     //스크롤 style
@@ -11,13 +14,13 @@ function InfiniteScroll(props){
     //스크롤 이벤트 함수
     const handleFollow = (e) =>{
         if(e.target.scrollHeight - e.target.scrollTop === props.scrollSize){
-            props.setscrollY('Y')
+            setscrollY('Y')
             setIsMount(true);
         }else if(e.target.scrollHeight - e.target.scrollTop !== props.scrollSize){
-            props.setscrollY('N')
+            setscrollY('N')
         }
     }
-
+    
     useEffect(()=> {
         if (isMount) {
             props.Paging();
@@ -26,7 +29,7 @@ function InfiniteScroll(props){
         return () => {
             setIsMount(false);
         };
-    },[props.scrollY])
+    },[scrollY])
 
     useEffect(() =>{
         const watch = () =>{
