@@ -30,6 +30,7 @@ function PM101GridHeader(props) {
 
     function handleChange(val) {
         if (typeof (val) !== "object") val = JSON.parse(val);
+        props.setGridData(null);
         props.setSelectPrj(val);
         props.setPrjStartYm(val.prjStartYm);
         props.setPrjEndYm(val.prjEndYm);

@@ -2,7 +2,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-
+import BottomSlidePop from '../../Component/BottomSlidePop';
 
 function PM101GridBody(props) {
 
@@ -14,6 +14,7 @@ function PM101GridBody(props) {
     let stMonth = props.prjStartYm && props.prjStartYm.substring(4);
     let endMonth = props.prjEndYm && props.prjEndYm.substring(4);
 
+    //그리드데이터 초기화
     useEffect(() => {
         if (props.gridData === null || props.gridData === undefined) {
             props.setGridData(newWrkMcNm)
@@ -21,6 +22,7 @@ function PM101GridBody(props) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
+    //프로젝트 기간을 계산하여 state에 저장
     useEffect(() => {
         if (props.prjStartYm !== undefined && props.prjEndYm !== undefined) {
             let period = 0;
@@ -41,7 +43,6 @@ function PM101GridBody(props) {
         props.selectPrj &&
             axios.post('/api/pm101/getMhrList', { 'prjNum': props.selectPrj.prjNum })
                 .then((rs) => {
-                    console.log(rs.data)
                     rs.data && props.setGridData(rs.data);
                 }).catch((e) => {
                     if (e === "null") {
@@ -88,8 +89,9 @@ function PM101GridBody(props) {
                 {
                     stYear &&
                     [...Array(periodMonth)].map((n, index) => {
-                        const year = Number(stMonth) + index > 12 ? Number(stYear.substring(2)) + 1 : stYear.substring(2);
-                        const month = Number(stMonth) + index > 12 ? Number(stMonth) + index - 12 : Number(stMonth) + index;
+                        const period = Number(stMonth) + index;
+                        const year = Number(stYear.substring(2)) + Math.floor((period - 1) / 12)
+                        const month = ((period - 1) % 12) + 1
                         return (<th scope="col" key={index}>M{index + 1}<br />({year}.{month})</th>)
                     })
                 }
@@ -98,107 +100,177 @@ function PM101GridBody(props) {
             </tr>
         )
     }
-
-    function Row() {          //행 컴포넌트
+    
+    function Row() {    //행 컴포넌트
+        let total = 0;  //전체 공수합계
+        let colTotal = Array.from({length: periodMonth}, ()=> 0); //전체 공수 월별합계
         return (
             <>
                 {props.selectPrj && props.gridData && props.gridData[0] &&
                     props.gridData.map((data1, i) => {
+                        let wrkScSpan = 0; //대분류 rowspan
+                        let mcTotal = 0;   //대분류 공수 합계
+                        let mcColTotal = Array.from({length: periodMonth}, ()=> 0); //대분류 공수 월별합계
+                        if (data1.wrkSc.length > 1) wrkScSpan += 1;
+
+                        // 대분류 rowspan 값 계산을 위한 MAP
+                        data1.wrkSc.map((data2, j) => {
+                            wrkScSpan += data2.mem.length;
+                            if (data2.mem.length > 1) wrkScSpan += 1;
+                            return wrkScSpan
+                        })
                         return (
-                            data1.wrkSc.map((data2, j) => {
-                                return (
-                                    data2.mem.map((data3, k) => {
-                                        return (
-                                            <>
-                                                <tr key={data1.wrkMcNm + data2.wrkScNm + data3.memName}>
-                                                    {k === 0 && j === 0 &&
-                                                        //대분류
-                                                        <td className="txtC mrg" rowSpan={(data1.wrkSc.length) + 1}>
-                                                            {data1.wrkMcNm}
-                                                            <div className="mt10">
-                                                                <button type="button" className="btnS6 rad50 borderC2"><i className="ic_rowPlusBlue"></i></button>
-                                                                <button type="button" className="btnS7 rad50 borderC2"><i className="ic_rowMinusRed"></i></button>
-                                                            </div>
-                                                        </td>
-                                                    }
-                                                    {k === 0 &&
-                                                        //중분류
-                                                        <td className="" rowSpan={(data2.mem.length)}>
-                                                            <div className="txtL">
-                                                                <span>{data2.wrkScNm}</span>
-                                                            </div>
-                                                            <div className="txtR">
-                                                                <button type="button" className="btnS6 rad50 borderC2"><i className="ic_rowPlusBlue"></i></button>
-                                                                <button type="button" className="btnS7 rad50 borderC2"><i className="ic_rowMinusRed"></i></button>
-                                                            </div>
-                                                        </td>
-                                                    }
-
-                                                    {/* 소분류(인력) */}
-                                                    <td className="">
-                                                        <div className="txtL">
-                                                            <span>{data3.rolNm}</span>
-                                                        </div>
-                                                        <div className="txtR">
-                                                            <button type="button" className="btnS6 rad50 borderC2 "><i className="ic_rowPlusBlue"></i></button>
-                                                            <button type="button" className="btnS7 rad50 borderC2 "><i className="ic_rowMinusRed"></i></button>
-                                                        </div>
-                                                    </td>
-                                                    {/* 이름 */}
-                                                    <td className="txtC">
-                                                        {data3.memName}
-                                                    </td>
-                                                    {/* 등급 */}
-                                                    <td className="txtC">
-                                                        {cmmnCode.RNK_CD && cmmnCode.RNK_CD.map(
-                                                            (code, l) => code.cdVal === data3.memRnkCd ?
-                                                                <div key={l}>{code.cdNm}</div> : null)}
-                                                    </td>
-                                                    {/* 투입공수 */}
-                                                    {
-                                                        [...Array(periodMonth)].map((n, index) => {
-                                                            const year = Number(stMonth) + index > 12 ? Number(stYear.substring(2)) + 1 : stYear.substring(2);
-                                                            const month = Number(stMonth) + index > 12 ? Number(stMonth) + index - 12 : Number(stMonth) + index;
-                                                            let drawable = true;
-
-                                                            if (data3.mhr.length > 0) {
-                                                                return (
-                                                                    data3.mhr.map((data4) => {
-                                                                        if (year + "" + month === data4.mhrYm) {
-                                                                            drawable = false;
-                                                                            return (
-                                                                                <td className="txtC" key={data3.memName + data4.mhrYm}>
-                                                                                    {data4.mmPurQty}
-                                                                                </td>
-                                                                            )
-                                                                        }
-                                                                        else if (drawable) {
-                                                                            return (
-                                                                                <td className="txtC" key={data3.memName + data4.mhrYm}></td>
-                                                                            )
-                                                                        } else return (null)
-                                                                    }
-                                                                    )
-                                                                )
-                                                            } else {
-                                                                return (
-                                                                    <td className="txtC" key={data3.memName + index}></td>
-                                                                )
-                                                            }
+                            <React.Fragment key={data1.wrkMcNm}>{
+                                data1.wrkSc.map((data2, j) => {
+                                    let subTotal = 0; //중분류 공수 합계
+                                    let subColTotal = Array.from({length: periodMonth}, ()=> 0); //인력 공수 월별합계
+                                    return (
+                                        data2.mem.map((data3, k) => {
+                                            let memTotal = 0; //인력 공수 합계
+                                            return (
+                                                <React.Fragment key={data1.wrkMcNm + data2.wrkScNm + data3.memName}>
+                                                    <tr>
+                                                        {k === 0 && j === 0 &&
+                                                            //대분류
+                                                            <td className="txtC mrg noWrap" rowSpan={wrkScSpan}>
+                                                                <div className="txtC">
+                                                                    <span>{data1.wrkMcNm}</span>
+                                                                </div>
+                                                                <div className="txtC">
+                                                                    <button type="button" className="btnS6 rad50 borderC2"><i className="ic_rowPlusBlue"></i></button>
+                                                                    <button type="button" className="btnS7 rad50 borderC2"><i className="ic_rowMinusRed"></i></button>
+                                                                </div>
+                                                            </td>
                                                         }
-                                                        )
-                                                    }
-                                                    <td className="txtR">합계</td>
-                                                    <td className="txtL">비고</td>
-                                                </tr>
+                                                        {k === 0 &&
+                                                            //중분류
+                                                            <td className="noWrap" rowSpan={data2.mem.length > 1 ? (data2.mem.length) + 1 : (data2.mem.length)}>
+                                                                <div className="txtC">
+                                                                    <span>{data2.wrkScNm}</span>
+                                                                </div>
+                                                                <div className="txtC">
+                                                                    <button type="button" className="btnS6 rad50 borderC2"><i className="ic_rowPlusBlue"></i></button>
+                                                                    <button type="button" className="btnS7 rad50 borderC2"><i className="ic_rowMinusRed"></i></button>
+                                                                </div>
+                                                            </td>
+                                                        }
 
-                                            </>
+                                                        {/* 소분류(인력) */}
+                                                        <td className="noWrap">
+                                                            <div className="txtC">
+                                                                <span>{data3.rolNm}</span>
+                                                            </div>
+                                                            <div className="txtC">
+                                                                <button type="button" className="btnS6 rad50 borderC2 "><i className="ic_rowPlusBlue"></i></button>
+                                                                <button type="button" className="btnS7 rad50 borderC2 "><i className="ic_rowMinusRed"></i></button>
+                                                            </div>
+                                                        </td>
+                                                        {/* 이름 */}
+                                                        <td className="txtC noWrap">
+                                                            {data3.memName}
+                                                        </td>
+                                                        {/* 등급 */}
+                                                        <td className="txtC">
+                                                            {cmmnCode.RNK_CD && cmmnCode.RNK_CD.map(
+                                                                (code, l) => code.cdVal === data3.memRnkCd ?
+                                                                    <div key={code + l}>{code.cdNm}</div> : null)}
+                                                        </td>
+                                                        {/* 투입공수 */}
+                                                        {
+                                                            [...Array(periodMonth)].map((n, index) => {
+                                                                const period = Number(stMonth) + index;
+                                                                const year   = Number(stYear.substring(2)) + Math.floor((period - 1) / 12)
+                                                                const month  = ((period - 1) % 12) + 1
+                                                                let drawable = true;
+
+                                                                if (data3.mhr.length > 0) {
+                                                                    return (
+                                                                        data3.mhr.map((data4, idx) => {
+                                                                            if (stYear.substring(0,2) + year + ("0" + month).substring(-2) === data4.mhrYm) {
+
+                                                                                total    += data4.mmPurQty; //전체 공수합계
+                                                                                mcTotal  += data4.mmPurQty; //대분류 공수합계
+                                                                                subTotal += data4.mmPurQty; //중분류 공수합계
+                                                                                memTotal += data4.mmPurQty; //인력 공수합계
+                                                                                
+                                                                                colTotal[index] += data4.mmPurQty;  //전체 공수 월별합계
+                                                                                mcColTotal[index] += data4.mmPurQty; //대분류 공수 월별합계
+                                                                                subColTotal[index] += data4.mmPurQty; //중분류 공수 월별합계
+
+                                                                                drawable = false;
+                                                                                return (
+                                                                                    <td className="txtC" key={data3.memName + data4.mhrYm}>
+                                                                                        {data4.mmPurQty}
+                                                                                    </td>
+                                                                                )
+                                                                            }
+                                                                            else if (drawable && idx === data3.mhr.length-1) {
+                                                                                return (
+                                                                                    <td className="txtC" key={data3.memName + data4.mhrYm}></td>
+                                                                                )
+                                                                            } else return true
+                                                                        }
+                                                                        )
+                                                                    )
+                                                                } else {
+                                                                    return (
+                                                                        <td className="txtC" key={data3.memName + index}></td>
+                                                                    )
+                                                                }
+                                                            }
+                                                            )
+                                                        }
+
+                                                        {/* 투입공수 합계 */}
+                                                        <td className="txtR">{memTotal}</td>
+
+                                                        {/* 비고 */}
+                                                        <td className="txtL">{data3.rmk}</td>
+                                                    </tr>
+
+                                                    {/* 중분류 소계 */}
+                                                    {data2.mem.length > 1 && k === data2.mem.length - 1 &&
+                                                        <tr className="tfoot">
+                                                            <td className="txtC" colSpan="3">소계</td>
+                                                            {[...Array(periodMonth)].map((n, index) =>
+                                                                <td className="txtC" key={"memSum" + index}>{subColTotal[index]}</td>)}
+                                                            <td className="txtR">{subTotal}</td>
+                                                            <td className="txtR"></td>
+                                                        </tr>
+                                                    }
+                                                    {/* 대분류 소계 */}
+                                                    {data1.wrkSc.length > 1 && j === data1.wrkSc.length - 1 && k === data2.mem.length - 1 &&
+                                                        <tr className="tfoot">
+                                                            <td className="txtC" colSpan="4">소계</td>
+                                                            {[...Array(periodMonth)].map((n, index) =>
+                                                                <td className="txtC" key={"scSum" + index}>{mcColTotal[index]}</td>)}
+                                                            <td className="txtR">{mcTotal}</td>
+                                                            <td className="txtR"></td>
+                                                        </tr>
+                                                    }
+
+                                                </React.Fragment>
+                                            )
+                                        }
                                         )
-                                    }
                                     )
+                                }
                                 )
                             }
-                            )
+                                {/* 합계 */}
+                                {props.gridData.length - 1 === i &&
+                                    <>
+                                        <tr><td className="non" colSpan={7 + periodMonth}></td></tr>
+                                        <tr className="tfoot total">
+                                            <td className="txtC" colSpan="5">합계</td>
+                                            {[...Array(periodMonth)].map((n, index) =>
+                                                <td className="txtC" key={"sum" + index}>{colTotal[index]}</td>)}
+                                            <td className="txtR">{total}</td>
+                                            <td className="txtR"></td>
+                                        </tr>
+                                    </>
+                                }
+                            </React.Fragment>
                         )
                     }
                     )
@@ -243,62 +315,8 @@ function PM101GridBody(props) {
                     </table>
                 </div>
             </div>
-            <div className="tb02 mt10">
-                <table>
-                    <caption>실투입공수관리</caption>
-                    <colgroup>
-                        <col></col>
-                        <col></col>
-                        <col></col>
-                        <col></col>
-                        <col></col>
-                        <col></col>
-                        <col></col>
-                        <col></col>
-                        <col></col>
-                        <col></col>
-                        <col></col>
-                        <col></col>
-                        <col></col>
-                        <col></col>
-                        <col></col>
-                        <col></col>
-                        <col></col>
-                        <col></col>
-                        <col></col>
-                        <col></col>
-                        <col></col>
-                        <col></col>
-                    </colgroup>
-                    <tbody>
-                        <tr className="tfoot">
-                            <td className="txtR"></td>
-                            <td className="txtR"></td>
-                            <td className="txtR"></td>
-                            <td className="txtR"></td>
-                            <td className="txtR"></td>
-                            <td className="txtR"></td>
-                            <td className="txtR"></td>
-                            <td className="txtR"></td>
-                            <td className="txtR"></td>
-                            <td className="txtR"></td>
-                            <td className="txtR"></td>
-                            <td className="txtR"></td>
-                            <td className="txtR"></td>
-                            <td className="txtR"></td>
-                            <td className="txtR"></td>
-                            <td className="txtR"></td>
-                            <td className="txtR"></td>
-                            <td className="txtR"></td>
-                            <td className="txtR"></td>
-                            <td className="txtR"></td>
-                            <td className="txtR"></td>
-                            <td className="txtR">189,072,917</td>
-                        </tr>
 
-                    </tbody>
-                </table>
-            </div>
+            <BottomSlidePop contents={<></>} toggleBtn={true} title={"테스트팝업"} />
         </>
     )
 }
