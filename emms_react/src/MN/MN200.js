@@ -2,82 +2,293 @@
 import React, { useEffect, useState, useRef, lazy } from 'react';
 import './MN200.css';
 import axios from 'axios';
-import { useForm } from 'react-hook-form';
-import { ACT_USER_INFO_UPDATE } from "../reducers/userInfo";
-import { useDispatch } from 'react-redux';
 import Img from "../imgs/logo_01.png"; 
+import { useDispatch } from 'react-redux';
+import { ACT_CMMN_CODE_GETLIST } from '../reducers/cmmnCode'
+import { useSelector } from "react-redux";
 
+import { getYear, getMonth } from "date-fns"; // getYear, getMonth 
+import DatePicker, { registerLocale } from "react-datepicker";  // 한국어적용
+import ko from 'date-fns/locale/ko'; // 한국어적용
+import "react-datepicker/dist/react-datepicker.css";
+registerLocale("ko", ko) // 한국어적용
+const _ = require('lodash');
 
-const Team_ARR = [
-    "test",
-]
+let CodeSelectOption = lazy(()=> import('../Component/CodeSelectOption.js') );
 
-function MN200() {
+function MN200(props) { 
 
+    const userInfo = useSelector(state => state.userInfo);
+
+    //redux dispatch 사용준비
     const dispatch = useDispatch();
+    //reducer store에 접근하여 userInfo state를 가져옴
 
-    const [inputs, setInput] = useState({
+    const setCode = (cmmnCode) =>{
+        // store에 있는 state 바꾸는 함수 실행
+        dispatch(ACT_CMMN_CODE_GETLIST({cmmnCode:cmmnCode}));
+        console.log(cmmnCode)
+    };
+
+    // 필드값
+    const [fields, setFields] = useState({
         userName: "",         // 이름
         userId: "",           // 아이디
         userPw: "",           // 비밀번호
         userCfPw: "",         // 비밀번호체크
         userBirth: "",        // 생년월일
+        usePhoneNum1: "",     // -전화-
         usePhoneNum2: "",     // -전화-
         usePhoneNum3: "",     // -전화
         userEmail1: "",       // 이메일@
         userEmail2: "",       // @이메일
+        userIncCd: "",        // 직책
+        userApoCd: "",        // 직책
         userTimName: "",      // 팀명
         usableId: false,      // 중복체크
-    })
+    });
 
-    const {userName, userId, userPw, userCfPw, userBirth, usePhoneNum2, usePhoneNum3, userEmail1, userEmail2, userTimName, usableId } = inputs;
-    const [option, setOption] = useState("선택");
-    const [teamInput, setTeamInput] = useState("");
-    const [searchResult, setSearchResult] = useState(Team_ARR);
-    const [showTeamList, setShowTeamList] = useState(true);
-    const [overIdLength, setOverIdLength] = useState(false);
-    const [overPwLength, setoverPwLength] = useState(false);
+    // 필드값 에러
+    const [errors, setErrors] = useState({
+        userName: "",         // 이름
+        userId: "",           // 아이디
+        userPw: "",           // 비밀번호
+        userCfPw: "",         // 비밀번호체크
+        userBirth: "",        // 생년월일
+        usePhoneNum1: "",     // -전화-
+        usePhoneNum2: "",     // -전화-
+        usePhoneNum3: "",     // -전화
+        userEmail1: "",       // 이메일@
+        userEmail2: "",       // @이메일
+        userIncCd: "",        // 직위
+        userApoCd: "",        // 직책
+        userTimName: "",      // 팀명
+        usableId: false,      // 중복체크
+    });
 
-    const onChange = (e) => {
-        const { value, name } = e.target;
-        setInput ({
-            ...inputs,
-            [name]:value,
-            usableId: usableId,
-        });
+    let realEmail = "";
 
-        if (inputs.userId.length > 8) {
-            setOverIdLength(true);
-        } else {
-            setOverIdLength(false);
-        }
-
-        if (inputs.userPw.length > 12) {
-            setoverPwLength(true);
-        } else {
-            setoverPwLength(true);
-        }
-    };
-
-
-
-    const { register, watch, handleSubmit, formState: { errors } } = useForm();
-    // 회원가입
-    const onSubmit = (data) => {
-  
+    const handleChange = event => {
+        const { name, value } = event.target;
+        let v_fields = {...fields};
+        v_fields[name] = value;
+        console.log(v_fields[name]);
+        setFields(v_fields);
     }
 
+    // 회원가입
+    const onSubmit = (data) => {
+        data.preventDefault();
+        let v_fields = fields;
+        // let v_Incfields = userIncCd;
+        // let v_Apofields = userApoCd;
+        if (validatehtmlForm()) {
+            alert("htmlForm submitted");
+            console.log("이름 : " + v_fields["userName"])
+            console.log("아이디 : " + v_fields["userId"])
+            console.log("비밀번호 : " + v_fields["userPw"])
+            console.log("비밀번호확인 : " + v_fields["userCfPw"])
+            console.log("생년월일 : " + v_fields["userBirth"])
+            console.log("휴대폰번호 : " + v_fields["usePhoneNum1"] + v_fields["usePhoneNum2"] + v_fields["usePhoneNum3"])
+            console.log("이메일 : " + v_fields['userEmail1'] + '@' + v_fields["userEmail2"])
+            console.log("직위 : " + v_fields["userIncCd"])
+            console.log("직책 : " + v_fields["userApoCd"])
+            console.log("팀명 : " + v_fields["userTimName"])
+
+            axios.post('/api/join/register', data)
+            .then(function(res) {
+                console.log("data", res.data)
+                if (validatehtmlForm()) {
+                    alert("htmlForm submitted");
+                    if (res.data === true) {
+                        console.log('회원가입 성공');
+                    }
+                    else {
+                        console.log('회원가입 실패 입력확인 바람');
+                    }
+                }
+                else {
+                    alert("validation 체크 실패");
+                }
+            })
+            .catch(function(res) {
+                console.log('회원가입 실패');
+            }) 
+        }
+        else {
+            alert("no")
+            console.log("이름 : " + v_fields["userName"])
+            console.log("아이디 : " + v_fields["userId"])
+            console.log("비밀번호 : " + v_fields["userPw"])
+            console.log("비밀번호확인 : " + v_fields["userCfPw"])
+            console.log("생년월일 : " + v_fields["userBirth"])
+            console.log("휴대폰번호 : " + v_fields["usePhoneNum1"] + v_fields["usePhoneNum2"] + v_fields["usePhoneNum3"])
+            console.log("이메일 : " + v_fields['userEmail1'] + '@' + v_fields["userEmail2"])
+            console.log("직위 : " + v_fields["userIncCd"])
+            console.log("직책 : " + v_fields["userApoCd"])
+            console.log("팀명 : " + v_fields["userTimName"])
+        }
+    }
+
+    // 유효성검사
+    const validatehtmlForm = () => {
+
+        let v_fields = fields;
+        let errors = {};
+        let htmlFormIsValid = true;
+
+        if (!v_fields["userName"]) {
+            htmlFormIsValid = false;
+            errors["userName"] = "*이름을 입력하세요.";
+        }
+        if (!v_fields["userId"]) {
+            htmlFormIsValid = false;
+            errors["userId"] = "*아이디를 입력하세요.";
+        }
+        if (!v_fields["userPw"]) {
+            htmlFormIsValid = false;
+            errors["userPw"] = "*비밀번호를 입력하세요.";
+        }
+        if (!v_fields["userCfPw"]) {
+            htmlFormIsValid = false;
+            errors["userCfPw"] = "*비밀번호확인을 입력하세요.";
+        }
+        if (v_fields["userPw"] !== v_fields["userCfPw"]) {
+            htmlFormIsValid = false;
+            errors["userCfPw"] = "*비밀번호가 일치하지 않습니다.";
+        }
+        if (!v_fields["userBirth"]) {
+            htmlFormIsValid = false;
+            errors["userBirth"] = "*생년월일을 입력하세요.";
+        }
+        if (!v_fields["usePhoneNum2"] || !v_fields["usePhoneNum3"]) {
+            htmlFormIsValid = false;
+            errors["usePhoneNum2"] = "*휴대폰번호를 입력하세요.";
+        }
+        if (!v_fields["userEmail1"]) {
+            htmlFormIsValid = false;
+            errors["userEmail1"] = "*이메일을 입력하세요.";
+        }
+        if (!v_fields["userIncCd"]) {
+            htmlFormIsValid = false;
+            errors["userIncCd"] = "*직위를 선택하세요.";
+        }
+        if (!v_fields["userApoCd"]) {
+            htmlFormIsValid = false;
+            errors["userApoCd"] = "*직책을 선택하세요.";
+        }
+        if (!v_fields["userTimName"]) {
+            htmlFormIsValid = false;
+            errors["userTimName"] = "*팀명을 입력하세요.";
+        }
+
+        setErrors(errors);
+        return htmlFormIsValid;
+    }
+
+    // 생년월일
+    const [birthDate, setBirthDate] = useState(new Date());
+    const years = _.range(1950, getYear(new Date()) + 1, 1);
+    const months = ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"];
+    // const [birthDate, setBirthDate] = useState(null);
+    useEffect(() => {
+        let v_fields = {...fields};
+
+        if( birthDate != null ){
+            v_fields['userBirth']  = toStringByFormattingDay(birthDate);
+        }
+        setFields(v_fields);
+        
+        console.log(v_fields['userBirth']);
+
+    }, [birthDate]);
+
+    //월이 1자리 일 경우 앞에 0
+    function leftPad(value) { 
+        if (value >= 10) { 
+            return value; 
+        } 
+        return `0${value}`; 
+    } 
+
+    //dateFormat - 년,월,일
+    function toStringByFormattingDay(source, delimiter = '') { 
+        console.log(source);
+        const year = source.getFullYear(); 
+        const month = leftPad(source.getMonth() + 1); 
+        const day = leftPad(source.getDate()); 
+        return [year, month, day].join(delimiter); 
+    }
+
+    
+    //////////////////////////////////////////////////////////////////////////////////
+    // 이름 생년월일 조회
+    let [usrName, setUsrName] = useState('');
+    let [usrBirth, setUsrBirth] = useState('');
+    function setMyNameSelect(){
+        let v_fields = fields;
+        let nmBirChkData = {"usrName": v_fields.userName, "usrBirth":toStringByFormattingDay(birthDate)};
+
+        axios.post('/api/join/nameChk', nmBirChkData)
+        .then((res) => {
+            console.log(res.data.result);
+        });
+    }
+    // //////////////////////////////////////////////////////////////////////////////////
+    // //이름 조회
+    // const [nameList, setNameList] = useState([]);
+    // //////////////////////////////////////////////////////////////////////////////////
+    // // useEffect
+    // useEffect(() => {
+    //     //이름  조회 ( DB )
+    //     axios.get('/api/join/nameChk', {})
+    //         .then(function (res) {
+    //             console.log(res);
+    //             console.log(res.data);
+    //             console.log(res.data.list);
+    //             setNameList(res.data.list)
+    //         })
+    //         .catch(function (res) {
+    //             //console.log('팀조회 실패');
+    //         })
+    // }, []);
+    // //이름 생년월일 비교 버튼
+    // function setMyNameSelect(){
+    //     let v_fields = {...fields};
+    //     console.log(v_fields['userName']);
+    //     console.log(v_fields['userBirth']);
+    //     {
+    //         // nameList && nameList.map(
+    //         //     (usrList, i) => {
+    //         //         console.log(usrList[i].usrName)
+    //         //         if (v_fields['userName'] === usrList[i].usrName) {
+    //         //             if (v_fields['userBirth'] === usrList.usrBirth) {
+    //         //                 console.log("데이터가 있다.")
+    //         //             }
+    //         //         }
+    //         // })
+    //     }
+    //     v_fields['userName']  = userInfo.userName == null ? '':userInfo.userName  //
+    //     setFields(v_fields);
+    // }
+
+    // 아이디 체크
     const [loginIdChk, setLoginIdChk] = useState("");
     const checkId = (e) => {
-        e.preventDefault();
+        
+        let v_fields = fields;
+        e.preventDefault();                 // 새로고침 방지
+
+        console.log(v_fields["userId"]);
         axios.get('/api/join/getIdList')
         .then((response) => {
-            console.log("response : " +response);
-            console.log("response.data : " +response.data);
-            if (response.data === 0) {
+            console.log(response);
+            
+            console.log(response.data);
+            if (response.data !== v_fields["userId"]) {
                 setLoginIdChk()
                 alert("사용 가능한 아이디입니다.");
-                console.log("inputs" + inputs);
+                // console.log("inputs" + inputs);
             } else {
                 console.log('error');
                 alert("이미 사용중인 아이디입니다. \n 다른 아이디를 입력해주세요.")
@@ -92,10 +303,85 @@ function MN200() {
         console.log("에러 : " + error);
     } 
 
-    console.log("워치 : " + watch());
-
     const col1 = {width:'130'};
     const col2 = {width:'auto'};
+
+    // 휴대폰 번호
+    // let v_fields = {...fields};
+    // const usePhoneNum = v_fields['usePhoneNum1'] + v_fields['usePhoneNum2'] + v_fields['usePhoneNum3']
+    // console.log("휴대폰 번호 : " + usePhoneNum)
+
+    // 이메일
+    const emailList = ["직접입력","u2w.co.kr","naver.com","daum.com","google.com","hanmail.com"];
+    const [emailSelected, setEmailSelected] = useState("");
+
+    const handleEmailSelect = (e) => {
+        setEmailSelected(e.target.value);
+
+        const { name, value } = e.target;
+        let v_fields = {...fields};
+        v_fields[name] = value;
+        if (v_fields[name] === 'u2w.co.kr') {
+            v_fields["userEmail2"] = v_fields[name];
+            console.log(v_fields["userEmail2"]);
+        }
+        if (v_fields[name] === 'naver.com') {
+            v_fields["userEmail2"] = v_fields[name];
+            console.log(v_fields["userEmail2"]);
+        }
+        if (v_fields[name] === 'daum.com') {
+            v_fields["userEmail2"] = v_fields[name];
+            console.log(v_fields["userEmail2"]);
+        }
+        if (v_fields[name] === 'google.com') {
+            v_fields["userEmail2"] = v_fields[name];
+            console.log(v_fields["userEmail2"]);
+        }
+        if (v_fields[name] === 'hanmail.com"') {
+            v_fields["userEmail2"] = v_fields[name];
+            console.log(v_fields["userEmail2"]);
+        }
+        if (v_fields[name] === '직접입력') {
+            v_fields["userEmail2"] = "";
+            console.log(v_fields["userEmail2"]);
+        }
+        realEmail = v_fields['userEmail1'] + '@' + v_fields["userEmail2"];
+        console.log(realEmail);
+        setFields(v_fields);
+    };
+
+
+    // 직위 값
+    const [incList, setIncList] = useState([]);
+
+    // 페이지가 그려지기 전에 데이터 가져옴
+    useEffect(() => {
+        axios.get('/api/join/listInc', {})
+        .then((rs) =>{
+            // console.log(rs.data)
+            setIncList(rs.data.list);
+        })
+        .catch(() => {
+            alert("리스트 불러오기 실패");
+        })
+    },[]);
+
+    // 직책 값
+    const [apoList, setApoList] = useState([]);
+
+    // 페이지가 그려지기 전에 데이터 가져옴
+    useEffect(() => {
+        axios.get('/api/join/listApo', {})
+        .then((rs) =>{
+            // console.log(rs.data)
+            setApoList(rs.data.list);
+        })
+        .catch(() => {
+            alert("리스트 불러오기 실패");
+        })
+    },[]);
+
+
 
     return (
     <div className="loginPage">
@@ -106,7 +392,7 @@ function MN200() {
         <section className="loginBody h600">
 
             <div className="loginLeft"><div className="txtLogin">회원가입</div></div>
-            <form id="signUpFrm" name="signUpFrm" onSubmit={handleSubmit(onSubmit, onError)}>
+            <form id="signUpFrm" name="signUpFrm" onSubmit={onSubmit}>
                 <div className="loginRight">
                     <div className="gridUtil22">
                         <div className="fl">
@@ -127,25 +413,120 @@ function MN200() {
                                     <th scope="row"><em className="important">*</em>이름</th>
                                     <td>
                                         <input type="text" placeholder="" className="w110"
-                                        name='name' id='name'
-                                        {...register("name",
-                                            {
-                                            required: { value: true, message: "이름을 작성해 주세요."},
-                                            }
-                                        )}
+                                        name='userName' id='userName'
+                                        value={fields.userName} onChange={handleChange}
                                         />
-                                        {errors.name && <span className="ml10 point01 bold">{errors?.name?.message}</span>}
+                                        {errors && <span className="ml10 point01 bold">{errors?.userName}</span>}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><em className="important">*</em>생년월일</th>
+                                    <td>
+                                        <span className="datepickerBox">
+                                            <DatePicker
+                                                renderCustomHeader={({
+                                                    date,
+                                                    changeYear,
+                                                    changeMonth,
+                                                    decreaseMonth,
+                                                    increaseMonth,
+                                                    prevMonthButtonDisabled,
+                                                    nextMonthButtonDisabled,
+                                                }) => (
+                                                <div
+                                                    style={{
+                                                        margin: 10,
+                                                        display: "flex",
+                                                        justifyContent: "center",
+                                                    }}
+                                                >
+                                                    <button onClick={decreaseMonth} disabled={prevMonthButtonDisabled}>
+                                                        {"<"}
+                                                    </button>
+                                                    <select
+                                                        value={getYear(date)}
+                                                        onChange={({ target: { value } }) => changeYear(value)}
+                                                    >
+                                                    {years.map((option) => (
+                                                        <option key={option} value={option}>
+                                                            {option}
+                                                        </option>
+                                                    ))}
+                                                    </select>
+
+                                                    <select
+                                                        value={months[getMonth(date)]}
+                                                        onChange={({ target: { value } }) =>
+                                                            changeMonth(months.indexOf(value))
+                                                        }
+                                                    >
+                                                    {months.map((option) => (
+                                                        <option key={option} value={option}>
+                                                            {option}
+                                                        </option>
+                                                    ))}
+                                                    </select>
+
+                                                    <button onClick={increaseMonth} disabled={nextMonthButtonDisabled}>
+                                                        {">"}
+                                                    </button>
+                                                </div>
+                                                )}
+                                                selected={birthDate}
+                                                dateFormat={"yyyy/MM/dd"}
+                                                locale={ko}
+                                                onChange={(date) => setBirthDate(date)}
+                                                />
+                                            {/* <DatePicker 
+                                                dateFormat="yyyy-MM-dd"
+                                                selected = {birthDate}
+                                                onChange = {date=>setBirthDate(date)}
+                                                locale = {ko}
+                                                value={fields.userBirth}
+                                                className='w110'
+                                            /> */}
+                                            {errors && <span className="ml10 point01 bold">{errors?.userBirth}</span>}
+                                        </span>
+                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td className='btnArea mt30' colSpan="2">
+                                        <button type="button" className="btn btn03s w150" onClick={setMyNameSelect}><span>등록확인</span></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><em className="important">*</em>휴대폰번호</th>
+                                    <td>
+                                        <input type="text" placeholder="" className="w70"
+                                        name='usePhoneNum1' id='usePhoneNum1'
+                                        value={fields.usePhoneNum1} onChange={handleChange}
+
+                                        />
+                                        <span className="wave">-</span> 
+                                        <input type="text" placeholder="" className="w70"
+                                        name='usePhoneNum2' id='usePhoneNum2'
+                                        value={fields.usePhoneNum2} onChange={handleChange}
+
+                                        />
+                                        <span className="wave">-</span> 
+                                        <input type="text" placeholder="" className="w70"
+                                        name='usePhoneNum3' id='usePhoneNum3'
+                                        value={fields.usePhoneNum3} onChange={handleChange}
+
+                                        />
+                                        {errors && <span className="ml10 point01 bold">{errors?.usePhoneNum2}</span>}
                                     </td>
                                 </tr>
                                 <tr>
                                     <th scope="row"><em className="important">*</em>아이디</th>
                                     <td>
                                         <input type="text" placeholder="" className="w110"
-                                        name='loginId' id='loginId'
-                                    
+                                        name='userId' id='userId'
+                                        value={fields.userId} onChange={handleChange}
                                         />
                                         <button type="button" className="btn btn03s ml5" onClick={checkId}><span>중복확인</span></button>
-                                        {errors.loginId && <span className="ml10 point01 bold">{errors?.loginId?.message}</span>}
+                                        {errors && <span className="ml10 point01 bold">{errors?.userId}</span>}
                                     </td>
                                 </tr>
                                 <tr>
@@ -153,27 +534,11 @@ function MN200() {
                                     <td>
                                         <div className="diFlex inputKeypad w110">
                                             <input type="password" placeholder="" className="w100p"
-                                            name='password' id='password'
-                                            {...register("password",
-                                                {
-                                                required: { value: true, message: "비밀번호를 입력하세요." },
-                                                minLength: {
-                                                    value: 8,
-                                                    message: "8자 이상의 비밀번호를 입력해주세요.",
-                                                },
-                                                maxLength: {
-                                                    value:16,
-                                                    message: "16자 이하만 사용가능합니다.",
-                                                },
-                                                pattern: {
-                                                    value: /^(?=.*\d)(?=.*[a-zA-ZS]).{8,}/,
-                                                    message: "영문, 숫자를 혼용하여 입력해주세요.",
-                                                }
-                                                }
-                                            )}
+                                            name='userPw' id='userPw'
+                                            value={fields.userPw} onChange={handleChange}
                                             />
                                         </div>
-                                        {errors.password && <span className="ml10 point01 bold">{errors?.password?.message}</span>}
+                                        {errors && <span className="ml10 point01 bold">{errors?.userPw}</span>}
                                     </td>
                                 </tr>
                                 <tr>
@@ -181,129 +546,73 @@ function MN200() {
                                     <td>
                                         <div className="diFlex inputKeypad w110">
                                             <input type="password" placeholder="" className="w100p"
-                                            name="confirmPassword" id='confirmPassword' 
-                                            {...register("confirmPassword",
-                                                {
-                                                required: { value: true, message: "비밀번호를 입력하세요." },
-                                                minLength: {
-                                                    value: 8,
-                                                    message: "8자 이상의 비밀번호를 입력해주세요.",
-                                                },
-                                                maxLength: {
-                                                    value:16,
-                                                    message: "16자 이하만 사용가능합니다.",
-                                                },
-                                                pattern: {
-                                                    value: /^(?=.*\d)(?=.*[a-zA-ZS]).{8,}/,
-                                                    message: "영문, 숫자를 혼용하여 입력해주세요.",
-                                                },
-                                                // validate: 
-                                                //   (value) => value === password.current,
-                                                //   message: "비밀번호가 일치하지 않습니다."
-                                                
-                                                }
-                                            )}
+                                            name='userCfPw' id='userCfPw'
+                                            value={fields.userCfPw} onChange={handleChange}
                                             />
-                                            {errors.confirmPassword && errors.confirmPassword.type === "validate" &&
-                                            (<span className="ml10 point01 bold">{errors?.confirmPassword?.message}</span>)}
-                                            {errors.confirmPassword && errors.confirmPassword.type === "required" &&
-                                            (<span className="ml10 point01 bold">비밀번호를 확인해 주시기 바랍니다.</span>)}
                                         </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row"><em className="important">*</em>생년월일</th>
-                                    <td>
-                                        <span className="datepickerBox">
-                                        <input type="text" placeholder="1997-09-02"
-                                            name='usrBirth' id='usrBirth'
-                                            {...register("usrBirth",
-                                            {
-                                                required: { value: true, message: "생년월일을 작성해 주세요."},
-                                            }
-                                            )}
-                                        />
-                                        </span>
-                                        
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row"><em className="important">*</em>휴대폰번호</th>
-                                    <td>
-                                        <select className="w70">
-                                            <option>010</option>
-                                            <option>011</option>
-                                            <option>012</option>
-                                        </select> 
-                                        <span className="wave">-</span> 
-                                        <input type="text" placeholder="" className="w70"
-                                        name='usrTelNum1' id='usrTelNum1'
-                                        {...register("usrTelNum1",
-                                            {
-                                            required: { value: true, message: "가운데 자리를 작성해 주세요."},
-                                            }
-                                        )} 
-                                        />
-                                        <span className="wave">-</span> 
-                                        <input type="text" placeholder="" className="w70"
-                                        name='usrTelNum2' id='usrTelNum2'
-                                        {...register("usrTelNum2",
-                                            {
-                                            required: { value: true, message: "마지막 자리를 작성해 주세요."},
-                                            }
-                                        )} 
-                                        />
-                                        {/* <span>
-                                        {usrTelNum1 === '' ? (
-                                            usrTelNum2 === '' ? (
-                                            <span className="ml10 point01 bold">휴대폰번호를 모두 입력해 주세요</span>
-                                            ) : (
-                                            <span className="ml10 point01 bold">{errors?.usrTelNum1?.message}</span>
-                                            )
-                                        ) : (
-                                            <span className="ml10 point01 bold">{errors?.usrTelNum2?.message}</span>
-                                        )}
-                                        </span> */}
-                                        {errors.usrTelNum1 && errors.usrTelNum2 && <span className="ml10 point01 bold">휴대폰번호를 입력해주세요.</span>}
+                                        {errors && <span className="ml10 point01 bold">{errors?.userCfPw}</span>}
                                     </td>
                                 </tr>
                                 <tr>
                                     <th scope="row">이메일</th>
                                     <td>
-                                        <input type="text" placeholder="" className="w110"/>
+                                        <input type="text" placeholder="" className="w110"
+                                        name='userEmail1' id='userEmail1'
+                                        value={fields.userEmail1} onChange={handleChange}
+                                        />
                                         <span className="wave">@</span> 
-                                        <input type="text" placeholder="" className="w110"/>
-                                        <select className="w130">
-                                            <option>직접입력</option>
-                                            <option>u2w.co.kr</option>
-                                            <option>naver.com</option>
-                                            <option>daum.com</option>
-                                            <option>google.com</option>
-                                            <option>hanmail.com</option>
+                                        <input type="text" placeholder="" className="w110"
+                                        name='userEmail2' id='userEmail2'
+                                        value={fields.userEmail2} onChange={handleChange}
+                                        />
+                                        <select className="w130" onChange={handleEmailSelect} value={emailSelected}>
+                                            {emailList.map((item) => (
+                                                <option value={item} key={item}>
+                                                    {item}
+                                                </option>
+                                            ))}
                                         </select> 
+                                        <div>
+                                            {errors && <span className="ml10 point01 bold">{errors?.userEmail1}</span>}
+                                        </div>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th scope="row"><em className="important">*</em>직위</th>
                                     <td>
-                                        <select  >
+                                        <select className="w110" id="userIncCd" name="userIncCd" onChange={handleChange} value={fields.userIncCd}>
                                             <option>선택</option>
+                                            {
+                                                incList.map((data, i)=>{
+                                                    return <option key={i} value={data.cdVal} >{data.cdNm}</option>
+                                                })
+                                            }
                                         </select>
+                                        {errors && <span className="ml10 point01 bold">{errors?.userIncCd}</span>}   
                                     </td>
                                 </tr>
                                 <tr>
                                     <th scope="row"><em className="important">*</em>직책</th>
                                     <td>
-                                        <select  >
+                                        <select className="w110" id="userApoCd" name="userApoCd" onChange={handleChange} value={fields.userApoCd}>
                                             <option>선택</option>
+                                            {
+                                                apoList.map((data, i)=>{
+                                                    return <option key={i} value={data.cdVal} >{data.cdNm}</option>
+                                                })
+                                            }
                                         </select>
+                                        {errors && <span className="ml10 point01 bold">{errors?.userApoCd}</span>} 
                                     </td>
                                 </tr>
                                 <tr>
                                     <th scope="row"><em className="important">*</em>팀명</th>
                                     <td>
-                                        <input type="text" placeholder="" className="w110"/>
-                                        <button type="button" className="btn btn03s ml5"><i className="ic_search_gray"></i><span className="hidden">찾기</span></button>
+                                        <input type="text" placeholder="" className="w110"
+                                        name='userTimName' id='userTimName'
+                                        value={fields.userTimName} onChange={handleChange}
+                                        />
+                                        {/* <button type="button" className="btn btn03s ml5"><i className="ic_search_gray"></i><span className="hidden">찾기</span></button> */}
                                     </td>
                                 </tr>               
                             </tbody>
