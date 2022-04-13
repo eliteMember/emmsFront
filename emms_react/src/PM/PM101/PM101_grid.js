@@ -10,6 +10,7 @@ function PM101Grid(props) {
             <PM101GridHeader
                 prjStartYm      = {props.prjStartYm}
                 prjEndYm        = {props.prjEndYm}
+                setGridData     = {props.setGridData}
 
                 selectPrj       = {props.selectPrj}
                 setPrjStartYm   = {props.setPrjStartYm}

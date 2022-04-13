@@ -590,6 +590,7 @@ ul.tb01Box>li{margin-right:20px}
 .tb02>table>tbody tr:active td,
 .tb02>table>tbody tr:hover td.bg01{background:#d9e7f2 !important}
 .tb02>table>tbody td:hover {background:#bbd9f0 !important}
+.tb02>table>tbody .tfoot td:hover {background:#f5d4a0 !important}
 .tb02.tfoot:after{border-top:1px solid #ccc} 
 table .tfoot th,
 table .tfoot td{background:#f9ecd7;border:1px solid #ccc;}
@@ -1083,3 +1084,9 @@ td .picItem .pic img{max-width:100%;width:initial !important;margin:0 auto;}
 
 .ic_rowPlusBlue{background-image: url(../imgs/ic_rowPlus_blue.png);width:8px;height:8px;margin-bottom: 1px;}
 .ic_rowMinusRed{background-image: url(../imgs/ic_rowMinus_red.png);width:8px;height:8px;margin-bottom: 1px;}
+
+/******************************************************************
+  오태윤 그리드 부분 컨트롤을 위한 CSS 추가_2022-04-01
+/******************************************************************/
+.noWrap{white-space: nowrap;}
+.non{background: none; border-bottom-color: black !important; border-left:none !important;border-right:none !important; height:10px !important;}
