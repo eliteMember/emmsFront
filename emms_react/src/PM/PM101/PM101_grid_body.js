@@ -17,7 +17,7 @@ function PM101GridBody(props) {
     //그리드데이터 초기화
     useEffect(() => {
         if (props.gridData === null || props.gridData === undefined) {
-            props.setGridData(newWrkMcNm)
+            props.setGridData(newWrkMc)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
@@ -52,6 +52,11 @@ function PM101GridBody(props) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.selectPrj])
 
+
+    /////////////////////////////////////////////////////////////////////////
+    // 그리드 데이터 초기값
+    /////////////////////////////////////////////////////////////////////////
+
     const newMhr = {
         mhrYm: '',      //투입년월
         mmPurQty: ''    //월매입수량
@@ -68,14 +73,14 @@ function PM101GridBody(props) {
         rmk: ''             //비고
     }
     //      ↓
-    const newWrkScNm = {
+    const newWrkSc = {
         wrkScNm: '',        //업무중분류명
         mem: [newMem]       //인력
     }
     //      ↓
-    const newWrkMcNm = {
+    const newWrkMc = {
         wrkMcNm: '',        //업무대분류명
-        wrkSc: [newWrkScNm] //중분류
+        wrkSc: [newWrkSc] //중분류
     }
 
     function Mc() {         //그리드 헤더 컴포넌트
@@ -100,7 +105,80 @@ function PM101GridBody(props) {
             </tr>
         )
     }
+
+    /////////////////////////////////////////////////////////////////////////
+    // 그리드 행 추가 삭제 수정 관련함수
+    /////////////////////////////////////////////////////////////////////////
+
+    //인력 추가
+    function addMem(e,mc,sc,mem){ //mc : 대분류, sc : 중분류, mem : 인력
+        e.preventDefault();
+
+        let gridData = [...props.gridData];
+        gridData[mc].wrkSc[sc].mem.splice(mem+1,0,newMem);
+        props.setGridData(gridData);
+    }
+    //인력 삭제
+    function removeMem(e,mc,sc,mem){ //mc : 대분류, sc : 중분류, mem : 인력
+        e.preventDefault();
+
+        let gridData = [...props.gridData];
+
+        if(gridData[mc].wrkSc[sc].mem.length > 1){
+            gridData[mc].wrkSc[sc].mem.splice(mem,1);
+        }else{
+            gridData[mc].wrkSc[sc].mem[mem] = newMem;
+        }
+        props.setGridData(gridData);
+    }
+
+    //중분류 추가
+    function addSc(e,mc,sc){ //mc : 대분류, sc : 중분류, mem : 인력
+        e.preventDefault();
+
+        let gridData = [...props.gridData];
+        gridData[mc].wrkSc.splice(sc+1,0,newWrkSc);
+        props.setGridData(gridData);
+    }
+    //중분류 삭제
+    function removeSc(e,mc,sc){ //mc : 대분류, sc : 중분류, mem : 인력
+        e.preventDefault();
+
+        let gridData = [...props.gridData];
+
+        if(gridData[mc].wrkSc.length > 1){
+            gridData[mc].wrkSc.splice(sc,1);
+        }else{
+            gridData[mc].wrkSc[sc] = newWrkSc;
+        }
+        props.setGridData(gridData);
+    }
     
+    //대분류 추가
+    function addMc(e,mc){ //mc : 대분류, sc : 중분류, mem : 인력
+        e.preventDefault();
+
+        let gridData = [...props.gridData];
+        gridData.splice(mc+1,0,newWrkMc);
+        props.setGridData(gridData);
+    }
+    //대분류 삭제
+    function removeMc(e,mc){ //mc : 대분류, sc : 중분류, mem : 인력
+        e.preventDefault();
+
+        let gridData = [...props.gridData];
+
+        if(gridData.length > 1){
+            gridData.splice(mc,1);
+        }else{
+            gridData[mc] = newWrkMc;
+        }
+        props.setGridData(gridData);
+    }
+
+    /////////////////////////////////////////////////////////////////////////
+    // 그리드 컴포넌트
+    /////////////////////////////////////////////////////////////////////////
     function Row() {    //행 컴포넌트
         let total = 0;  //전체 공수합계
         let colTotal = Array.from({length: periodMonth}, ()=> 0); //전체 공수 월별합계
@@ -114,13 +192,13 @@ function PM101GridBody(props) {
                         if (data1.wrkSc.length > 1) wrkScSpan += 1;
 
                         // 대분류 rowspan 값 계산을 위한 MAP
-                        data1.wrkSc.map((data2, j) => {
+                        data1.wrkSc.map((data2) => {
                             wrkScSpan += data2.mem.length;
                             if (data2.mem.length > 1) wrkScSpan += 1;
                             return wrkScSpan
                         })
                         return (
-                            <React.Fragment key={data1.wrkMcNm}>{
+                            <React.Fragment key={data1.wrkMcNm + i}>{
                                 data1.wrkSc.map((data2, j) => {
                                     let subTotal = 0; //중분류 공수 합계
                                     let subColTotal = Array.from({length: periodMonth}, ()=> 0); //인력 공수 월별합계
@@ -128,7 +206,7 @@ function PM101GridBody(props) {
                                         data2.mem.map((data3, k) => {
                                             let memTotal = 0; //인력 공수 합계
                                             return (
-                                                <React.Fragment key={data1.wrkMcNm + data2.wrkScNm + data3.memName}>
+                                                <React.Fragment key={data1.wrkMcNm + data2.wrkScNm + data3.memName + k}>
                                                     <tr>
                                                         {k === 0 && j === 0 &&
                                                             //대분류
@@ -137,11 +215,12 @@ function PM101GridBody(props) {
                                                                     <span>{data1.wrkMcNm}</span>
                                                                 </div>
                                                                 <div className="txtC">
-                                                                    <button type="button" className="btnS6 rad50 borderC2"><i className="ic_rowPlusBlue"></i></button>
-                                                                    <button type="button" className="btnS7 rad50 borderC2"><i className="ic_rowMinusRed"></i></button>
+                                                                    <button type="button" className="btnS6 rad50 borderC2" onClick={(e)=>{addMc(e,i)}}><i className="ic_rowPlusBlue"></i></button>
+                                                                    <button type="button" className="btnS7 rad50 borderC2" onClick={(e)=>{removeMc(e,i)}}><i className="ic_rowMinusRed"></i></button>
                                                                 </div>
                                                             </td>
                                                         }
+
                                                         {k === 0 &&
                                                             //중분류
                                                             <td className="noWrap" rowSpan={data2.mem.length > 1 ? (data2.mem.length) + 1 : (data2.mem.length)}>
@@ -149,8 +228,8 @@ function PM101GridBody(props) {
                                                                     <span>{data2.wrkScNm}</span>
                                                                 </div>
                                                                 <div className="txtC">
-                                                                    <button type="button" className="btnS6 rad50 borderC2"><i className="ic_rowPlusBlue"></i></button>
-                                                                    <button type="button" className="btnS7 rad50 borderC2"><i className="ic_rowMinusRed"></i></button>
+                                                                    <button type="button" className="btnS6 rad50 borderC2" onClick={(e)=>{addSc(e,i,j)}}><i className="ic_rowPlusBlue"></i></button>
+                                                                    <button type="button" className="btnS7 rad50 borderC2" onClick={(e)=>{removeSc(e,i,j)}}><i className="ic_rowMinusRed"></i></button>
                                                                 </div>
                                                             </td>
                                                         }
@@ -161,8 +240,8 @@ function PM101GridBody(props) {
                                                                 <span>{data3.rolNm}</span>
                                                             </div>
                                                             <div className="txtC">
-                                                                <button type="button" className="btnS6 rad50 borderC2 "><i className="ic_rowPlusBlue"></i></button>
-                                                                <button type="button" className="btnS7 rad50 borderC2 "><i className="ic_rowMinusRed"></i></button>
+                                                                <button type="button" className="btnS6 rad50 borderC2 " onClick={(e)=>{addMem(e,i,j,k)}}><i className="ic_rowPlusBlue"></i></button>
+                                                                <button type="button" className="btnS7 rad50 borderC2 " onClick={(e)=>{removeMem(e,i,j,k)}}><i className="ic_rowMinusRed"></i></button>
                                                             </div>
                                                         </td>
                                                         {/* 이름 */}
@@ -199,14 +278,14 @@ function PM101GridBody(props) {
 
                                                                                 drawable = false;
                                                                                 return (
-                                                                                    <td className="txtC" key={data3.memName + data4.mhrYm}>
+                                                                                    <td className="txtC" key={data3.memName + data4.mhrYm + idx}>
                                                                                         {data4.mmPurQty}
                                                                                     </td>
                                                                                 )
                                                                             }
                                                                             else if (drawable && idx === data3.mhr.length-1) {
                                                                                 return (
-                                                                                    <td className="txtC" key={data3.memName + data4.mhrYm}></td>
+                                                                                    <td className="txtC" key={data3.memName + data4.mhrYm + idx}></td>
                                                                                 )
                                                                             } else return true
                                                                         }
