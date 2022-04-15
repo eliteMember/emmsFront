@@ -10,6 +10,7 @@ import PM101 from '../PM/PM101/PM101';
 import PM201 from '../PM/PM201/PM201';
 import { useDispatch } from 'react-redux';
 import { ACT_CMMN_CODE_GETLIST } from '../reducers/cmmnCode'
+import DO101 from '../DO/DO101';
 
 function Body(props) {
 
@@ -59,7 +60,7 @@ function Body(props) {
       {/* 인력관리 */}
       <Route path="/MEMMNG"><div className='subFrame'><ME101 /></div></Route>
       {/* 문서관리 */}
-      <Route path="/DOCMNG">{/* TODO */}<div className='subFrame'>문서관리</div></Route>
+      <Route path="/DOCMNG">{/* TODO */}<div className='subFrame'><DO101/></div></Route>
       {/* 사용자관리 */}
       <Route path="/MN400">{/* TODO */}<div className='subFrame'><MN400/></div></Route>
       {/* 예외상황 */}

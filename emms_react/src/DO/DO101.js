@@ -1,5 +1,17 @@
 import './DO101.css'
-import React from "react";
+import React, { lazy, useEffect, useState } from "react";
+import axios from 'axios';
+
+import { getYear, getMonth } from "date-fns"; // getYear, getMonth 
+import DatePicker, { registerLocale } from "react-datepicker";  // 한국어적용
+import ko from 'date-fns/locale/ko'; // 한국어적용
+import "react-datepicker/dist/react-datepicker.css";
+registerLocale("ko", ko) // 한국어적용
+const _ = require('lodash');
+
+
+const CodeSelectOption = lazy( ()=> import('../Component/CodeSelectOption.js') );
+const ProjectSelectOption = lazy( ()=> import('../Component/ProjectListSelectOption.js') );
 
 function DO101(){
 
@@ -8,12 +20,87 @@ function DO101(){
     const col3 = {width:'60px'};
     const col4 = {width:'100px'};
     const col5 = {width:'130px'};
+    
+    
+//---------------------------상세검색테이블---------------------------------------
+    function FirstTable(){
+        
 
-    return(
-        <>
-        <div className="subWrap">
-            <div className="inner mt10">
-            <section>
+        const [searchField, setSearchFiled] = useState({
+            prjNum : "",        //프로젝트번호
+            docClsCd : "",      //서류분류코드
+            startDate : "",     //검색시작날짜
+            endDate : "",       //검색끝날짜
+            crtUsrNum : "",     //작성자
+            filNm : ""          //파일명
+        });
+
+        const [showFiled, setShowFiled] = useState([]);
+
+        const handleChange = event => {
+            const { id, value } = event.target;
+            let changeFields = {...searchField};
+            changeFields[id] = value;
+            setSearchFiled(changeFields);
+        }
+
+        const [startDate, setStartDate] = useState(new Date());
+        const [endDate, setEndDate] = useState(new Date());
+        const years = _.range(1950, getYear(new Date()) + 1, 1);
+        const months = ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"];
+        
+        useEffect(() => {
+            let changeFields = {...searchField};
+
+            if( startDate != null ){
+                changeFields['startDate']  = toStringByFormattingDay(startDate);
+            }
+            setSearchFiled(changeFields);
+
+            console.log(changeFields['startDate']);
+
+        }, [startDate]);
+
+        useEffect(() => {
+            let changeFields = {...searchField};
+
+            if( endDate != null ){
+                changeFields['endDate']  = toStringByFormattingDay(endDate);
+            }
+            setSearchFiled(changeFields);
+
+            console.log(changeFields['endDate']);
+
+        }, [endDate]);
+
+        //월이 1자리 일 경우 앞에 0
+        function leftPad(value) { 
+            if (value >= 10) { 
+                return value; 
+            } 
+            return `0${value}`; 
+        } 
+
+        //dateFormat - 년,월,일
+        function toStringByFormattingDay(source, delimiter = '') { 
+            const year = source.getFullYear(); 
+            const month = leftPad(source.getMonth() + 1); 
+            const day = leftPad(source.getDate()); 
+            return [year, month, day].join(delimiter); 
+        }
+
+        //데이터검색 함수
+        function searchData(){
+            axios.post('/api/DO101/searchList', searchField)
+            .then((rs) =>{
+                setShowFiled(rs.data.List);
+            }).catch(()=>{
+                alert("[시스템 오류] 잠시후 다시 시도해주세요.")
+            })
+        }
+
+        return(
+            <form id='fileSearch'>
                 <div className="gridUtil">
                     <div className="fl">
                         <div className="tb01">
@@ -26,58 +113,157 @@ function DO101(){
                                     <tr>
                                         <th scope="row"><span className="tit">프로젝트</span></th>
                                         <td>
-                                            <select className="w180">
-                                                <option>미래에셋생명 비대면업무확대</option>
-                                                <option>NH차세대지방재정</option>
-                                                <option>푸르덴셜 KB 비대면업무확대</option>
-                                                <option>정예맴버 프로젝트관리시스템 구축</option>
+                                            <select className="w180" id='prjNum' onChange={handleChange}>
+                                                <option value='0' hidden></option>
+                                                <ProjectSelectOption />
                                             </select>
                                         </td>
                                         <th scope="row"><span className="tit ml20">문서종류</span></th>
                                         <td>
-                                            <select className="w180">
-                                                <option>전체</option>
-                                                <option>제안요청서</option>
-                                                <option>제안서</option>
-                                                <option>견적서</option>
-                                                <option>공수표</option>
-                                                <option>원가표</option>
+                                            <select className="w180" id='docClsCd' onChange={handleChange}>
+                                                <CodeSelectOption codeGroup={'DOC_CLS_CD'}/>
                                             </select>
                                         </td>
                                         <th scope="row"><span className="tit ml20">등록기간</span></th>
                                         <td className="txtC">
-                                            <span className="datepickerBox"><input type="text" placeholder="2022-03-01"/></span>
-                                            <span className="wave">~</span>
-                                            <span className="datepickerBox"><input type="text" placeholder="2022-03-11"/></span>
+                                            <DatePicker
+                                                renderCustomHeader={({
+                                                    date,
+                                                    changeYear,
+                                                    changeMonth,
+                                                    decreaseMonth,
+                                                    increaseMonth,
+                                                    prevMonthButtonDisabled,
+                                                    nextMonthButtonDisabled,
+                                                }) => (
+                                                <div
+                                                    style={{
+                                                        margin: 10,
+                                                        display: "flex",
+                                                        justifyContent: "center",
+                                                    }}
+                                                >
+                                                    <button onClick={decreaseMonth} disabled={prevMonthButtonDisabled}>
+                                                        {"<"}
+                                                    </button>
+                                                    <select
+                                                        value={getYear(date)}
+                                                        onChange={({ target: { value } }) => changeYear(value)}
+                                                    >
+                                                    {years.map((option) => (
+                                                        <option key={option} value={option}>
+                                                            {option}
+                                                        </option>
+                                                    ))}
+                                                    </select>
+
+                                                    <select
+                                                        value={months[getMonth(date)]}
+                                                        onChange={({ target: { value } }) =>
+                                                            changeMonth(months.indexOf(value))
+                                                        }
+                                                    >
+                                                    {months.map((option) => (
+                                                        <option key={option} value={option}>
+                                                            {option}
+                                                        </option>
+                                                    ))}
+                                                    </select>
+
+                                                    <button onClick={increaseMonth} disabled={nextMonthButtonDisabled}>
+                                                        {">"}
+                                                    </button>
+                                                </div>
+                                                )}
+                                                selected={startDate}
+                                                dateFormat={"yyyy/MM/dd"}
+                                                locale={ko}
+                                                onChange={(date) => setStartDate(date)}
+                                            />
+                                            ~
+                                            <DatePicker
+                                                renderCustomHeader={({
+                                                    date,
+                                                    changeYear,
+                                                    changeMonth,
+                                                    decreaseMonth,
+                                                    increaseMonth,
+                                                    prevMonthButtonDisabled,
+                                                    nextMonthButtonDisabled,
+                                                }) => (
+                                                <div
+                                                    style={{
+                                                        margin: 10,
+                                                        display: "flex",
+                                                        justifyContent: "center",
+                                                    }}
+                                                >
+                                                    <button onClick={decreaseMonth} disabled={prevMonthButtonDisabled}>
+                                                        {"<"}
+                                                    </button>
+                                                    <select
+                                                        value={getYear(date)}
+                                                        onChange={({ target: { value } }) => changeYear(value)}
+                                                    >
+                                                    {years.map((option) => (
+                                                        <option key={option} value={option}>
+                                                            {option}
+                                                        </option>
+                                                    ))}
+                                                    </select>
+
+                                                    <select
+                                                        value={months[getMonth(date)]}
+                                                        onChange={({ target: { value } }) =>
+                                                            changeMonth(months.indexOf(value))
+                                                        }
+                                                    >
+                                                    {months.map((option) => (
+                                                        <option key={option} value={option}>
+                                                            {option}
+                                                        </option>
+                                                    ))}
+                                                    </select>
+
+                                                    <button onClick={increaseMonth} disabled={nextMonthButtonDisabled}>
+                                                        {">"}
+                                                    </button>
+                                                </div>
+                                                )}
+                                                selected={endDate}
+                                                dateFormat={"yyyy/MM/dd"}
+                                                locale={ko}
+                                                onChange={(date) => setEndDate(date)}
+                                            />
                                         </td>
                                         <th scope="row"><span className="tit ml20">등록자</span></th>
                                         <td className="txtC">
-                                            <input type="text" placeholder="입력하세요" className="w130"/>
+                                            <input type="text" placeholder="입력하세요" className="w130" id='crtUsrNum' value={searchField.crtUsrNum} onChange={handleChange}/>
                                         </td>
                                         <th scope="row"><span className="tit ml20">파일명</span></th>
                                         <td className="txtC">
-                                            <input type="text" placeholder="입력하세요" className="w245"/>
+                                            <input type="text" placeholder="입력하세요" className="w245" id='filNm' value={searchField.filNm} onChange={handleChange}/>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
-                    
                     </div>
-                    <div className="fr">
-                        <button type="button" className="btn01"><i className="ic_search"></i><span>조회</span></button>
-                    </div>
-                </div>
-
-                <div className="hr20"></div>
-
-                <div className="gridUtil">
-                    <div className="fl">
-                        <p className="txtGuide">첨부파일을 클릭하여 해당 문서를 다운로드할 수 있습니다.</p>
+                        <div className="fr">
+                            <button type="button" className="btn01" onClick={()=>{searchData();}}><i className="ic_search"></i><span>조회</span></button>
                     </div>
                 </div>
+            </form>
+        )
+    }
+//---------------------------------------------------------------------------------
 
-                <div className="tb02">                            
+
+//---------------------------문서리스트테이블-----------------------------------------------------
+    function SecondTable(){
+
+        return(
+            <div className="tb02">                            
                     <table>
                         <caption>테이블</caption>
                         <colgroup>
@@ -206,7 +392,23 @@ function DO101(){
                         </tbody>
                     </table>
                 </div>
+        )
+    }
+//------------------------------------------------------------------------------------
+    return(
+        <>
+        <div className="subWrap">
+            <div className="inner mt10">
+            <section>
+                <FirstTable/>
+                <div className="hr20"></div>
 
+                <div className="gridUtil">
+                    <div className="fl">
+                        <p className="txtGuide">첨부파일을 클릭하여 해당 문서를 다운로드할 수 있습니다.</p>
+                    </div>
+                </div>
+                <SecondTable/>
                 <div className="gridUtilBottom mt30">
                     <div className="paging">
                         <a href="#none" className="prev btn_paging_first">맨앞으로</a>
