@@ -1,4 +1,5 @@
 //객체가 빈 값(Null, "", undefined, [], {})인지 확인하는 함수
+//비어있으면 true 반환
 export function isEmpty(obj){
     let result = false;
 
@@ -13,6 +14,7 @@ export function isEmpty(obj){
 }
 
 //두 비교대상의 값이 동일한지 확인하는 함수
+//값이 같으면 true 반환
 export function isSame(arg1,arg2){
     let result = false
 
