@@ -13,7 +13,7 @@ function InfiniteScroll(props){
     const scroll = {overflow:'auto', height:props.scrollSize + 'px'};
     //스크롤 이벤트 함수
     const handleFollow = (e) =>{
-        if(e.target.scrollHeight - e.target.scrollTop === props.scrollSize){
+        if(parseInt(e.target.scrollHeight - e.target.scrollTop) <= props.scrollSize){
             setscrollY('Y')
             setIsMount(true);
         }else if(e.target.scrollHeight - e.target.scrollTop !== props.scrollSize){
