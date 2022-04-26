@@ -401,9 +401,8 @@ function DO101(){
 
 //---------------------------문서리스트테이블-----------------------------------------------------
     function SecondTable(){
-
+//--------------------------파일다운로드--------------------------------------------------
         function fileSave(url,fileNm, fileExt){
-            // FileSaver.saveAs(url, fileNm + "." + fileExt)
             axios({
                 url: '/api/DO101/download',
                 method: 'POST',
@@ -417,7 +416,7 @@ function DO101(){
                 FileSaver.saveAs(new Blob([response.data]), fileNm + "." + fileExt);
               });
         }
-
+//-------------------------------------------------------------------------------------
         return(
             <div className="tb02">                            
                     <table>
