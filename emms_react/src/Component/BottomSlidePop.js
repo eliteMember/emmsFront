@@ -33,9 +33,7 @@ function BottomSlidePop(props) {
           <h2>{props.title}</h2>
         </div>
         <div className="bottomupCont">
-          <div className="inner">
             {props.contents}
-          </div>
         </div>
         <a onClick={() => { fnBottomSlideToggle("DOWN") }} className="bottomupClose">창닫기</a>
       </div>

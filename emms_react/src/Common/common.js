@@ -7,8 +7,8 @@ export function isEmpty(obj){
     if(obj === "") result = true;
     if(obj === undefined) result = true;
     if(obj === "null") result = true;
-    if(obj === []) result = true;
-    if(obj === {}) result = true;
+    if(JSON.stringify(obj) === "[]") result = true;
+    if(JSON.stringify(obj) === "{}") result = true;
 
     return result;
 }

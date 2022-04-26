@@ -429,6 +429,7 @@ button[class*="btn0"] span{font-size:inherit}
 
 .btn09{background:#2090ef;border-radius: 4px;padding:0px 14px;height:50px;width:50px;}/*파랑 | 아동반 변경시 좌우이동버튼 정현추가*/ 
 .btn010{background: #fff;color:#333;border:1px solid #5f636f;border-radius: 4px;padding:0px 14px;height:32px;}/*흰배경| 버튼활성화 오태윤 추가*/
+.btn011{background:#ededed;color:#333;border:1px solid #5f636f;border-radius: 4px;padding:0px 14px;height:32px;pointer-events: none;}/*회색배경| 버튼비활성화 오태윤 추가*/
 
 .btn11{background:#21339b;color:#fff;border:1px solid #21339b;border-radius: 4px;padding:0px 14px;height:32px;}/*다크파랑 | 조회,목록,등록*/
 
@@ -1091,4 +1092,5 @@ td .picItem .pic img{max-width:100%;width:initial !important;margin:0 auto;}
 /******************************************************************/
 .noWrap{white-space: nowrap;}
 .non{background: none; border-bottom-color: black !important; border-left:none !important;border-right:none !important; height:10px !important; pointer-events: none;}
-.click{background-color: #bbd9f0;}
+.click{background-color: #bbd9f0 !important;}
+.rowSum{background-color: #e3f0fb;}
