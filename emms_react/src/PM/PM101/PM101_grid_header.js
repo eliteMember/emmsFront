@@ -76,6 +76,12 @@ function PM101GridHeader(props) {
         return true;
     }
 
+    function setStartYm(date){
+            
+        props.setPrjStartYm(date);
+
+    }
+
     return (
         <>
             <div className="gridUtil">
@@ -102,7 +108,7 @@ function PM101GridHeader(props) {
 
                                     {/* START DATE DATEPICKER */}
                                     <td className="txtL">
-                                        <DatePicker selected={props.prjStartYm && fnStr2Date(props.prjStartYm)} onChange={(date) => checkDate(date, props.prjEndYm) ? props.setPrjStartYm(fnDate2Str(date)) : null}
+                                        <DatePicker selected={props.prjStartYm && fnStr2Date(props.prjStartYm)} onChange={(date) => checkDate(date, props.prjEndYm) ? setStartYm(fnDate2Str(date)) : null}
                                             locale="ko"
                                             dateFormat="yyyy-MM"
                                             showMonthYearPicker

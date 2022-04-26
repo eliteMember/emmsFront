@@ -1,17 +1,22 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import BottomSlidePop from '../../Component/BottomSlidePop';
 import * as common from '../../Common/common';
+import { ACT_BOTTOM_SLIDE_POP } from '../../reducers/bottomSlidePop';
+import SearchMem from '../../Component/SearchMem';
 
 function PM101GridBody(props) {
+
+    const dispatch = useDispatch();
 
     const { cmmnCode } = useSelector(state => state.cmmnCode);
 
     const [periodMonth, setPeriodMonth] = useState(1)
     const [selectRow, setSelectRow] = useState({ row: [], data: "" });
     const [copyRow, setCopyRow] = useState();
+    const [bottomPop, setBottomPop] = useState({ title: "", contents: "" });
 
     let stYear = props.prjStartYm && props.prjStartYm.substring(0, 4);
     let endYear = props.prjEndYm && props.prjEndYm.substring(0, 4);
@@ -22,41 +27,45 @@ function PM101GridBody(props) {
     // 그리드 데이터 초기값
     /////////////////////////////////////////////////////////////////////////
 
-    const newMhr = {
+    const [newMhr, setNewMhr] = useState([{
         mhrYm: '',      //투입년월
         mmPurQty: ''    //월매입수량
-    }
+    }])
     //      ↓
-    const newMem = {
+    let newMem = {
         rolNm: '',          //역할명
         memName: '',        //인력이름
         memRnkCd: '',       //인력등급
         depStartDt: '',     //투입시작일자
         depEndDt: '',       //투입종료일자
-        mhr: [newMhr],      //월투입공수
+        mhr: [...newMhr],      //월투입공수
         qtyTotal: 0,        //투입수량합계
         rmk: ''             //비고
     }
     //      ↓
-    const newWrkSc = {
+    let newWrkSc = {
         wrkScNm: '',        //업무중분류명
-        mem: [newMem]       //인력
+        mem: [{...newMem}]       //인력
     }
     //      ↓
-    const newWrkMc = {
+    let newWrkMc = {
         wrkMcNm: '',        //업무대분류명
-        wrkSc: [newWrkSc]   //중분류
+        wrkSc: [{...newWrkSc}]   //중분류
     }
 
-
-    //그리드데이터 초기화
     useEffect(() => {
-        if (props.gridData === null || props.gridData === undefined || props.gridData.length <= 0) {
-            props.setGridData(newWrkMc)
-            setSelectRow({ row: "", data: "" });
+        const fetchNewMhr = async () => {
+            if (common.isEmpty(props.selectPrj)) return;
+            try {
+                const rs = await axios.post('/api/pm101/getNewMhrList', { 'prjNum': props.selectPrj.prjNum });
+                setNewMhr([...rs.data]);
+            } catch (e) {
+                console.log(e);
+                alert("기본자료 조회 중 오류가 발생하였습니다.");
+            }
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+        fetchNewMhr();
+    }, [props.prjStartYm, props.prjEndYm, props.selectPrj])
 
     //프로젝트 기간을 계산하여 state에 저장
     useEffect(() => {
@@ -75,24 +84,115 @@ function PM101GridBody(props) {
         }
     }, [props.prjStartYm, props.prjEndYm, endYear, stYear, endMonth, stMonth])
 
+    //그리드데이터 초기화
     useEffect(() => {
-        props.selectPrj &&
-            axios.post('/api/pm101/getMhrList', { 'prjNum': props.selectPrj.prjNum })
-                .then((rs) => {
-                    if(rs.data.length > 0){
-                        props.setGridData(rs.data)
-                    }else{
-                        props.setGridData([newWrkMc])
-                        setSelectRow({ row: "", data: "" });
-                    }
-                }).catch((e) => {
-                    if (e === "null") {
-                        alert('조회 할 프로젝트가 없습니다.');
-                    }
-                })
+        if (props.gridData === null || props.gridData === undefined || props.gridData.length <= 0) {
+            props.setGridData([{...newWrkMc}]);
+            setSelectRow({ row: "", data: "" });
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
+    //실투입공수 조회
+    useEffect(() => {
+        if (common.isEmpty(props.selectPrj)) return;
+        const fetchData = async () => {
+            try {
+                const rs = await axios.post('/api/pm101/getMhrList', { 'prjNum': props.selectPrj.prjNum });
+                if (common.isEmpty(rs.data)) {
+                    props.setGridData([{...newWrkMc}]);
+                }else{
+                    props.setGridData(rs.data);
+                }
+            }
+            catch (e) {
+                console.log(e);
+                alert('실투입공수 조회 중 오류가 발생하였습니다.');
+            }
+        }
+        fetchData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.selectPrj])
 
+    /////////////////////////////////////////////////////////////////////////
+    // 일반 함수
+    /////////////////////////////////////////////////////////////////////////
+
+    //인력명 변경함수
+    function modifyMemName(data) {
+        let grdData = [...props.gridData];
+        if (selectRow.row.length < 3) {
+            alert("인력명 변경 중 오류가 발생하였습니다.");
+        }
+        else {
+            grdData[selectRow.row[0]].wrkSc[selectRow.row[1]].mem[selectRow.row[2]].memNum = data.memNum;
+            grdData[selectRow.row[0]].wrkSc[selectRow.row[1]].mem[selectRow.row[2]].memName = data.memName;
+            grdData[selectRow.row[0]].wrkSc[selectRow.row[1]].mem[selectRow.row[2]].memRnkCd = data.memRnkCd;
+        }
+        props.setGridData(grdData);
+        dispatch(ACT_BOTTOM_SLIDE_POP("DOWN"));
+    }
+
+    //텍스트 변경 이벤트
+    function changeTextHandler(e, i, type) {
+        e.preventDefault();
+        let grdData = [...props.gridData];
+
+        switch (type) {
+            case "mc":
+                grdData[i[0]].wrkMcNm = e.target.value;
+                break;
+            case "sc":
+                grdData[i[0]].wrkSc[i[1]].wrkScNm = e.target.value;
+                break;
+            case "mem.rolNm":
+                grdData[i[0]].wrkSc[i[1]].mem[i[2]].rolNm = e.target.value;
+                break;
+            case "mem.memRnkCd":
+                grdData[i[0]].wrkSc[i[1]].mem[i[2]].memRnkCd = e.target.value;
+                break;
+            case "mem.rmk":
+                grdData[i[0]].wrkSc[i[1]].mem[i[2]].rmk = e.target.value;
+                break;
+            case "mhr":
+                grdData[i[0]].wrkSc[i[1]].mem[i[2]].mhr[i[3]].mmPurQty = e.target.value;
+                break;
+            default:
+                break;
+        }
+        props.setGridData(grdData);
+    }
+
+    //텍스트 포커스아웃 이벤트
+    function outFocusTxt(e, i) {
+        e.preventDefault();
+
+        let rowClass = i.length === 1 ? "mc"
+            : i.length === 2 ? "sc"
+                : i.length === 3 ? "mem"
+                    : i.length === 4 ? "mhr"
+                        : ""
+
+        let grdData = [...props.gridData];
+
+        switch (rowClass) {
+            case "mc":
+                grdData[i[0]].click = "";
+                break;
+            case "sc":
+                grdData[i[0]].wrkSc[i[1]].click = "";
+                break;
+            case "mem":
+                grdData[i[0]].wrkSc[i[1]].mem[i[2]].click = "";
+                break;
+            case "mhr":
+                grdData[i[0]].wrkSc[i[1]].mem[i[2]].mhr[i[3]].click = "";
+                break;
+            default:
+                break;
+        }
+        props.setGridData(grdData);
+    }
     /////////////////////////////////////////////////////////////////////////
     // 그리드 행 추가 삭제 수정 관련함수
     /////////////////////////////////////////////////////////////////////////
@@ -105,6 +205,7 @@ function PM101GridBody(props) {
         gridData[mc].wrkSc[sc].mem.splice(mem + 1, 0, newMem);
         props.setGridData(gridData);
     }
+
     //인력 삭제
     function removeMem(e, mc, sc, mem) { //mc : 대분류, sc : 중분류, mem : 인력
         e.preventDefault();
@@ -127,6 +228,7 @@ function PM101GridBody(props) {
         gridData[mc].wrkSc.splice(sc + 1, 0, newWrkSc);
         props.setGridData(gridData);
     }
+
     //중분류 삭제
     function removeSc(e, mc, sc) { //mc : 대분류, sc : 중분류, mem : 인력
         e.preventDefault();
@@ -149,6 +251,7 @@ function PM101GridBody(props) {
         gridData.splice(mc + 1, 0, newWrkMc);
         props.setGridData(gridData);
     }
+
     //대분류 삭제
     function removeMc(e, mc) { //mc : 대분류, sc : 중분류, mem : 인력
         e.preventDefault();
@@ -164,19 +267,157 @@ function PM101GridBody(props) {
     }
 
     //행 클릭 이벤트
-    function clickRow(e, i, data) {
+    function clickRow(e, i, data, comp) {
         e.preventDefault();
-        setSelectRow({ row: i, data: data })
+        if (comp === 'mem') {
+            let sr = selectRow;
+            sr.row = i;
+            sr.data = data;
+            setSelectRow(sr);
+            setBottomPop({ title: "인력조회", contents: <SearchMem modifyMemName={modifyMemName} /> });
+            dispatch(ACT_BOTTOM_SLIDE_POP("UP"));
+        }
+        else {
+            setSelectRow({ row: i, data: data });
+        }
+    }
+
+    //라벨 클릭 이벤트
+    function clickLabel(e, i, data, label) {
+        e.preventDefault();
+        let row = [...i];
+
+        let rowClass = i.length === 1 ? "mc"
+            : i.length === 2 ? "sc"
+                : i.length === 3 ? "mem"
+                    : i.length === 4 ? "mhr"
+                        : ""
+
+        if (rowClass === "mhr") row.pop();
+
+        setSelectRow({ row: row, data: data });
+
+        let grdData = [...props.gridData];
+
+        switch (rowClass) {
+            case "mc":
+                grdData[i[0]].click = label;
+                break;
+            case "sc":
+                grdData[i[0]].wrkSc[i[1]].click = label;
+                break;
+            case "mem":
+                grdData[i[0]].wrkSc[i[1]].mem[i[2]].click = label;
+                break;
+            case "mhr":
+                grdData[i[0]].wrkSc[i[1]].mem[i[2]].mhr[i[3]].click = label;
+                break;
+            default:
+                break;
+        }
+        props.setGridData(grdData);
     }
 
     //행 위로 버튼 이벤트
     function rowUp(e) {
         e.preventDefault();
 
-        let grdData = props.gridData;
+        if (common.isEmpty(selectRow.row)) {
+            alert("행 변경 중 오류가 발생하였습니다.");
+        } else {
+            let rowClass = selectRow.row.length === 1 ? "mc"
+                : selectRow.row.length === 2 ? "sc"
+                    : selectRow.row.length === 3 ? "mem"
+                        : ""
 
-        if(Number(selectRow.row) > 0){
-            let temp = props.gridData;
+            let grdData = [...props.gridData];
+            let temp;
+            let row = selectRow.row;
+
+            if (rowClass === "mc") {
+                if (selectRow.row[0] > 0) {
+                    temp = grdData[selectRow.row[0] - 1];
+                    grdData[selectRow.row[0] - 1] = selectRow.data;
+                    grdData[selectRow.row[0]] = temp;
+
+                    row[0] = row[0] - 1;
+                    setSelectRow({ row: row, data: selectRow.data });
+                }
+            }
+            else if (rowClass === "sc") {
+                if (selectRow.row[1] > 0) {
+                    temp = grdData[selectRow.row[0]].wrkSc[selectRow.row[1] - 1];
+                    grdData[selectRow.row[0]].wrkSc[selectRow.row[1] - 1] = selectRow.data;
+                    grdData[selectRow.row[0]].wrkSc[selectRow.row[1]] = temp;
+
+                    row[1] = row[1] - 1;
+                    setSelectRow({ row: row, data: selectRow.data });
+                }
+            }
+            else if (rowClass === "mem") {
+                if (selectRow.row[2] > 0) {
+                    temp = grdData[selectRow.row[0]].wrkSc[selectRow.row[1]].mem[selectRow.row[2] - 1];
+                    grdData[selectRow.row[0]].wrkSc[selectRow.row[1]].mem[selectRow.row[2] - 1] = selectRow.data;
+                    grdData[selectRow.row[0]].wrkSc[selectRow.row[1]].mem[selectRow.row[2]] = temp;
+
+                    row[2] = row[2] - 1;
+                    setSelectRow({ row: row, data: selectRow.data });
+                }
+            }
+
+            props.setGridData(grdData);
+        }
+
+    }
+
+    //행 아래로 버튼 이벤트
+    function rowDown(e) {
+        e.preventDefault();
+
+        if (common.isEmpty(selectRow.row)) {
+            alert("행 변경 중 오류가 발생하였습니다.");
+        } else {
+            let rowClass = selectRow.row.length === 1 ? "mc"
+                : selectRow.row.length === 2 ? "sc"
+                    : selectRow.row.length === 3 ? "mem"
+                        : ""
+
+            let grdData = [...props.gridData];
+            let temp;
+            let row = selectRow.row;
+
+            if (rowClass === "mc") {
+                if (selectRow.row[0] < grdData.length - 1) {
+                    temp = grdData[selectRow.row[0] + 1];
+                    grdData[selectRow.row[0] + 1] = selectRow.data;
+                    grdData[selectRow.row[0]] = temp;
+
+                    row[0] = row[0] + 1;
+                    setSelectRow({ row: row, data: selectRow.data });
+                }
+            }
+            else if (rowClass === "sc") {
+                if (selectRow.row[1] < grdData[selectRow.row[0]].wrkSc.length - 1) {
+                    temp = grdData[selectRow.row[0]].wrkSc[selectRow.row[1] + 1];
+                    grdData[selectRow.row[0]].wrkSc[selectRow.row[1] + 1] = selectRow.data;
+                    grdData[selectRow.row[0]].wrkSc[selectRow.row[1]] = temp;
+
+                    row[1] = row[1] + 1;
+                    setSelectRow({ row: row, data: selectRow.data });
+                }
+            }
+            else if (rowClass === "mem") {
+                if (selectRow.row[2] < grdData[selectRow.row[0]].wrkSc[selectRow.row[1]].mem.length - 1) {
+                    temp = grdData[selectRow.row[0]].wrkSc[selectRow.row[1]].mem[selectRow.row[2] + 1];
+                    grdData[selectRow.row[0]].wrkSc[selectRow.row[1]].mem[selectRow.row[2] + 1] = selectRow.data;
+                    grdData[selectRow.row[0]].wrkSc[selectRow.row[1]].mem[selectRow.row[2]] = temp;
+
+                    row[2] = row[2] + 1;
+                    setSelectRow({ row: row, data: selectRow.data });
+                }
+            }
+
+            props.setGridData(grdData);
         }
 
     }
@@ -184,10 +425,10 @@ function PM101GridBody(props) {
     //행 복사 이벤트
     function copy(e) {
         e.preventDefault();
-        if(common.isEmpty(selectRow.data)){
+        if (common.isEmpty(selectRow.data)) {
             alert("복사 할 수 없는 데이터입니다.");
-        }else{
-            setCopyRow({row:selectRow.row, data:selectRow.data})
+        } else {
+            setCopyRow({ row: selectRow.row, data: {...selectRow.data} })
         }
     }
 
@@ -199,8 +440,8 @@ function PM101GridBody(props) {
                 : copyRow.row.length === 3 ? "mem"
                     : ""
 
-        let grdData = props.gridData;
-        
+        let grdData = [...props.gridData];
+
         if (copyClass === "mc") {
             grdData[selectRow.row[0]] = copyRow.data;
             selectRow.data = copyRow.data;
@@ -216,7 +457,6 @@ function PM101GridBody(props) {
         else return false;
 
         props.setGridData(grdData);
-
     }
 
     //현재 선택된 행의 위치 파악
@@ -229,22 +469,43 @@ function PM101GridBody(props) {
         let grdData = props.gridData;
 
         if (grdData != null && grdData !== undefined) {
+            // if (selectClass === "mc") {
+            //     if(grdData.length === 1) curPosition = 0;
+            //     else if (curPosition[0] === 0) curPosition = "top";
+            //     else if (curPosition[0] === grdData.length - 1) curPosition = "bottom";
+            //     else curPosition = "middle";
+            // }
+            // else if (selectClass === "sc") {
+            //     if(grdData.length === 1 && grdData[0].wrkSc.length === 1) curPosition = 0;
+            //     else if (common.isSame(curPosition,[0,0])) curPosition = "top";
+            //     else if (curPosition[0] === grdData.length - 1
+            //         && curPosition[1] === grdData[grdData.length - 1].wrkSc.length - 1) curPosition = "bottom";
+            //     else curPosition = "middle";
+            // }
+            // else if (selectClass === "mem") {
+            //     if(grdData.length === 1 && grdData[0].wrkSc.length === 1 && grdData[0].wrkSc[0].mem.length === 1) curPosition = 0;
+            //     else if (common.isSame(curPosition,[0,0,0])) curPosition = "top";
+            //     else if (curPosition[0] === grdData.length - 1
+            //         && curPosition[1] === grdData[grdData.length - 1].wrkSc.length - 1
+            //         && curPosition[2] === grdData[grdData.length - 1].wrkSc[grdData[grdData.length - 1].wrkSc.length - 1].mem.length - 1) curPosition = "bottom";
+            //     else curPosition = "middle";
+            // }
             if (selectClass === "mc") {
-                if(grdData.length === 1) curPosition = 0;
+                if (grdData.length === 1) curPosition = 0;
                 else if (curPosition[0] === 0) curPosition = "top";
                 else if (curPosition[0] === grdData.length - 1) curPosition = "bottom";
                 else curPosition = "middle";
             }
             else if (selectClass === "sc") {
-                if(grdData.length === 1 && grdData[0].wrkSc.length === 1) curPosition = 0;
-                else if (common.isSame(curPosition,[0,0])) curPosition = "top";
+                if (grdData.length === 1 && grdData[0].wrkSc.length === 1) curPosition = 0;
+                else if (common.isSame(curPosition, [0, 0])) curPosition = "top";
                 else if (curPosition[0] === grdData.length - 1
                     && curPosition[1] === grdData[grdData.length - 1].wrkSc.length - 1) curPosition = "bottom";
                 else curPosition = "middle";
             }
             else if (selectClass === "mem") {
-                if(grdData.length === 1 && grdData[0].wrkSc.length === 1 && grdData[0].wrkSc[0].mem.length === 1) curPosition = 0;
-                else if (common.isSame(curPosition,[0,0,0])) curPosition = "top";
+                if (grdData.length === 1 && grdData[0].wrkSc.length === 1 && grdData[0].wrkSc[0].mem.length === 1) curPosition = 0;
+                else if (common.isSame(curPosition, [0, 0, 0])) curPosition = "top";
                 else if (curPosition[0] === grdData.length - 1
                     && curPosition[1] === grdData[grdData.length - 1].wrkSc.length - 1
                     && curPosition[2] === grdData[grdData.length - 1].wrkSc[grdData[grdData.length - 1].wrkSc.length - 1].mem.length - 1) curPosition = "bottom";
@@ -311,9 +572,11 @@ function PM101GridBody(props) {
                                                     <tr>
                                                         {k === 0 && j === 0 &&
                                                             //대분류
-                                                            <td className={"txtC mrg noWrap" + (selectRow.row === ""+i ? " click" : "")} rowSpan={wrkScSpan} onClick={(e) => clickRow(e, [i], data1)}>
-                                                                <div className="txtC">
-                                                                    <span>{data1.wrkMcNm}</span>
+                                                            <td className={"txtC mrg noWrap" + (common.isSame(selectRow.row, [i]) ? " click" : "")} rowSpan={wrkScSpan} onClick={(e) => { clickRow(e, [i], data1) }}>
+                                                                <div className="txtC" onClick={(e) => clickLabel(e, [i], data1, "mc")}>
+                                                                    {data1.click === "mc" ?
+                                                                        <input type="text" onBlur={(e) => { outFocusTxt(e, [i]) }} onChange={(e) => { changeTextHandler(e, [i], "mc") }} value={props.gridData[i].wrkMcNm} autoFocus />
+                                                                        : <span>{common.isEmpty(data1.wrkMcNm) ? <br/> : data1.wrkMcNm}</span>}
                                                                 </div>
                                                                 <div className="txtC">
                                                                     <button type="button" className="btnS6 rad50 borderC2" onClick={(e) => { addMc(e, i) }}><i className="ic_rowPlusBlue"></i></button>
@@ -324,9 +587,11 @@ function PM101GridBody(props) {
 
                                                         {k === 0 &&
                                                             //중분류
-                                                            <td className={"noWrap" + (selectRow.row === "" + i + j ? " click" : "")} rowSpan={data2.mem.length > 1 ? (data2.mem.length) + 1 : (data2.mem.length)} onClick={(e) => clickRow(e, [i,j], data2)}>
-                                                                <div className="txtC">
-                                                                    <span>{data2.wrkScNm}</span>
+                                                            <td className={"noWrap" + (common.isSame(selectRow.row, [i, j]) ? " click" : "")} rowSpan={data2.mem.length > 1 ? (data2.mem.length) + 1 : (data2.mem.length)} onClick={(e) => clickRow(e, [i, j], data2)}>
+                                                                <div className="txtC" onClick={(e) => clickLabel(e, [i, j], data2, "sc")}>
+                                                                    {data2.click === "sc" ?
+                                                                        <input type="text" onBlur={(e) => { outFocusTxt(e, [i, j]) }} onChange={(e) => { changeTextHandler(e, [i, j], "sc") }} value={props.gridData[i].wrkSc[j].wrkScNm} autoFocus />
+                                                                        : <span>{common.isEmpty(data2.wrkScNm) ? <br/> : data2.wrkScNm}</span>}
                                                                 </div>
                                                                 <div className="txtC">
                                                                     <button type="button" className="btnS6 rad50 borderC2" onClick={(e) => { addSc(e, i, j) }}><i className="ic_rowPlusBlue"></i></button>
@@ -336,9 +601,11 @@ function PM101GridBody(props) {
                                                         }
 
                                                         {/* 소분류(인력) */}
-                                                        <td className={"noWrap" + (selectRow.row === "" + i + j + k ? " click" : "")} onClick={(e) => clickRow(e, [i,j,k], data3)}>
-                                                            <div className="txtC">
-                                                                <span>{data3.rolNm}</span>
+                                                        <td className={"noWrap" + (common.isSame(selectRow.row, [i, j, k]) ? " click" : "")} onClick={(e) => clickRow(e, [i, j, k], data3)}>
+                                                            <div className="txtC"  onClick={(e) => clickLabel(e, [i, j, k], data3, "mem.rolNm")}>
+                                                                {data3.click === "mem.rolNm" ?
+                                                                    <input type="text" onBlur={(e) => { outFocusTxt(e, [i, j, k]) }} onChange={(e) => { changeTextHandler(e, [i, j, k], "mem.rolNm") }} value={props.gridData[i].wrkSc[j].mem[k].rolNm} autoFocus />
+                                                                    : <span>{common.isEmpty(data3.rolNm) ? <br/> : data3.rolNm}</span>}
                                                             </div>
                                                             <div className="txtC">
                                                                 <button type="button" className="btnS6 rad50 borderC2 " onClick={(e) => { addMem(e, i, j, k) }}><i className="ic_rowPlusBlue"></i></button>
@@ -346,11 +613,11 @@ function PM101GridBody(props) {
                                                             </div>
                                                         </td>
                                                         {/* 이름 */}
-                                                        <td className={"txtC noWrap" + (selectRow.row === "" + i + j + k ? " click" : "")} onClick={(e) => clickRow(e,[i,j,k], data3)}>
+                                                        <td className={"txtC noWrap" + (common.isSame(selectRow.row, [i, j, k]) ? " click" : "")} onClick={(e) => clickRow(e, [i, j, k], data3, "mem")}>
                                                             {data3.memName}
                                                         </td>
                                                         {/* 등급 */}
-                                                        <td className={"txtC" + (selectRow.row === "" + i + j + k ? " click" : "")} onClick={(e) => clickRow(e,[i,j,k], data3)}>
+                                                        <td className={"txtC" + (common.isSame(selectRow.row, [i, j, k]) ? " click" : "")} onClick={(e) => clickRow(e, [i, j, k], data3)}>
                                                             {cmmnCode.RNK_CD && cmmnCode.RNK_CD.map(
                                                                 (code, l) => code.cdVal === data3.memRnkCd ?
                                                                     <div key={code + l}>{code.cdNm}</div> : null)}
@@ -361,51 +628,46 @@ function PM101GridBody(props) {
                                                                 const period = Number(stMonth) + index;
                                                                 const year = Number(stYear.substring(2)) + Math.floor((period - 1) / 12)
                                                                 const month = ((period - 1) % 12) + 1
-                                                                let drawable = true;
 
-                                                                if (data3.mhr.length > 0) {
-                                                                    return (
-                                                                        data3.mhr.map((data4, idx) => {
-                                                                            if (stYear.substring(0, 2) + year + ("0" + month).substring(-2) === data4.mhrYm) {
+                                                                return (
+                                                                    data3.mhr.map((data4, idx) => {
+                                                                        
+                                                                        if (stYear.substring(0, 2) + year + ("0" + month).substring(("0" + month).length-2) === data4.mhrYm) {
 
-                                                                                total += data4.mmPurQty; //전체 공수합계
-                                                                                mcTotal += data4.mmPurQty; //대분류 공수합계
-                                                                                subTotal += data4.mmPurQty; //중분류 공수합계
-                                                                                memTotal += data4.mmPurQty; //인력 공수합계
+                                                                            total += Number(data4.mmPurQty); //전체 공수합계
+                                                                            mcTotal += Number(data4.mmPurQty); //대분류 공수합계
+                                                                            subTotal += Number(data4.mmPurQty); //중분류 공수합계
+                                                                            memTotal += Number(data4.mmPurQty); //인력 공수합계
 
-                                                                                colTotal[index] += data4.mmPurQty;  //전체 공수 월별합계
-                                                                                mcColTotal[index] += data4.mmPurQty; //대분류 공수 월별합계
-                                                                                subColTotal[index] += data4.mmPurQty; //중분류 공수 월별합계
+                                                                            colTotal[index] += Number(data4.mmPurQty);  //전체 공수 월별합계
+                                                                            mcColTotal[index] += Number(data4.mmPurQty); //대분류 공수 월별합계
+                                                                            subColTotal[index] += Number(data4.mmPurQty); //중분류 공수 월별합계
 
-                                                                                drawable = false;
-                                                                                return (
-                                                                                    <td className={"txtC" + (selectRow.row === [i,j,k] ? " click" : "")} onClick={(e) => clickRow(e, [i,j,k], data3)} key={data3.memName + data4.mhrYm + idx}>
-                                                                                        {data4.mmPurQty}
-                                                                                    </td>
-                                                                                )
-                                                                            }
-                                                                            else if (drawable && idx === data3.mhr.length - 1) {
-                                                                                return (
-                                                                                    <td className={"txtC" + (selectRow.row === [i,j,k] ? " click" : "")} onClick={(e) => clickRow(e, [i,j,k], data3)} key={data3.memName + data4.mhrYm + idx}></td>
-                                                                                )
-                                                                            } else return true
-                                                                        }
-                                                                        )
+                                                                            return (
+                                                                                <td className={"txtC" + (common.isSame(selectRow.row, [i, j, k]) ? " click" : "")} onClick={(e) => clickLabel(e, [i, j, k, idx], data3, "mem.mhr." + index)} key={data3.memName + index}>
+                                                                                    {data4.click === "mem.mhr." + index ?
+                                                                                        <input type="number" step="0.1" min="0" max="100" onBlur={(e) => { outFocusTxt(e, [i, j, k, index]) }} onChange={(e) => { changeTextHandler(e, [i, j, k, index], "mhr") }} value={common.isEmpty(data4.mmPurQty) ? '':data4.mmPurQty} autoFocus />
+                                                                                        : <span onClick={(e) => clickLabel(e, [i, j, k, idx], data3, "mem.mhr." + index)}>{data4.mmPurQty === 0 ? "" : data4.mmPurQty}</span>}
+                                                                                </td>
+                                                                            )
+                                                                        } else return null;
+                                                                    }
                                                                     )
-                                                                } else {
-                                                                    return (
-                                                                        <td className={"txtC" + (selectRow.row === [i,j,k] ? " click" : "")} onClick={(e) => clickRow(e, "" + i + j + k, data3)} key={data3.memName + index}></td>
-                                                                    )
-                                                                }
+                                                                )
+
                                                             }
                                                             )
                                                         }
 
                                                         {/* 투입공수 합계 */}
-                                                        <td className={"txtR" + (selectRow.row === [i,j,k]? " click" : "")} onClick={(e) => clickRow(e, [i,j,k], data3)}>{memTotal}</td>
+                                                        <td className={"txtR rowSum" + (common.isSame(selectRow.row, [i, j, k]) ? " click" : "")} onClick={(e) => clickRow(e, [i, j, k], data3)}>{memTotal === 0? memTotal : memTotal.toFixed(1)}</td>
 
                                                         {/* 비고 */}
-                                                        <td className={"txtL" + (selectRow.row === [i,j,k] ? " click" : "")} onClick={(e) => clickRow(e, [i,j,k], data3)}>{data3.rmk}</td>
+                                                        <td className={"txtL" + (common.isSame(selectRow.row, [i, j, k]) ? " click" : "")} onClick={(e) => clickLabel(e, [i, j, k], data3, "mem.rmk")}>
+                                                            {data3.click === "mem.rmk" ?
+                                                                <input type="text" value={data3.rmk} onBlur={(e) => { outFocusTxt(e, [i, j, k]) }} onChange={(e) => { changeTextHandler(e, [i, j, k],"mem.rmk") }} autoFocus />
+                                                                : <span onClick={(e) => clickLabel(e, [i, j, k], data3, "mem.rmk")}>{data3.rmk}</span>}
+                                                        </td>
                                                     </tr>
 
                                                     {/* 중분류 소계 */}
@@ -413,8 +675,8 @@ function PM101GridBody(props) {
                                                         <tr className="tfoot">
                                                             <td className="txtC" colSpan="3">소계</td>
                                                             {[...Array(periodMonth)].map((n, index) =>
-                                                                <td className="txtC" key={"memSum" + index}>{subColTotal[index]}</td>)}
-                                                            <td className="txtR">{subTotal}</td>
+                                                                <td className="txtC" key={"memSum" + index}>{subColTotal[index] === 0? subColTotal[index] : subColTotal[index].toFixed(1)}</td>)}
+                                                            <td className="txtR">{subTotal === 0? subTotal : subTotal.toFixed(1)}</td>
                                                             <td className="txtR"></td>
                                                         </tr>
                                                     }
@@ -423,8 +685,8 @@ function PM101GridBody(props) {
                                                         <tr className="tfoot">
                                                             <td className="txtC" colSpan="4">소계</td>
                                                             {[...Array(periodMonth)].map((n, index) =>
-                                                                <td className="txtC" key={"scSum" + index}>{mcColTotal[index]}</td>)}
-                                                            <td className="txtR">{mcTotal}</td>
+                                                                <td className="txtC" key={"scSum" + index}>{mcColTotal[index] === 0 ? mcColTotal[index] : mcColTotal[index].toFixed(1)}</td>)}
+                                                            <td className="txtR">{mcTotal === 0 ? mcTotal : mcTotal.toFixed(1)}</td>
                                                             <td className="txtR"></td>
                                                         </tr>
                                                     }
@@ -444,8 +706,8 @@ function PM101GridBody(props) {
                                         <tr className="tfoot total">
                                             <td className="txtC" colSpan="5">합계</td>
                                             {[...Array(periodMonth)].map((n, index) =>
-                                                <td className="txtC" key={"sum" + index}>{colTotal[index]}</td>)}
-                                            <td className="txtR">{total}</td>
+                                                <td className="txtC" key={"sum" + index}>{colTotal[index] === 0 ? colTotal[index] : colTotal[index].toFixed(1)}</td>)}
+                                            <td className="txtR">{total === 0 ? total : total.toFixed(1)}</td>
                                             <td className="txtR"></td>
                                         </tr>
                                     </>
@@ -470,16 +732,16 @@ function PM101GridBody(props) {
                 </div>
 
                 <div className="fr">
-                    <button type="button" className={"btn" + (chkRowPosition() === "bottom" || chkRowPosition() === "middle" ? " btn010 " : " btn02 ") + "rad50 borderC2"} onClick={(e) => rowUp(e)}>
+                    <button type="button" className={"btn" + (chkRowPosition() === "bottom" || chkRowPosition() === "middle" ? " btn010 " : " btn011 ") + "rad50 borderC2"} onClick={(e) => rowUp(e)}>
                         <i className="ic_rowUp"></i><span>위로</span>
                     </button>
-                    <button type="button" className={"btn" + (chkRowPosition() === "top" || chkRowPosition() === "middle" ? " btn010 " : " btn02 ") + "rad50 borderC2"}>
+                    <button type="button" className={"btn" + (chkRowPosition() === "top" || chkRowPosition() === "middle" ? " btn010 " : " btn011 ") + "rad50 borderC2"} onClick={(e) => rowDown(e)}>
                         <i className="ic_rowDown"></i><span>아래로</span>
                     </button>
-                    <button type="button" className={"btn" + (!common.isEmpty(selectRow.row) && !common.isEmpty(selectRow.data)? " btn010 " : " btn02 ") + "rad50 borderC2"} onClick={(e) => copy(e)}>
+                    <button type="button" className={"btn" + (!common.isEmpty(selectRow.row) && !common.isEmpty(selectRow.data) ? " btn010 " : " btn011 ") + "rad50 borderC2"} onClick={(e) => copy(e)}>
                         <span>복사</span>
                     </button>
-                    <button type="button" className={"btn" + (!common.isEmpty(selectRow.row) && !common.isEmpty(copyRow) ? " btn010 " : " btn02 ") + "rad50 borderC2"} onClick={(e) => paste(e)}>
+                    <button type="button" className={"btn" + (!common.isEmpty(selectRow.row) && !common.isEmpty(copyRow) ? " btn010 " : " btn011 ") + "rad50 borderC2"} onClick={(e) => paste(e)}>
                         <span>붙여넣기</span>
                     </button>
                     <button type="button" className="btn05">
@@ -506,7 +768,7 @@ function PM101GridBody(props) {
                 </div>
             </div>
 
-            <BottomSlidePop contents={<></>} toggleBtn={true} title={"테스트팝업"} />
+            <BottomSlidePop contents={bottomPop.contents} title={bottomPop.title} />
         </>
     )
 }
