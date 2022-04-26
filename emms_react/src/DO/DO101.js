@@ -111,11 +111,9 @@ function DO101(){
             }else if(today){
                 alert("검색날짜가 오늘날짜보다 빠를수 없습니다.");
             }else{
-                console.log(searchField);
                 axios.post('/api/DO101/searchList', searchField)
                 .then((rs) =>{
                     setShowFiled(rs.data.List);
-                    console.log(rs.data.List);
                 }).catch(()=>{
                     alert("[시스템 오류] 잠시후 다시 시도해주세요.")
                 })
