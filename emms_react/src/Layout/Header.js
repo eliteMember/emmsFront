@@ -9,8 +9,12 @@ import { ACT_SUB_MENU_LIST_UPDATE } from "../reducers/subMenuList";
 import { ACT_SUB_MENU_OVER_UPDATE } from "../reducers/subMenuOver";
 import { ACT_SUB_MENU_CLICK_UPDATE } from "../reducers/subMenuClick";
 import { ACT_SUB_MENU_CLICK_LIST_UPDATE } from "../reducers/subMenuClickList";
+import MN300 from '../MN/MN300';
 
 function Header(props) {
+
+  const [popup, handlePopup] = useState(false);
+
   const dispatch = useDispatch();
 
   const history = useHistory();
@@ -86,11 +90,11 @@ function Header(props) {
                 </div>
               </li>
               <li className="userMypage">
-                <a onClick={() => history.push('/MYINFO')} className="name">{userInfo.usrName} 님</a>
+                <a onClick={() => {handlePopup(true);}} className="name">{userInfo.usrName} 님</a>
                 <div className="utilSub">
                   <div className="utilSubMenu">
                     <ul>
-                      <li><a onClick={() => history.push('/MYINFO')}>- 내정보</a></li>
+                      <li><a onClick={() => {handlePopup(true);}}>- 내정보</a></li>
                     </ul>
                   </div>
                 </div>
@@ -105,6 +109,7 @@ function Header(props) {
           }
         </div>
       </div>
+      {popup && <MN300 onClose={handlePopup} />}
     </div >
   )
 

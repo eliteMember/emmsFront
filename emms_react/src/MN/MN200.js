@@ -6,6 +6,7 @@ import Img from "../imgs/logo_01.png";
 import { useDispatch } from 'react-redux';
 import { ACT_CMMN_CODE_GETLIST } from '../reducers/cmmnCode'
 import { useSelector } from "react-redux";
+import { useHistory } from 'react-router-dom';
 
 import { getYear, getMonth } from "date-fns"; // getYear, getMonth 
 import DatePicker, { registerLocale } from "react-datepicker";  // 한국어적용
@@ -18,7 +19,7 @@ let CodeSelectOption = lazy(()=> import('../Component/CodeSelectOption.js') );
 
 function MN200(props) { 
 
-    const userInfo = useSelector(state => state.userInfo);
+    const [url, setUrl] = useState()
 
     //redux dispatch 사용준비
     const dispatch = useDispatch();
@@ -32,6 +33,7 @@ function MN200(props) {
 
     // 필드값
     const [fields, setFields] = useState({
+        userNum: "",           // 사용자번호
         userName: "",         // 이름
         userId: "",           // 아이디
         userPw: "",           // 비밀번호
@@ -50,6 +52,7 @@ function MN200(props) {
 
     // 필드값 에러
     const [errors, setErrors] = useState({
+        // userNm: "",           // 사용자번호
         userName: "",         // 이름
         userId: "",           // 아이디
         userPw: "",           // 비밀번호
@@ -78,14 +81,14 @@ function MN200(props) {
 
     // 회원가입
     const onSubmit = (data) => {
-        data.preventDefault();
-        let v_fields = fields;
-        // let v_Incfields = userIncCd;
-        // let v_Apofields = userApoCd;
+        data.preventDefault(data);
+        let v_fields = {...fields};
+        let teamData = {"timNm": v_fields.userTimName};
+
         if (validatehtmlForm()) {
-            alert("htmlForm submitted");
             console.log("이름 : " + v_fields["userName"])
             console.log("아이디 : " + v_fields["userId"])
+            console.log("아이디중복체크확인 : " + v_fields["usableId"])
             console.log("비밀번호 : " + v_fields["userPw"])
             console.log("비밀번호확인 : " + v_fields["userCfPw"])
             console.log("생년월일 : " + v_fields["userBirth"])
@@ -95,30 +98,42 @@ function MN200(props) {
             console.log("직책 : " + v_fields["userApoCd"])
             console.log("팀명 : " + v_fields["userTimName"])
 
-            axios.post('/api/join/register', data)
+            console.log("URL : " + url)
+
+            setFields(v_fields);
+
+            console.log(teamData)
+            axios.post('/api/join/insertTeam',teamData)
             .then(function(res) {
-                console.log("data", res.data)
-                if (validatehtmlForm()) {
-                    alert("htmlForm submitted");
-                    if (res.data === true) {
-                        console.log('회원가입 성공');
+                console.log(res.data.result)
+
+                axios.post(url, v_fields)
+                .then(function(res) {
+                    console.log(res.data.result)
+                    if (validatehtmlForm()) {
+                        if (res.data.result > 0) {
+
+                            alert('회원가입 성공');
+                            history.push('/LOGIN');
+                        }
+                        else {
+                            alert('회원가입 실패 입력확인 바람');
+                        }
                     }
                     else {
-                        console.log('회원가입 실패 입력확인 바람');
+                        alert("validation 체크 실패");
                     }
-                }
-                else {
-                    alert("validation 체크 실패");
-                }
+                })
+                .catch(function(res) {
+                    console.log('회원가입 실패');
+                }) 
             })
-            .catch(function(res) {
-                console.log('회원가입 실패');
-            }) 
+
         }
         else {
-            alert("no")
             console.log("이름 : " + v_fields["userName"])
             console.log("아이디 : " + v_fields["userId"])
+            console.log("아이디중복체크확인 : " + v_fields["usableId"])
             console.log("비밀번호 : " + v_fields["userPw"])
             console.log("비밀번호확인 : " + v_fields["userCfPw"])
             console.log("생년월일 : " + v_fields["userBirth"])
@@ -145,11 +160,15 @@ function MN200(props) {
             htmlFormIsValid = false;
             errors["userId"] = "*아이디를 입력하세요.";
         }
+        else if (v_fields["usableId"] === false) {
+            htmlFormIsValid = false;
+            errors["userId"] = "*아이디 중복확인 체크를 하세요.";
+        }
         if (!v_fields["userPw"]) {
             htmlFormIsValid = false;
             errors["userPw"] = "*비밀번호를 입력하세요.";
         }
-        if (!v_fields["userCfPw"]) {
+        if (!v_fields["userCfPw"]) { 
             htmlFormIsValid = false;
             errors["userCfPw"] = "*비밀번호확인을 입력하세요.";
         }
@@ -177,7 +196,7 @@ function MN200(props) {
             htmlFormIsValid = false;
             errors["userApoCd"] = "*직책을 선택하세요.";
         }
-        if (!v_fields["userTimName"]) {
+        if (v_fields["userApoCd"] === '204' && !v_fields["userTimName"]) {
             htmlFormIsValid = false;
             errors["userTimName"] = "*팀명을 입력하세요.";
         }
@@ -220,83 +239,77 @@ function MN200(props) {
         return [year, month, day].join(delimiter); 
     }
 
+    const history = useHistory();
     
     //////////////////////////////////////////////////////////////////////////////////
     // 이름 생년월일 조회
-    let [usrName, setUsrName] = useState('');
-    let [usrBirth, setUsrBirth] = useState('');
-    function setMyNameSelect(){
-        let v_fields = fields;
-        let nmBirChkData = {"usrName": v_fields.userName, "usrBirth":toStringByFormattingDay(birthDate)};
-
-        axios.post('/api/join/nameChk', nmBirChkData)
+    function setMyNameSelect(e) {
+        e.preventDefault();
+        let v_fields = {...fields};
+        let nmJoinYNChkData = {"usrName": v_fields.userName, "usrBirth":toStringByFormattingDay(birthDate)};
+        
+        axios.post('/api/join/joinYnChk', nmJoinYNChkData)
         .then((res) => {
             console.log(res.data.result);
+
+            // 신규가입
+            if (res.data.result === null) {
+                setUrl('/api/join/insertMember');
+                if (v_fields["userName"] && v_fields["userBirth"]) alert("가입 가능한 신규 회원입니다.");
+
+                else if (!v_fields["userName"] || !v_fields["userBirth"]) alert("이름과 생년월일을 입력바랍니다.");
+            
+            }
+            else {
+                if (res.data.result.joinYn === "Y") {
+                    history.push('/LOGIN');
+                } else if (res.data.result.joinYn === "N") {
+                    alert("가입 가능한 기존 회원입니다."); 
+                    setUrl('/api/join/updateMember');
+                    console.log(res.data.result)
+                    v_fields['userNum'] = res.data.result.usrNum
+                    v_fields['userEmail1'] = res.data.result.usrEmail.split('@')[0] === null ? '' : res.data.result.usrEmail.split('@')[0]; 
+                    v_fields['userEmail2'] = res.data.result.usrEmail.split('@')[1] === null ? '' : res.data.result.usrEmail.split('@')[1];
+                    v_fields['usePhoneNum1'] = res.data.result.usrTelNum.split('-')[0] === null ? '' : res.data.result.usrTelNum.split('-')[0];
+                    v_fields['usePhoneNum2'] = res.data.result.usrTelNum.split('-')[1] === null ? '' : res.data.result.usrTelNum.split('-')[1];
+                    v_fields['usePhoneNum3'] = res.data.result.usrTelNum.split('-')[2] === null ? '' : res.data.result.usrTelNum.split('-')[2];
+
+                    v_fields['userId'] = res.data.result.loginId === null ? '' : res.data.result.loginId;
+
+                    v_fields['userIncCd'] = res.data.result.incCd === null ? '' : res.data.result.incCd;
+                    v_fields['userApoCd'] = res.data.result.apoCd === null ? '' : res.data.result.apoCd;
+                    v_fields['userTimName'] = res.data.result.timNm === null ? '' : res.data.result.timNm;            
+                    setFields(v_fields);
+
+                    // res.data.infoNum의 값을 리턴해서 나중에 회원가입 버튼 눌렀을 때 update 하게끔
+                }
+            }
+            
         });
+
     }
-    // //////////////////////////////////////////////////////////////////////////////////
-    // //이름 조회
-    // const [nameList, setNameList] = useState([]);
-    // //////////////////////////////////////////////////////////////////////////////////
-    // // useEffect
-    // useEffect(() => {
-    //     //이름  조회 ( DB )
-    //     axios.get('/api/join/nameChk', {})
-    //         .then(function (res) {
-    //             console.log(res);
-    //             console.log(res.data);
-    //             console.log(res.data.list);
-    //             setNameList(res.data.list)
-    //         })
-    //         .catch(function (res) {
-    //             //console.log('팀조회 실패');
-    //         })
-    // }, []);
-    // //이름 생년월일 비교 버튼
-    // function setMyNameSelect(){
-    //     let v_fields = {...fields};
-    //     console.log(v_fields['userName']);
-    //     console.log(v_fields['userBirth']);
-    //     {
-    //         // nameList && nameList.map(
-    //         //     (usrList, i) => {
-    //         //         console.log(usrList[i].usrName)
-    //         //         if (v_fields['userName'] === usrList[i].usrName) {
-    //         //             if (v_fields['userBirth'] === usrList.usrBirth) {
-    //         //                 console.log("데이터가 있다.")
-    //         //             }
-    //         //         }
-    //         // })
-    //     }
-    //     v_fields['userName']  = userInfo.userName == null ? '':userInfo.userName  //
-    //     setFields(v_fields);
-    // }
 
     // 아이디 체크
-    const [loginIdChk, setLoginIdChk] = useState("");
-    const checkId = (e) => {
-        
+    function checkId(e) { 
+        e.preventDefault();
         let v_fields = fields;
-        e.preventDefault();                 // 새로고침 방지
+        console.log(v_fields);
+        let chkId = {"userId": v_fields.userId, "userNum": v_fields.userNum};
 
-        console.log(v_fields["userId"]);
-        axios.get('/api/join/getIdList')
-        .then((response) => {
-            console.log(response);
-            
-            console.log(response.data);
-            if (response.data !== v_fields["userId"]) {
-                setLoginIdChk()
-                alert("사용 가능한 아이디입니다.");
-                // console.log("inputs" + inputs);
-            } else {
-                console.log('error');
-                alert("이미 사용중인 아이디입니다. \n 다른 아이디를 입력해주세요.")
+        axios.post('/api/join/loginIdChk', chkId)
+        .then((res) => {
+            console.log(res.data.checkId);
+            if (res.data.checkId === 1) {
+                alert("이미 사용중인 아이디 입니다.\n 다른 아이디를 입력해 주세요.");
+                v_fields['userId'] = "";
+                v_fields['usableId'] = false;
+            } 
+            else {
+                v_fields['usableId'] = true;
+                alert("사용 가능한 아이디 입니다.");
             }
-        })
-        .catch(() => {
-            console.log("아이디 리스트 불러오기 실패");
-        })
+        });
+
     }
 
     const onError = (error) => {
@@ -307,9 +320,9 @@ function MN200(props) {
     const col2 = {width:'auto'};
 
     // 휴대폰 번호
-    // let v_fields = {...fields};
-    // const usePhoneNum = v_fields['usePhoneNum1'] + v_fields['usePhoneNum2'] + v_fields['usePhoneNum3']
-    // console.log("휴대폰 번호 : " + usePhoneNum)
+    let v_fields = {...fields};
+    const usePhoneNum = v_fields['usePhoneNum1'] +"-"+ v_fields['usePhoneNum2'] +"-"+ v_fields['usePhoneNum3']
+    console.log("휴대폰 번호 : " + usePhoneNum)
 
     // 이메일
     const emailList = ["직접입력","u2w.co.kr","naver.com","daum.com","google.com","hanmail.com"];
@@ -358,7 +371,7 @@ function MN200(props) {
     useEffect(() => {
         axios.get('/api/join/listInc', {})
         .then((rs) =>{
-            // console.log(rs.data)
+            console.log(rs.data.list)
             setIncList(rs.data.list);
         })
         .catch(() => {
@@ -414,7 +427,7 @@ function MN200(props) {
                                     <td>
                                         <input type="text" placeholder="" className="w110"
                                         name='userName' id='userName'
-                                        value={fields.userName} onChange={handleChange}
+                                        value={fields.userName || ''} onChange={handleChange}
                                         />
                                         {errors && <span className="ml10 point01 bold">{errors?.userName}</span>}
                                     </td>
@@ -422,7 +435,6 @@ function MN200(props) {
                                 <tr>
                                     <th scope="row"><em className="important">*</em>생년월일</th>
                                     <td>
-                                        <span className="datepickerBox">
                                             <DatePicker
                                                 renderCustomHeader={({
                                                     date,
@@ -440,11 +452,8 @@ function MN200(props) {
                                                         justifyContent: "center",
                                                     }}
                                                 >
-                                                    <button onClick={decreaseMonth} disabled={prevMonthButtonDisabled}>
-                                                        {"<"}
-                                                    </button>
                                                     <select
-                                                        value={getYear(date)}
+                                                        value={getYear(date) || ''}
                                                         onChange={({ target: { value } }) => changeYear(value)}
                                                     >
                                                     {years.map((option) => (
@@ -466,17 +475,13 @@ function MN200(props) {
                                                         </option>
                                                     ))}
                                                     </select>
-
-                                                    <button onClick={increaseMonth} disabled={nextMonthButtonDisabled}>
-                                                        {">"}
-                                                    </button>
                                                 </div>
                                                 )}
                                                 selected={birthDate}
-                                                dateFormat={"yyyy/MM/dd"}
                                                 locale={ko}
+                                                dateFormat={"yyyy/MM/dd"}
                                                 onChange={(date) => setBirthDate(date)}
-                                                />
+                                            />
                                             {/* <DatePicker 
                                                 dateFormat="yyyy-MM-dd"
                                                 selected = {birthDate}
@@ -486,33 +491,32 @@ function MN200(props) {
                                                 className='w110'
                                             /> */}
                                             {errors && <span className="ml10 point01 bold">{errors?.userBirth}</span>}
-                                        </span>
                                         
                                     </td>
                                 </tr>
                                 <tr>
                                     <td className='btnArea mt30' colSpan="2">
-                                        <button type="button" className="btn btn03s w150" onClick={setMyNameSelect}><span>등록확인</span></button>
-                                    </td>
+                                        <button type="button" className="btn btn03s w150" onClick={(e) => setMyNameSelect(e)}><span>등록확인</span></button>
+                                    </td>  
                                 </tr>
                                 <tr>
                                     <th scope="row"><em className="important">*</em>휴대폰번호</th>
                                     <td>
                                         <input type="text" placeholder="" className="w70"
                                         name='usePhoneNum1' id='usePhoneNum1'
-                                        value={fields.usePhoneNum1} onChange={handleChange}
+                                        value={fields.usePhoneNum1 || ''} onChange={handleChange}
 
                                         />
                                         <span className="wave">-</span> 
                                         <input type="text" placeholder="" className="w70"
                                         name='usePhoneNum2' id='usePhoneNum2'
-                                        value={fields.usePhoneNum2} onChange={handleChange}
+                                        value={fields.usePhoneNum2 || ''} onChange={handleChange}
 
                                         />
                                         <span className="wave">-</span> 
                                         <input type="text" placeholder="" className="w70"
                                         name='usePhoneNum3' id='usePhoneNum3'
-                                        value={fields.usePhoneNum3} onChange={handleChange}
+                                        value={fields.usePhoneNum3 || ''} onChange={handleChange}
 
                                         />
                                         {errors && <span className="ml10 point01 bold">{errors?.usePhoneNum2}</span>}
@@ -523,7 +527,7 @@ function MN200(props) {
                                     <td>
                                         <input type="text" placeholder="" className="w110"
                                         name='userId' id='userId'
-                                        value={fields.userId} onChange={handleChange}
+                                        value={fields.userId || ''} onChange={handleChange}
                                         />
                                         <button type="button" className="btn btn03s ml5" onClick={checkId}><span>중복확인</span></button>
                                         {errors && <span className="ml10 point01 bold">{errors?.userId}</span>}
@@ -535,7 +539,7 @@ function MN200(props) {
                                         <div className="diFlex inputKeypad w110">
                                             <input type="password" placeholder="" className="w100p"
                                             name='userPw' id='userPw'
-                                            value={fields.userPw} onChange={handleChange}
+                                            value={fields.userPw || ''} onChange={handleChange}
                                             />
                                         </div>
                                         {errors && <span className="ml10 point01 bold">{errors?.userPw}</span>}
@@ -547,27 +551,27 @@ function MN200(props) {
                                         <div className="diFlex inputKeypad w110">
                                             <input type="password" placeholder="" className="w100p"
                                             name='userCfPw' id='userCfPw'
-                                            value={fields.userCfPw} onChange={handleChange}
+                                            value={fields.userCfPw || ''} onChange={handleChange}
                                             />
                                         </div>
                                         {errors && <span className="ml10 point01 bold">{errors?.userCfPw}</span>}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th scope="row">이메일</th>
+                                    <th scope="row"><em className="important">*</em>이메일</th>
                                     <td>
                                         <input type="text" placeholder="" className="w110"
                                         name='userEmail1' id='userEmail1'
-                                        value={fields.userEmail1} onChange={handleChange}
+                                        value={fields.userEmail1 || ''} onChange={handleChange}
                                         />
                                         <span className="wave">@</span> 
                                         <input type="text" placeholder="" className="w110"
                                         name='userEmail2' id='userEmail2'
-                                        value={fields.userEmail2} onChange={handleChange}
+                                        value={fields.userEmail2 || ''} onChange={handleChange}
                                         />
                                         <select className="w130" onChange={handleEmailSelect} value={emailSelected}>
                                             {emailList.map((item) => (
-                                                <option value={item} key={item}>
+                                                <option value={item || ''} key={item}>
                                                     {item}
                                                 </option>
                                             ))}
@@ -584,7 +588,7 @@ function MN200(props) {
                                             <option>선택</option>
                                             {
                                                 incList.map((data, i)=>{
-                                                    return <option key={i} value={data.cdVal} >{data.cdNm}</option>
+                                                    return <option key={i} value={data.cdVal || ''} >{data.cdNm}</option>
                                                 })
                                             }
                                         </select>
@@ -598,23 +602,25 @@ function MN200(props) {
                                             <option>선택</option>
                                             {
                                                 apoList.map((data, i)=>{
-                                                    return <option key={i} value={data.cdVal} >{data.cdNm}</option>
+                                                    return <option key={i} value={data.cdVal || ''} >{data.cdNm}</option>
                                                 })
                                             }
                                         </select>
                                         {errors && <span className="ml10 point01 bold">{errors?.userApoCd}</span>} 
                                     </td>
                                 </tr>
-                                <tr>
+                                {fields.userApoCd === '204' ? <tr>
                                     <th scope="row"><em className="important">*</em>팀명</th>
                                     <td>
                                         <input type="text" placeholder="" className="w110"
                                         name='userTimName' id='userTimName'
-                                        value={fields.userTimName} onChange={handleChange}
+                                        value={fields.userTimName || ''} onChange={handleChange}
+                                        
                                         />
-                                        {/* <button type="button" className="btn btn03s ml5"><i className="ic_search_gray"></i><span className="hidden">찾기</span></button> */}
+                                        {errors && <span className="ml10 point01 bold">{errors?.userTimName}</span>}
                                     </td>
-                                </tr>               
+                                </tr> : null}
+                                               
                             </tbody>
                         </table>
                     </div>
