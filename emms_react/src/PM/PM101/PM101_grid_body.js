@@ -65,7 +65,7 @@ function PM101GridBody(props) {
             }
         }
         fetchNewMhr();
-    }, [props.prjStartYm, props.prjEndYm, props.selectPrj])
+    }, [props.selectPrj])
 
     //프로젝트 기간을 계산하여 state에 저장
     useEffect(() => {
@@ -87,7 +87,7 @@ function PM101GridBody(props) {
     //그리드데이터 초기화
     useEffect(() => {
         if (props.gridData === null || props.gridData === undefined || props.gridData.length <= 0) {
-            props.setGridData([{...newWrkMc}]);
+            props.setGridData(newWrkMc);
             setSelectRow({ row: "", data: "" });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -112,7 +112,12 @@ function PM101GridBody(props) {
         }
         fetchData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [props.selectPrj])
+    }, [props.selectPrj, newMhr])
+
+    //프로젝트 기간 변경시 데이터 추가
+    useEffect(() => {
+        
+    }, [props.prjStartYm, props.prjEndYm])
 
     /////////////////////////////////////////////////////////////////////////
     // 일반 함수
@@ -443,16 +448,16 @@ function PM101GridBody(props) {
         let grdData = [...props.gridData];
 
         if (copyClass === "mc") {
-            grdData[selectRow.row[0]] = copyRow.data;
-            selectRow.data = copyRow.data;
+            grdData[selectRow.row[0]] = {...copyRow.data};
+            selectRow.data = {...copyRow.data};
         }
         else if (copyClass === "sc") {
-            grdData[selectRow.row[0]].wrkSc[selectRow.row[1]] = copyRow.data;
-            selectRow.data = copyRow.data;
+            grdData[selectRow.row[0]].wrkSc[selectRow.row[1]] = {...copyRow.data};
+            selectRow.data = {...copyRow.data};
         }
         else if (copyClass === "mem") {
-            grdData[selectRow.row[0]].wrkSc[selectRow.row[1]].mem[selectRow.row[2]] = copyRow.data;
-            selectRow.data = copyRow.data;
+            grdData[selectRow.row[0]].wrkSc[selectRow.row[1]].mem[selectRow.row[2]] = {...copyRow.data};
+            selectRow.data = {...copyRow.data};
         }
         else return false;
 
@@ -469,27 +474,6 @@ function PM101GridBody(props) {
         let grdData = props.gridData;
 
         if (grdData != null && grdData !== undefined) {
-            // if (selectClass === "mc") {
-            //     if(grdData.length === 1) curPosition = 0;
-            //     else if (curPosition[0] === 0) curPosition = "top";
-            //     else if (curPosition[0] === grdData.length - 1) curPosition = "bottom";
-            //     else curPosition = "middle";
-            // }
-            // else if (selectClass === "sc") {
-            //     if(grdData.length === 1 && grdData[0].wrkSc.length === 1) curPosition = 0;
-            //     else if (common.isSame(curPosition,[0,0])) curPosition = "top";
-            //     else if (curPosition[0] === grdData.length - 1
-            //         && curPosition[1] === grdData[grdData.length - 1].wrkSc.length - 1) curPosition = "bottom";
-            //     else curPosition = "middle";
-            // }
-            // else if (selectClass === "mem") {
-            //     if(grdData.length === 1 && grdData[0].wrkSc.length === 1 && grdData[0].wrkSc[0].mem.length === 1) curPosition = 0;
-            //     else if (common.isSame(curPosition,[0,0,0])) curPosition = "top";
-            //     else if (curPosition[0] === grdData.length - 1
-            //         && curPosition[1] === grdData[grdData.length - 1].wrkSc.length - 1
-            //         && curPosition[2] === grdData[grdData.length - 1].wrkSc[grdData[grdData.length - 1].wrkSc.length - 1].mem.length - 1) curPosition = "bottom";
-            //     else curPosition = "middle";
-            // }
             if (selectClass === "mc") {
                 if (grdData.length === 1) curPosition = 0;
                 else if (curPosition[0] === 0) curPosition = "top";
