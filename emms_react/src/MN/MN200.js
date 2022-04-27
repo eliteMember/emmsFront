@@ -28,7 +28,6 @@ function MN200(props) {
     const setCode = (cmmnCode) =>{
         // store에 있는 state 바꾸는 함수 실행
         dispatch(ACT_CMMN_CODE_GETLIST({cmmnCode:cmmnCode}));
-        console.log(cmmnCode)
     };
 
     // 필드값
@@ -75,7 +74,6 @@ function MN200(props) {
         const { name, value } = event.target;
         let v_fields = {...fields};
         v_fields[name] = value;
-        console.log(v_fields[name]);
         setFields(v_fields);
     }
 
@@ -86,30 +84,14 @@ function MN200(props) {
         let teamData = {"timNm": v_fields.userTimName};
 
         if (validatehtmlForm()) {
-            console.log("이름 : " + v_fields["userName"])
-            console.log("아이디 : " + v_fields["userId"])
-            console.log("아이디중복체크확인 : " + v_fields["usableId"])
-            console.log("비밀번호 : " + v_fields["userPw"])
-            console.log("비밀번호확인 : " + v_fields["userCfPw"])
-            console.log("생년월일 : " + v_fields["userBirth"])
-            console.log("휴대폰번호 : " + v_fields["usePhoneNum1"] + v_fields["usePhoneNum2"] + v_fields["usePhoneNum3"])
-            console.log("이메일 : " + v_fields['userEmail1'] + '@' + v_fields["userEmail2"])
-            console.log("직위 : " + v_fields["userIncCd"])
-            console.log("직책 : " + v_fields["userApoCd"])
-            console.log("팀명 : " + v_fields["userTimName"])
-
-            console.log("URL : " + url)
 
             setFields(v_fields);
 
-            console.log(teamData)
             axios.post('/api/join/insertTeam',teamData)
             .then(function(res) {
-                console.log(res.data.result)
 
                 axios.post(url, v_fields)
                 .then(function(res) {
-                    console.log(res.data.result)
                     if (validatehtmlForm()) {
                         if (res.data.result > 0) {
 
@@ -125,23 +107,12 @@ function MN200(props) {
                     }
                 })
                 .catch(function(res) {
-                    console.log('회원가입 실패');
+                    alert.log('회원가입 실패');
                 }) 
             })
 
         }
         else {
-            console.log("이름 : " + v_fields["userName"])
-            console.log("아이디 : " + v_fields["userId"])
-            console.log("아이디중복체크확인 : " + v_fields["usableId"])
-            console.log("비밀번호 : " + v_fields["userPw"])
-            console.log("비밀번호확인 : " + v_fields["userCfPw"])
-            console.log("생년월일 : " + v_fields["userBirth"])
-            console.log("휴대폰번호 : " + v_fields["usePhoneNum1"] + v_fields["usePhoneNum2"] + v_fields["usePhoneNum3"])
-            console.log("이메일 : " + v_fields['userEmail1'] + '@' + v_fields["userEmail2"])
-            console.log("직위 : " + v_fields["userIncCd"])
-            console.log("직책 : " + v_fields["userApoCd"])
-            console.log("팀명 : " + v_fields["userTimName"])
         }
     }
 
@@ -218,7 +189,6 @@ function MN200(props) {
         }
         setFields(v_fields);
         
-        console.log(v_fields['userBirth']);
 
     }, [birthDate]);
 
@@ -232,7 +202,6 @@ function MN200(props) {
 
     //dateFormat - 년,월,일
     function toStringByFormattingDay(source, delimiter = '') { 
-        console.log(source);
         const year = source.getFullYear(); 
         const month = leftPad(source.getMonth() + 1); 
         const day = leftPad(source.getDate()); 
@@ -250,7 +219,6 @@ function MN200(props) {
         
         axios.post('/api/join/joinYnChk', nmJoinYNChkData)
         .then((res) => {
-            console.log(res.data.result);
 
             // 신규가입
             if (res.data.result === null) {
@@ -266,7 +234,6 @@ function MN200(props) {
                 } else if (res.data.result.joinYn === "N") {
                     alert("가입 가능한 기존 회원입니다."); 
                     setUrl('/api/join/updateMember');
-                    console.log(res.data.result)
                     v_fields['userNum'] = res.data.result.usrNum
                     v_fields['userEmail1'] = res.data.result.usrEmail.split('@')[0] === null ? '' : res.data.result.usrEmail.split('@')[0]; 
                     v_fields['userEmail2'] = res.data.result.usrEmail.split('@')[1] === null ? '' : res.data.result.usrEmail.split('@')[1];
@@ -293,12 +260,10 @@ function MN200(props) {
     function checkId(e) { 
         e.preventDefault();
         let v_fields = fields;
-        console.log(v_fields);
         let chkId = {"userId": v_fields.userId, "userNum": v_fields.userNum};
 
         axios.post('/api/join/loginIdChk', chkId)
         .then((res) => {
-            console.log(res.data.checkId);
             if (res.data.checkId === 1) {
                 alert("이미 사용중인 아이디 입니다.\n 다른 아이디를 입력해 주세요.");
                 v_fields['userId'] = "";
@@ -313,7 +278,6 @@ function MN200(props) {
     }
 
     const onError = (error) => {
-        console.log("에러 : " + error);
     } 
 
     const col1 = {width:'130'};
@@ -322,7 +286,6 @@ function MN200(props) {
     // 휴대폰 번호
     let v_fields = {...fields};
     const usePhoneNum = v_fields['usePhoneNum1'] +"-"+ v_fields['usePhoneNum2'] +"-"+ v_fields['usePhoneNum3']
-    console.log("휴대폰 번호 : " + usePhoneNum)
 
     // 이메일
     const emailList = ["직접입력","u2w.co.kr","naver.com","daum.com","google.com","hanmail.com"];
@@ -336,30 +299,23 @@ function MN200(props) {
         v_fields[name] = value;
         if (v_fields[name] === 'u2w.co.kr') {
             v_fields["userEmail2"] = v_fields[name];
-            console.log(v_fields["userEmail2"]);
         }
         if (v_fields[name] === 'naver.com') {
             v_fields["userEmail2"] = v_fields[name];
-            console.log(v_fields["userEmail2"]);
         }
         if (v_fields[name] === 'daum.com') {
             v_fields["userEmail2"] = v_fields[name];
-            console.log(v_fields["userEmail2"]);
         }
         if (v_fields[name] === 'google.com') {
             v_fields["userEmail2"] = v_fields[name];
-            console.log(v_fields["userEmail2"]);
         }
         if (v_fields[name] === 'hanmail.com"') {
             v_fields["userEmail2"] = v_fields[name];
-            console.log(v_fields["userEmail2"]);
         }
         if (v_fields[name] === '직접입력') {
             v_fields["userEmail2"] = "";
-            console.log(v_fields["userEmail2"]);
         }
         realEmail = v_fields['userEmail1'] + '@' + v_fields["userEmail2"];
-        console.log(realEmail);
         setFields(v_fields);
     };
 
@@ -371,7 +327,6 @@ function MN200(props) {
     useEffect(() => {
         axios.get('/api/join/listInc', {})
         .then((rs) =>{
-            console.log(rs.data.list)
             setIncList(rs.data.list);
         })
         .catch(() => {
@@ -386,7 +341,6 @@ function MN200(props) {
     useEffect(() => {
         axios.get('/api/join/listApo', {})
         .then((rs) =>{
-            // console.log(rs.data)
             setApoList(rs.data.list);
         })
         .catch(() => {

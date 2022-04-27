@@ -109,7 +109,7 @@ function Header(props) {
           }
         </div>
       </div>
-      {popup && <MN300 onClose={handlePopup} />}
+      {popup && <MN300 onClose={handlePopup} /> }
     </div >
   )
 

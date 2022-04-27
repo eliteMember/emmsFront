@@ -17,8 +17,6 @@ function MN300(props){
     const col1 = {width:'130'};
     const col2 = {width:'auto'};
 
-    const { onClose } = props;
-
     const userInfo = useSelector(state => state.userInfo);
 
     let [listData, listDataModify] = useState([]);      // 목록
@@ -58,10 +56,8 @@ function MN300(props){
     });
 
     function fn_userInfo() {
-        console.log(userInfo.usrNum)
         axios.post('/api/user/userInfo', {usrNum: userInfo.usrNum})
         .then(function (res) {
-            console.log(res.data.result);
             for  ( var data in res.data.result )  {
                 numModify(res.data.result.usrNum);        // 번호
                 nameModify(res.data.result.usrName);      // 이름
@@ -135,36 +131,21 @@ function MN300(props){
 
     const onSubmit = (data) => {
         data.preventDefault(data);
-        console.log(userInfo.usrNum)
         
         let teamData = {"teamNm": teamNm};
         let chkPw    = {"id":id ,"existPw": existPw};
 
         if (validatehtmlForm()) {
-            console.log("이름 : " + name);
-            console.log("아이디 : " + id);
-            console.log("기존 비밀번호 : " + existPw);
-            console.log("비밀번호 : " + pw);
-            console.log("비밀번호 확인 : " + pwChk);
-            console.log("생년월일 : " + birMd);
-            console.log("휴대폰번호 : " + ctt1 + ctt2 + ctt3);
-            console.log("이메일 : " + email1 + '@' + email2);
-            console.log("직위 : " + incCd);
-            console.log("직책 : " + apoCd);
-            console.log("팀명 : " + teamNm);
 
             axios.post('/api/user/existPwChk',chkPw)
             .then(function(res) {
-                console.log(res.data.chkPw);
                 if (res.data.chkPw != 1) {
                     alert("기존 비밀번호가 다릅니다.\n 다시 입력해 주세요.");
                 }
                 else {
                     // 팀명이 있으면 말고 없으면 팀명 insert
-                    console.log(teamData)
                     axios.post('/api/user/insertTeam',teamData)
                     .then(function(res) {
-                        console.log(res.data.result);
 
                         let regDataList = { "num":userInfo.usrNum,
                                             "name":name , "id":id , "existPw":existPw , "pw":pw , 
@@ -176,7 +157,7 @@ function MN300(props){
                         axios.post('/api/user/updateMember',regDataList)
                         .then(function(res) {
                             if (res.data.result > 0) {
-
+                                props.onClose(false);
                                 alert('회원이 성공적으로 수정되었습니다.');
                             }
                             else {
@@ -189,17 +170,6 @@ function MN300(props){
             })
         }
         else {
-            console.log("이름 : " + name);
-            console.log("아이디 : " + id);
-            console.log("기존 비밀번호 : " + existPw);
-            console.log("비밀번호 : " + pw);
-            console.log("비밀번호 확인 : " + pwChk);
-            console.log("생년월일 : " + birMd);
-            console.log("휴대폰번호 : " + ctt1 + ctt2 + ctt3);
-            console.log("이메일 : " + email1 + '@' + email2);
-            console.log("직위 : " + incCd);
-            console.log("직책 : " + apoCd);
-            console.log("팀명 : " + teamNm);
         }
     }
 
@@ -210,27 +180,21 @@ function MN300(props){
         setEmailSelected(e.target.value);
         if (e.target.value === 'u2w.co.kr') {
             email2 = emailList[1];
-            console.log(email2);
         }
         if (e.target.value === 'naver.com') {
             email2 = "naver.com";
-            console.log(email2);
         }
         if (e.target.value === 'daum.com') {
             email2 = 'daum.com';
-            console.log(email2);
         }
         if (e.target.value === 'google.com') {
             email2 = 'google.com';
-            console.log(email2);
         }
         if (e.target.value === 'hanmail.com') {
             email2 = 'hanmail.com';
-            console.log(email2);
         }
         if (e.target.value === '직접입력') {
             email2 = "";
-            console.log(email2);
         }
         email2Modify(email2);
     };
@@ -270,7 +234,7 @@ function MN300(props){
                                     <td>
                                         <div className="diFlex inputKeypad w110">
                                             <input type="password" placeholder="" className="w100p" id='existPw' value={existPw || ''}
-                                             onChange={(e) => { existPwModify(e.target.value); console.log(e.target.value); }}/>
+                                             onChange={(e) => { existPwModify(e.target.value); }}/>
                                         </div>
                                         {errors && <span className="ml10 point01 bold">{errors?.existPw}</span>}
                                     </td>
@@ -280,7 +244,7 @@ function MN300(props){
                                     <td>
                                         <div className="diFlex inputKeypad w110">
                                             <input type="password" placeholder="" className="w100p" id='pw'  value={pw || ''}
-                                             onChange={(e) => { pwModify(e.target.value); console.log(e.target.value); }}/>
+                                             onChange={(e) => { pwModify(e.target.value); }}/>
                                         </div>
                                         {errors && <span className="ml10 point01 bold">{errors?.pw}</span>}
                                     </td>
@@ -290,7 +254,7 @@ function MN300(props){
                                     <td>
                                         <div className="diFlex inputKeypad w110">
                                             <input type="password" placeholder="" className="w100p" id='pwChk'  value={pwChk || ''}
-                                             onChange={(e) => { pwChkModify(e.target.value); console.log(e.target.value); }}/>
+                                             onChange={(e) => { pwChkModify(e.target.value);}}/>
                                         </div>
                                         {errors && <span className="ml10 point01 bold">{errors?.pwChk}</span>}
                                     </td>
@@ -305,13 +269,13 @@ function MN300(props){
                                     <th scope="row"><em className="important">*</em>휴대폰번호</th>
                                     <td>
                                         <input type="text" id="ctt1" value={ctt1} placeholder="" className="w70"
-                                         onChange={(e) => { ctt1Modify(e.target.value); console.log(e.target.value); }}/>
+                                         onChange={(e) => { ctt1Modify(e.target.value);  }}/>
                                         <span className="wave">-</span> 
                                         <input type="text" id="ctt2" value={ctt2} placeholder="" className="w70"
-                                         onChange={(e) => { ctt2Modify(e.target.value); console.log(e.target.value); }}/>
+                                         onChange={(e) => { ctt2Modify(e.target.value);  }}/>
                                         <span className="wave">-</span> 
                                         <input type="text" id="ctt3" value={ctt3} placeholder="" className="w70"
-                                         onChange={(e) => { ctt3Modify(e.target.value); console.log(e.target.value); }}/>
+                                         onChange={(e) => { ctt3Modify(e.target.value);  }}/>
                                         {errors && <span className="ml10 point01 bold">{errors?.ctt2}</span>}
                                     </td>
                                 </tr>
@@ -319,10 +283,10 @@ function MN300(props){
                                     <th scope="row"><em className="important">*</em>이메일</th>
                                     <td>
                                         <input type="text" placeholder="" className="w110" value={email1|| ''} 
-                                         onChange={(e) => { email1Modify(e.target.value); console.log(e.target.value); }}/>
+                                         onChange={(e) => { email1Modify(e.target.value);  }}/>
                                         <span className="wave">@</span> 
                                         <input type="text" placeholder="" className="w110" value={email2|| ''}
-                                         onChange={(e) => { email2Modify(e.target.value); console.log(e.target.value); }}/>
+                                         onChange={(e) => { email2Modify(e.target.value);  }}/>
                                         <select className="w130" onChange={handleEmailSelect} value={emailSelected}>
                                             {emailList.map((item) => (
                                                 <option value={item || ''} key={item}>
@@ -336,7 +300,7 @@ function MN300(props){
                                 <tr>
                                     <th scope="row"><em className="important">*</em>직위</th>
                                     <td>
-                                        <select className="w110" id="incCd" onChange={(e) => { incCdModify(e.target.value); console.log(e.target.value); }} value={incCd} >
+                                        <select className="w110" id="incCd" onChange={(e) => { incCdModify(e.target.value);  }} value={incCd} >
                                             <CodeSelectOption codeGroup={'INC_CD'} />
                                         </select>
                                         {errors && <span className="ml10 point01 bold">{errors?.incCd}</span>} 
@@ -345,7 +309,7 @@ function MN300(props){
                                 <tr>
                                     <th scope="row"><em className="important">*</em>직책</th>
                                     <td>
-                                        <select className="w110" id="apoCd" onChange={(e) => { apoCdModify(e.target.value); console.log(e.target.value); }} value={apoCd} >
+                                        <select className="w110" id="apoCd" onChange={(e) => { apoCdModify(e.target.value);  }} value={apoCd} >
                                             <CodeSelectOption codeGroup={'APO_CD'} />
                                         </select>
                                         {errors && <span className="ml10 point01 bold">{errors?.apoCd}</span>} 
@@ -356,7 +320,7 @@ function MN300(props){
                                     <th scope="row"><em className="important">*</em>팀명</th>
                                     <td>
                                         <input type="text" placeholder="" className="w110" id="teamNm" value={teamNm || ''}
-                                         onChange={(e) => { teamNmModify(e.target.value); console.log(e.target.value); }}/>
+                                         onChange={(e) => { teamNmModify(e.target.value);  }}/>
                                         {errors && <span className="ml10 point01 bold">{errors?.teamNm}</span>}
                                     </td>
                                 </tr> 
@@ -381,7 +345,7 @@ function MN300(props){
                 </div>
                 <a  className='popClose'
                     onClick={() => {
-                        onClose(false);
+                        props.onClose(false);
                     }}
                 >창닫기</a>
             </div>
