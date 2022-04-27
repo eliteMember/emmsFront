@@ -21,7 +21,6 @@ const CMMN_CODE = (state = initialState, action) =>{
     switch(action.type){
         case GETCODE:
             copyCmmnCode = action.payload;
-            console.log(copyCmmnCode);
         return copyCmmnCode;
 
         default:
